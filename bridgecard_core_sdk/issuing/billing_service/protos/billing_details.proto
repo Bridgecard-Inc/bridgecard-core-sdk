@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package billing_details;
+
+
+enum BillType {
+  CARD_ISSUING_FEE = 0;
+  CARD_MAINTENANCE_FEE = 1;
+  CARD_TRANSACTION_FEE = 2;
+  CARD_REWARDS_FEE = 3;
+}
+
+message RequestData {
+  string token = 1;
+  BillType bill_type = 2;
+  map<string, string>  request_metadata = 3;
+}
+
+
+message ResponseData {
+  int64 code = 1;
+  string message = 2;
+  map<string, string>  response_metadata = 3;
+
+}
+
+
+
+service BillingService {
+  rpc CheckAdminBillStatus(RequestData) returns (ResponseData) {}
+  rpc BillAdmin(RequestData) returns (ResponseData) {}
+}

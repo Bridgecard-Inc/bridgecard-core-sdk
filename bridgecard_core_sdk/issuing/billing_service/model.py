@@ -1,0 +1,1 @@
+from .protos.billing_details_pb2 import BillType
