@@ -79,8 +79,8 @@ def bill_admin(token: str, bill_type: BillType):
             return True
 
     except grpc.RpcError as e:
-        print(f"check_admin_bill_status - Code: {e.code()}")
+        print(f"bill_admin - Code: {e.code()}")
 
-        print(f"check_admin_bill_status - Message: {e.details()}")
+        print(f"bill_admin - Message: {e.details()}")
 
         return False
