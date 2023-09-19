@@ -21,14 +21,14 @@ bridgecard_core_sdk.init(billing_service=True)
 
 ```python
 
-    admin_token = ""
+admin_token = ""
 
-    amount_left = billing_service.check_admin_bill_status(token=admin_token,bill_type=BillType.CARD_REWARDS_FEE)
+amount_left = billing_service.check_admin_bill_status(token=admin_token,bill_type=BillType.CARD_REWARDS_FEE)
 
-    print(amount_left)
+print(amount_left)
 
-    admin_billed = billing_service.bill_admin(token=admin_token,bill_type=BillType.CARD_REWARDS_FEE)
+admin_billed = billing_service.bill_admin(token=admin_token,bill_type=BillType.CARD_REWARDS_FEE)
 
-    print(admin_billed)
+print(admin_billed)
 
 ```
