@@ -32,3 +32,23 @@ admin_billed = billing_service.bill_admin(token=admin_token,bill_type=BillType.C
 print(admin_billed)
 
 ```
+
+### 4. NGN Cards Billing sample
+
+```python
+
+admin_token = ""
+
+amount_left = billing_service.check_admin_bill_status(token=admin_token,bill_type=BillType.CARD_ISSUING_FEE_NGN_VIRTUAL_CARD)
+
+print(amount_left)
+
+admin_billed = billing_service.bill_admin(token=admin_token,bill_type=BillType.CARD_ISSUING_FEE_NGN_VIRTUAL_CARD)
+
+print(admin_billed)
+
+admin_billed = billing_service.bill_admin(token=admin_token,bill_type=BillType.CARD_TRANSACTION_FEE_NGN_VIRTUAL_CARD,transaction_fee=115)
+
+print(admin_billed)
+
+```

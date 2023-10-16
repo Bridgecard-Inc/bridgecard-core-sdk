@@ -4,14 +4,17 @@ package billing_details;
 
 
 enum BillType {
-  CARD_ISSUING_FEE = 0;
-  CARD_MAINTENANCE_FEE = 1;
-  CARD_TRANSACTION_FEE = 2;
+  CARD_ISSUING_FEE_USD_VIRTUAL_CARD = 0;
+  CARD_MAINTENANCE_FEE_USD_VIRTUAL_CARD = 1;
+  CARD_TRANSACTION_FEE_USD_VIRTUAL_CARD  = 2;
   CARD_REWARDS_FEE = 3;
+  CARD_ISSUING_FEE_NGN_VIRTUAL_CARD = 4;
+  CARD_MAINTENANCE_FEE_NGN_VIRTUAL_CARD = 5;
+  CARD_TRANSACTION_FEE_NGN_VIRTUAL_CARD = 6;
+
 }
 
 message RequestData {
-  string token = 1;
   BillType bill_type = 2;
   map<string, string>  request_metadata = 3;
 }

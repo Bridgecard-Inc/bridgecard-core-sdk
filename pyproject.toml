@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "bridgecard-core-sdk"
-version = "0.2.0"
+version = "0.3.0"
 description = ""
 authors = ["enfinity <festusowumi@gmail.com>"]
 readme = "README.md"

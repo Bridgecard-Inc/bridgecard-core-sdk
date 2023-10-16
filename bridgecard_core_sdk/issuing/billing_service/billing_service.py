@@ -1,4 +1,5 @@
 import os
+from typing import Optional
 
 import grpc
 
@@ -7,7 +8,6 @@ from .protos import billing_details_pb2_grpc, billing_details_pb2
 from .model import BillType
 
 from .utils.billing_service_data_context import billing_service_data_context
-
 
 def init_billing_service():
     client_private_key = os.environ.get("BRIDGECARD_ISSUING_TLS_CLIENT_PRIVATE_KEY")
@@ -60,7 +60,8 @@ def check_admin_bill_status(token: str, bill_type: BillType):
         return False
 
 
-def bill_admin(token: str, bill_type: BillType):
+def bill_admin(token: str, bill_type: BillType, transaction_fee: Optional[int] = None):
+
     grpc_channel = billing_service_data_context.grpc_channel
 
     client_stub = billing_details_pb2_grpc.BillingServiceStub(grpc_channel)
@@ -70,6 +71,7 @@ def bill_admin(token: str, bill_type: BillType):
     # Make a remote gRPC call
     request = billing_details_pb2.RequestData(
         bill_type=bill_type,
+        request_metadata={"transaction_fee": str(transaction_fee)}
     )
 
     try:
