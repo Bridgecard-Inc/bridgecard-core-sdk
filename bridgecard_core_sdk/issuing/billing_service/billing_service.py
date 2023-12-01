@@ -9,6 +9,7 @@ from .model import BillType
 
 from .utils.billing_service_data_context import billing_service_data_context
 
+
 def init_billing_service():
     client_private_key = os.environ.get("BRIDGECARD_ISSUING_TLS_CLIENT_PRIVATE_KEY")
 
@@ -20,7 +21,9 @@ def init_billing_service():
         "BRIDGECARD_ISSUING_TLS_SERVER_CERT_CHAIN"
     )
 
-    server_addr = "ae740cdf8e16b48bc82a259400ca03b9-1383199310.us-west-2.elb.amazonaws.com:80"
+    server_addr = (
+        "ae740cdf8e16b48bc82a259400ca03b9-1383199310.us-west-2.elb.amazonaws.com:80"
+    )
     # server_addr = "0.0.0.0:8080"
 
     creds = grpc.ssl_channel_credentials(
@@ -33,7 +36,12 @@ def init_billing_service():
     billing_service_data_context.grpc_channel = grpc_channel
 
 
-def check_admin_bill_status(token: str, bill_type: BillType):
+def check_admin_bill_status(
+    token: str,
+    bill_type: BillType,
+    card_id: Optional[str] = None,
+    transaction_amount: Optional[str] = None,
+):
     grpc_channel = billing_service_data_context.grpc_channel
 
     client_stub = billing_details_pb2_grpc.BillingServiceStub(grpc_channel)
@@ -42,6 +50,7 @@ def check_admin_bill_status(token: str, bill_type: BillType):
 
     request = billing_details_pb2.RequestData(
         bill_type=bill_type,
+        request_metadata={"card_id": card_id, "transaction_amount": transaction_amount},
     )
 
     try:
@@ -60,8 +69,12 @@ def check_admin_bill_status(token: str, bill_type: BillType):
         return False
 
 
-def bill_admin(token: str, bill_type: BillType, transaction_fee: Optional[int] = None):
-
+def bill_admin(
+    token: str,
+    bill_type: BillType,
+    card_id: Optional[str] = None,
+    transaction_amount: Optional[str] = None,
+):
     grpc_channel = billing_service_data_context.grpc_channel
 
     client_stub = billing_details_pb2_grpc.BillingServiceStub(grpc_channel)
@@ -71,7 +84,7 @@ def bill_admin(token: str, bill_type: BillType, transaction_fee: Optional[int] =
     # Make a remote gRPC call
     request = billing_details_pb2.RequestData(
         bill_type=bill_type,
-        request_metadata={"transaction_fee": str(transaction_fee)}
+        request_metadata={"card_id": card_id, "transaction_amount": transaction_amount},
     )
 
     try:
@@ -86,4 +99,3 @@ def bill_admin(token: str, bill_type: BillType, transaction_fee: Optional[int] =
         print(f"bill_admin - Message: {e.details()}")
 
         return False
-        
