@@ -39,16 +39,45 @@ print(admin_billed)
 
 admin_token = ""
 
-amount_left = billing_service.check_admin_bill_status(token=admin_token,bill_type=BillType.CARD_ISSUING_FEE_NGN_VIRTUAL_CARD)
+# CARD ISSUING FEE
 
-print(amount_left)
+amount_out = billing_service.check_admin_bill_status(token=admin_token,bill_type=BillType.CARD_ISSUING_FEE_NGN_VIRTUAL_CARD)
 
-admin_billed = billing_service.bill_admin(token=admin_token,bill_type=BillType.CARD_ISSUING_FEE_NGN_VIRTUAL_CARD)
+print(amount_out)
 
-print(admin_billed)
+was_admin_billed = billing_service.bill_admin(token=admin_token,bill_type=BillType.CARD_ISSUING_FEE_NGN_VIRTUAL_CARD)
 
-admin_billed = billing_service.bill_admin(token=admin_token,bill_type=BillType.CARD_ISSUING_FEE_NGN_VIRTUAL_CARD)
+print(was_admin_billed)
 
-print(admin_billed)
+
+# CARD MAINTENANCE FEE
+
+card_id = ""
+
+transaction_amount = ""
+
+amount_out = billing_service.check_admin_bill_status(token=admin_token,bill_type=BillType.CARD_ISSUING_FEE_NGN_VIRTUAL_CARD)
+
+print(amount_out)
+
+was_admin_billed = billing_service.bill_admin(token=admin_token,bill_type=BillType.CARD_MAINTENANCE_FEE_NGN_VIRTUAL_CARD,card_id=card_id,transaction_amount=transaction_amount)
+
+print(was_admin_billed)
+
+
+# CARD TRANSACTION FEE
+
+card_id = ""
+
+transaction_amount = ""
+
+amount_out = billing_service.check_admin_bill_status(token=admin_token,bill_type=BillType.CARD_TRANSACTION_FEE_NGN_VIRTUAL_CARD)
+
+print(amount_out)
+
+was_admin_billed = billing_service.bill_admin(token=admin_token,bill_type=BillType.CARD_TRANSACTION_FEE_NGN_VIRTUAL_CARD,card_id=card_id,transaction_amount=transaction_amount)
+
+print(was_admin_billed)
+
 
 ```
