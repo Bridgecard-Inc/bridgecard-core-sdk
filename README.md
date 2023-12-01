@@ -47,7 +47,7 @@ admin_billed = billing_service.bill_admin(token=admin_token,bill_type=BillType.C
 
 print(admin_billed)
 
-admin_billed = billing_service.bill_admin(token=admin_token,bill_type=BillType.CARD_TRANSACTION_FEE_NGN_VIRTUAL_CARD,transaction_fee=115)
+admin_billed = billing_service.bill_admin(token=admin_token,bill_type=BillType.CARD_ISSUING_FEE_NGN_VIRTUAL_CARD)
 
 print(admin_billed)
 

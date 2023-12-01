@@ -21,7 +21,7 @@ def init_billing_service():
     )
 
     server_addr = "ae740cdf8e16b48bc82a259400ca03b9-1383199310.us-west-2.elb.amazonaws.com:80"
-    server_addr = "0.0.0.0:8080"
+    # server_addr = "0.0.0.0:8080"
 
     creds = grpc.ssl_channel_credentials(
         private_key=client_private_key.encode(),
