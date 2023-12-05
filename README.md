@@ -41,6 +41,10 @@ admin_token = ""
 
 # CARD ISSUING FEE
 
+card_id = ""
+
+transaction_amount = ""
+
 amount_out = billing_service.check_admin_bill_status(token=admin_token,bill_type=BillType.CARD_ISSUING_FEE_NGN_VIRTUAL_CARD)
 
 print(amount_out)
@@ -52,11 +56,11 @@ print(was_admin_billed)
 
 # CARD MAINTENANCE FEE
 
-card_id = ""
+card_id = "c1a9f59ba1d54d62aac978dd4cb2c27f"
 
-transaction_amount = ""
+transaction_amount = "70000"
 
-amount_out = billing_service.check_admin_bill_status(token=admin_token,bill_type=BillType.CARD_ISSUING_FEE_NGN_VIRTUAL_CARD)
+amount_out = billing_service.check_admin_bill_status(token=admin_token,bill_type=BillType.CARD_MAINTENANCE_FEE_NGN_VIRTUAL_CARD,card_id=card_id,transaction_amount=transaction_amount)
 
 print(amount_out)
 
@@ -67,11 +71,11 @@ print(was_admin_billed)
 
 # CARD TRANSACTION FEE
 
-card_id = ""
+card_id = "c1a9f59ba1d54d62aac978dd4cb2c27f"
 
-transaction_amount = ""
+transaction_amount = "70000"
 
-amount_out = billing_service.check_admin_bill_status(token=admin_token,bill_type=BillType.CARD_TRANSACTION_FEE_NGN_VIRTUAL_CARD)
+amount_out = billing_service.check_admin_bill_status(token=admin_token,bill_type=BillType.CARD_TRANSACTION_FEE_NGN_VIRTUAL_CARD,card_id=card_id,transaction_amount=transaction_amount)
 
 print(amount_out)
 
