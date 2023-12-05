@@ -50,7 +50,7 @@ def check_admin_bill_status(
 
     request = billing_details_pb2.RequestData(
         bill_type=bill_type,
-        request_metadata={"card_id": card_id, "transaction_amount": transaction_amount},
+        request_metadata={"card_id": card_id or "", "transaction_amount": transaction_amount or ""},
     )
 
     try:
@@ -84,7 +84,7 @@ def bill_admin(
     # Make a remote gRPC call
     request = billing_details_pb2.RequestData(
         bill_type=bill_type,
-        request_metadata={"card_id": card_id, "transaction_amount": transaction_amount},
+        request_metadata={"card_id": card_id or "", "transaction_amount": transaction_amount or ""},
     )
 
     try:
