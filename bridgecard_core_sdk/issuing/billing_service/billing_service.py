@@ -26,12 +26,14 @@ def init_billing_service():
     )
     # server_addr = "0.0.0.0:8080"
 
-    creds = grpc.ssl_channel_credentials(
-        private_key=client_private_key.encode(),
-        certificate_chain=client_certificate_chain.encode(),
-        root_certificates=server_certificate_chain.encode(),
-    )
-    grpc_channel = grpc.secure_channel(server_addr, creds)
+    # creds = grpc.ssl_channel_credentials(
+    #     private_key=client_private_key.encode(),
+    #     certificate_chain=client_certificate_chain.encode(),
+    #     root_certificates=server_certificate_chain.encode(),
+    # )
+    # grpc_channel = grpc.secure_channel(server_addr, creds)
+
+    grpc_channel = grpc.insecure_channel(server_addr)
 
     billing_service_data_context.grpc_channel = grpc_channel
 
