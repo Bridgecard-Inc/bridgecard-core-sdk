@@ -85,3 +85,19 @@ print(was_admin_billed)
 
 
 ```
+
+### 4. Core Db sample
+
+```python
+
+bridgecard_core_sdk.init(
+    billing_service=True, core_db=True, core_db_init_data=CoreDbInitData(admin_db=True)
+)
+
+core_db_usecase: CoreDbUsecase = core_db_data_context.core_db_usecase
+
+result = core_db_usecase.admin_repository.read_by_id(id="tQP4lRSqckXLrzRkpr5gaIcdPQm2", context=None)
+
+print(result)
+
+```
