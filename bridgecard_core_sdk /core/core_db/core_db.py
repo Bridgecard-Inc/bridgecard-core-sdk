@@ -1,4 +1,5 @@
 from contextlib import AbstractContextManager, contextmanager
+from redis import Redis
 import os
 from typing import Any, Callable, Optional
 import firebase_admin
@@ -13,6 +14,7 @@ from .repository import (
     CardholdersRepository,
     CardTransactionsRepository,
     NairaAccountsRepository,
+    CacheRepository
 )
 
 from .utils.core_db_data_context import core_db_data_context
@@ -27,6 +29,7 @@ class CoreDbUsecase:
         card_transactions_repository: Optional[CardTransactionsRepository] = None,
         naira_accounts_repository: Optional[NairaAccountsRepository] = False,
         billing_repository: Optional[AdminRepository] = None,
+        cache_repository: Optional[CacheRepository] = None,
     ):
         self.cards_repository = cards_repository
         self.admin_repository = admin_repository
@@ -34,6 +37,7 @@ class CoreDbUsecase:
         self.card_transactions_repository = card_transactions_repository
         self.naira_accounts_repository = naira_accounts_repository
         self.billing_repository = billing_repository
+        self.cache_repository = cache_repository
 
 
 class Database:
@@ -124,6 +128,26 @@ class Database:
                 name="naira_account_db_app",
             )
 
+        if core_db_init_data.cache_db:
+
+            redis_host = os.environ.get("REDIS_HOST")
+
+            redis_port = os.environ.get("REDIS_PORT")
+
+            redis_username = os.environ.get("REDIS_USERNAME")
+
+            redis_password = os.environ.get("REDIS_PASSWORD")
+
+
+            redis = Redis(host=redis_host, port=redis_port, decode_responses=True,username=redis_username, password=redis_password)
+
+            if redis.ping():
+                self.cache_db_client = redis
+            else:
+                print("Failed to Redis")
+
+
+
     @contextmanager
     def session(self) -> Callable[..., AbstractContextManager[DbSession]]:
         db_session = DbSession(
@@ -133,6 +157,7 @@ class Database:
             card_transactions_db_app=self._card_transactions_db_app,
             cardholders_db_app=self._cardholders_db_app,
             naira_accounts_db_app=self._naira_accounts_db_app,
+            cache_db_client=self.cache_db_client
         )
         try:
             yield db_session
@@ -145,6 +170,7 @@ class Database:
 
 
 def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
+
     db = Database(core_db_init_data)
 
     cards_repository = CardsRepository(db_session_factory=db.session)
@@ -175,6 +201,12 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
     if core_db_init_data.admin_db:
         admin_repository = AdminRepository(db_session_factory=db.session)
 
+    cache_repository = None
+
+    if core_db_init_data.cache_db:
+
+        cache_repository = CacheRepository(db_session_factory=db.session)
+
     core_db_usecase = CoreDbUsecase(
         cards_repository=cards_repository,
         card_transactions_repository=card_transactions_repository,
@@ -182,6 +214,7 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
         naira_accounts_repository=naira_accounts_repository,
         billing_repository=billing_repository,
         admin_repository=admin_repository,
+        cache_repository=cache_repository
     )
 
     core_db_data_context.core_db_usecase = core_db_usecase

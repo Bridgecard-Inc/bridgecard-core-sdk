@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package transaction_monitoring_details;
+
+
+enum ProductType {
+  USD_CARDS = 0;
+
+}
+
+message RequestData {
+  ProductType product_type = 1;
+  map<string, string>  request_metadata = 2;
+}
+
+
+message ResponseData {
+  int64 code = 1;
+  string message = 2;
+  map<string, string>  response_metadata = 3;
+
+}
+
+
+service TransactionMonitoringService {
+  rpc CheckTransactionRisk(RequestData) returns (ResponseData) {}
+}
