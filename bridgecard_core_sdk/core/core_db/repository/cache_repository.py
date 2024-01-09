@@ -30,19 +30,33 @@ class CacheRepository():
         
     def fetch_list_of_dicts(self, key: str, context):
 
-        hash_keys = self.cache_db_client.keys(f'{key}:*')
+        try:
 
-        # Fetch the dictionaries from Redis
-        list_of_dicts = [self.cache_db_client.hgetall(hash_key) for hash_key in hash_keys]
+            hash_keys = self.cache_db_client.keys(f'{key}:*')
 
-        return list_of_dicts
+            # Fetch the dictionaries from Redis
+            list_of_dicts = [self.cache_db_client.hgetall(hash_key) for hash_key in hash_keys]
+
+            return list_of_dicts
+        
+        except:
+
+            return False
     
     def set_list_of_dicts_in_redis(self, key: str, list_of_dicts: list):
 
-        for index, dictionary in enumerate(list_of_dicts):
+        try:
 
-            hash_key = f'{key}:{index}'
+            for index, dictionary in enumerate(list_of_dicts):
 
-            self.cache_db_client.hmset(hash_key, dictionary)
+                hash_key = f'{key}:{index}'
+
+                self.cache_db_client.hmset(hash_key, dictionary)
+
+            return True
+        
+        except:
+
+            return False
 
     

@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-from .import transaction_monitoring_details_pb2 as transaction__monitoring__details__pb2
+from . import transaction_monitoring_details_pb2 as transaction__monitoring__details__pb2
 
 
 class TransactionMonitoringServiceStub(object):

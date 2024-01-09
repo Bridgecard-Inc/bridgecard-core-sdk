@@ -3,6 +3,8 @@ from typing import Dict, Optional
 
 import grpc
 
+from google.protobuf.struct_pb2 import Struct
+
 from .protos import (
     transaction_monitoring_details_pb2_grpc,
     transaction_monitoring_details_pb2,
@@ -58,9 +60,12 @@ def check_transaction_risk(
 
     metadata = (("token", token),)
 
+    metadata_struct = Struct()
+    metadata_struct.update(data or {})
+
     request = transaction_monitoring_details_pb2.RequestData(
         product_type=product_type,
-        request_metadata=data or {},
+        request_metadata=metadata_struct,
     )
 
     try:
@@ -75,3 +80,4 @@ def check_transaction_risk(
         print(f"check_transaction_risk - Message: {e.details()}")
 
         return False
+

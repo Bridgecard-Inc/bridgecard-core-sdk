@@ -41,3 +41,23 @@ class CardTransactionsRepository(BaseRepository):
 
         except:
             return False
+
+
+    def fetch_card_transaction_data(
+        self,
+        environment: EnvironmentEnum,
+        company_issuing_app_id: str,
+        card_id: str,
+        context,
+    ):
+        try:
+
+            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(
+                card_id
+            ).get()
+            
+
+            return data
+
+        except:
+            return False
