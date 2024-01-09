@@ -28,10 +28,10 @@ def init_transaction_monitoring_service():
         "BRIDGECARD_ISSUING_TLS_SERVER_CERT_CHAIN"
     )
 
-    # server_addr = (
-    #     "ae740cdf8e16b48bc82a259400ca03b9-1383199310.us-west-2.elb.amazonaws.com:80"
-    # )
-    server_addr = "0.0.0.0:8080"
+    server_addr = (
+        "a08c5b25f952f4266b52c70600aefcec-2060662335.us-west-2.elb.amazonaws.com:80"
+    )
+    # server_addr = "0.0.0.0:8080"
 
     # creds = grpc.ssl_channel_credentials(
     #     private_key=client_private_key.encode(),
