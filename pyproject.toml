@@ -11,7 +11,7 @@ python = "^3.9"
 pydantic = "^1.10.9"
 grpcio-tools = "^1.57.0"
 slack-sdk = "3.19.5"
-sse-starlette = "0.10.3"
+sse-starlette = "1.6.1"
 firebase-admin = "^6.3.0"
 redis = "^5.0.1"
 
