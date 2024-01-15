@@ -56,7 +56,7 @@ print(was_admin_billed)
 
 # CARD MAINTENANCE FEE
 
-card_id = "c1a9f59ba1d54d62aac978dd4cb2c27f"
+card_id = ""
 
 transaction_amount = "70000"
 
@@ -71,7 +71,7 @@ print(was_admin_billed)
 
 # CARD TRANSACTION FEE
 
-card_id = "c1a9f59ba1d54d62aac978dd4cb2c27f"
+card_id = ""
 
 transaction_amount = "70000"
 
