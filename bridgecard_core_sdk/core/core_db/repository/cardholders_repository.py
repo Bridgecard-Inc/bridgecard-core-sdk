@@ -21,6 +21,23 @@ class CardholdersRepository(BaseRepository):
 
             self.db_ref = db_ref
 
+    def fetch_cardholder_data(
+        self,
+        environment: EnvironmentEnum,
+        company_issuing_app_id: str,
+        cardholder_id: str,
+        context,
+    ):
+        try:
+
+            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(cardholder_id).get()
+                
+            return data
+
+        except:
+            
+            return None
+
     def fetch_cardholder_data_attr(
         self,
         environment: EnvironmentEnum,
