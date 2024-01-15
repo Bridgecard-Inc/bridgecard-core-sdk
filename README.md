@@ -96,7 +96,7 @@ bridgecard_core_sdk.init(
 
 core_db_usecase: CoreDbUsecase = core_db_data_context.core_db_usecase
 
-result = core_db_usecase.admin_repository.read_by_id(id="tQP4lRSqckXLrzRkpr5gaIcdPQm2", context=None)
+result = core_db_usecase.admin_repository.read_by_id(id="", context=None)
 
 print(result)
 
