@@ -5,3 +5,4 @@ from .card_transactions_repository import CardTransactionsRepository
 from .cardholders_repository import CardholdersRepository
 from .naira_accounts_repository import NairaAccountsRepository
 from .cache_repository import CacheRepository 
+from .manually_passed_kyc_logs import ManuallyPassedKycLogsRepository

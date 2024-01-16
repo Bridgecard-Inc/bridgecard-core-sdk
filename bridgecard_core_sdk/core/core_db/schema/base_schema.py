@@ -11,6 +11,7 @@ class DbSession(BaseModel):
     card_transactions_db_app: Any
     cardholders_db_app: Any
     naira_accounts_db_app: Any
+    client_logs_db_app: Any
     cache_db_client: Any
 
 class CoreDbInitData(BaseModel):
@@ -21,6 +22,7 @@ class CoreDbInitData(BaseModel):
     cardholders_db: Optional[bool] = False
     naira_accounts_db: Optional[bool] = False
     cache_db: Optional[bool] = False
+    client_logs_db: Optional[bool] = False
 
 
 class EnvironmentEnum(str, Enum):

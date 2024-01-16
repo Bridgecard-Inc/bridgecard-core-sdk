@@ -14,7 +14,8 @@ from .repository import (
     CardholdersRepository,
     CardTransactionsRepository,
     NairaAccountsRepository,
-    CacheRepository
+    CacheRepository,
+    ManuallyPassedKycLogsRepository,
 )
 
 from .utils.core_db_data_context import core_db_data_context
@@ -30,6 +31,9 @@ class CoreDbUsecase:
         naira_accounts_repository: Optional[NairaAccountsRepository] = False,
         billing_repository: Optional[AdminRepository] = None,
         cache_repository: Optional[CacheRepository] = None,
+        manually_passed_kyc_logs_repository: Optional[
+            ManuallyPassedKycLogsRepository
+        ] = None,
     ):
         self.cards_repository = cards_repository
         self.admin_repository = admin_repository
@@ -38,6 +42,7 @@ class CoreDbUsecase:
         self.naira_accounts_repository = naira_accounts_repository
         self.billing_repository = billing_repository
         self.cache_repository = cache_repository
+        self.manually_passed_kyc_logs_repository = manually_passed_kyc_logs_repository
 
 
 class Database:
@@ -128,8 +133,16 @@ class Database:
                 name="naira_account_db_app",
             )
 
-        if core_db_init_data.cache_db:
+        if core_db_init_data.client_logs_db:
+            client_logs_database_url = os.environ.get("CLIENT_LOGS_DATABASE_URL")
 
+            self.client_log_db_app = firebase_admin.initialize_app(
+                self._cred,
+                {"databaseURL": client_logs_database_url},
+                name="client_log_db_app",
+            )
+
+        if core_db_init_data.cache_db:
             redis_host = os.environ.get("REDIS_HOST")
 
             redis_port = os.environ.get("REDIS_PORT")
@@ -138,15 +151,18 @@ class Database:
 
             redis_password = os.environ.get("REDIS_PASSWORD")
 
-
-            redis = Redis(host=redis_host, port=redis_port, decode_responses=True,username=redis_username, password=redis_password)
+            redis = Redis(
+                host=redis_host,
+                port=redis_port,
+                decode_responses=True,
+                username=redis_username,
+                password=redis_password,
+            )
 
             if redis.ping():
                 self.cache_db_client = redis
             else:
                 print("Failed to Redis")
-
-
 
     @contextmanager
     def session(self) -> Callable[..., AbstractContextManager[DbSession]]:
@@ -157,7 +173,8 @@ class Database:
             card_transactions_db_app=self._card_transactions_db_app,
             cardholders_db_app=self._cardholders_db_app,
             naira_accounts_db_app=self._naira_accounts_db_app,
-            cache_db_client=self.cache_db_client
+            cache_db_client=self.cache_db_client,
+            client_logs_db_app=self.client_log_db_app,
         )
         try:
             yield db_session
@@ -170,7 +187,6 @@ class Database:
 
 
 def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
-
     db = Database(core_db_init_data)
 
     cards_repository = CardsRepository(db_session_factory=db.session)
@@ -204,8 +220,14 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
     cache_repository = None
 
     if core_db_init_data.cache_db:
-
         cache_repository = CacheRepository(db_session_factory=db.session)
+
+    manually_passed_kyc_logs_repository = None
+
+    if core_db_init_data.client_logs_db:
+        manually_passed_kyc_logs_repository = ManuallyPassedKycLogsRepository(
+            db_session_factory=db.session
+        )
 
     core_db_usecase = CoreDbUsecase(
         cards_repository=cards_repository,
@@ -214,7 +236,8 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
         naira_accounts_repository=naira_accounts_repository,
         billing_repository=billing_repository,
         admin_repository=admin_repository,
-        cache_repository=cache_repository
+        cache_repository=cache_repository,
+        manually_passed_kyc_logs_repository=manually_passed_kyc_logs_repository,
     )
 
     core_db_data_context.core_db_usecase = core_db_usecase
