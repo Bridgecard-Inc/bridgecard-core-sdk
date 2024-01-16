@@ -133,6 +133,8 @@ class Database:
                 name="naira_account_db_app",
             )
 
+        self.client_log_db_app = None
+
         if core_db_init_data.client_logs_db:
             client_logs_database_url = os.environ.get("CLIENT_LOGS_DATABASE_URL")
 
