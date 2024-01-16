@@ -142,6 +142,8 @@ class Database:
                 name="client_log_db_app",
             )
 
+        self.cache_db_client = None
+
         if core_db_init_data.cache_db:
             redis_host = os.environ.get("REDIS_HOST")
 
