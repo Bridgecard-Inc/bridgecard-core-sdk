@@ -20,6 +20,24 @@ class CardsRepository(BaseRepository):
 
             self.db_ref = db_ref
 
+    
+    def fetch_card_data(
+        self,
+        environment: EnvironmentEnum,
+        company_issuing_app_id: str,
+        card_id: str,
+        context,
+    ):
+        try:
+
+            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(card_id).get()
+                
+            return data
+
+        except:
+            
+            return None
+
 
     def update_card_data_attr_as_a_transaction(
         self,
