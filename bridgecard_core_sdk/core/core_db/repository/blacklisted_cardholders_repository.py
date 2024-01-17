@@ -5,18 +5,18 @@ from .base_repository import BaseRepository
 from ..schema.base_schema import EnvironmentEnum
 from firebase_admin import db
 
-CARDHOLDERS_MODEL_NAME = "blacklisted_cardholders"
+BLACKLISTED_CARDHOLDERS_MODEL_NAME = "blacklisted_cardholders"
 
 
 
-class CardholdersRepository(BaseRepository):
+class BlackListedCardholdersRepository(BaseRepository):
     
     def __init__(
         self, db_session_factory: Callable[..., AbstractContextManager[DbSession]]
     ):
         with db_session_factory() as db_session:
 
-            db_ref = db.reference(CARDHOLDERS_MODEL_NAME, db_session.cardholders_db_app)
+            db_ref = db.reference(BLACKLISTED_CARDHOLDERS_MODEL_NAME, db_session.cardholders_db_app)
 
             self.db_ref = db_ref
 
