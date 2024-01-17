@@ -37,6 +37,24 @@ class CardholdersRepository(BaseRepository):
         except:
             
             return None
+        
+    def set_cardholder_data(
+        self,
+        environment: EnvironmentEnum,
+        company_issuing_app_id: str,
+        cardholder_id: str,
+        value,
+        context,
+    ):
+        try:
+
+            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(cardholder_id).set(value)
+                
+            return data
+
+        except:
+            
+            return None
 
     def fetch_cardholder_data_attr(
         self,
@@ -92,7 +110,7 @@ class CardholdersRepository(BaseRepository):
 
         except:
 
-            return CARDHOLDER_DATA_UPDATE_ERROR_MESSAGE
+            return None
         
 
     
@@ -112,7 +130,27 @@ class CardholdersRepository(BaseRepository):
             return True
 
         except:
-            return CARDHOLDER_DATA_UPDATE_ERROR_MESSAGE
+            return None
+    
+
+    def set_cardholder_child_atrr_data(
+        self,
+        environment: EnvironmentEnum,
+        company_issuing_app_id: str,
+        cardholder_id: str,
+        child_atrr: str,
+        value,
+        context,
+    ):
+        try:
+
+            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(child_atrr).child(cardholder_id).set(value)
+                
+            return data
+
+        except:
+            
+            return None
 
     
     

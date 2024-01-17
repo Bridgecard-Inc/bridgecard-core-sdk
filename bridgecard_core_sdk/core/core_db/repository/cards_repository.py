@@ -37,6 +37,23 @@ class CardsRepository(BaseRepository):
         except:
             
             return None
+        
+    def delete_card_data(
+        self,
+        environment: EnvironmentEnum,
+        company_issuing_app_id: str,
+        card_id: str,
+        context,
+    ):
+        try:
+
+            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(card_id).delete()
+                
+            return data
+
+        except:
+            
+            return None
 
 
     def update_card_data_attr_as_a_transaction(
@@ -96,5 +113,25 @@ class CardsRepository(BaseRepository):
 
         except:
 
+            return None
+        
+
+    def set_card_child_atrr_data(
+        self,
+        environment: EnvironmentEnum,
+        company_issuing_app_id: str,
+        card_id: str,
+        child_atrr: str,
+        value,
+        context,
+    ):
+        try:
+
+            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(child_atrr).child(card_id).set(value)
+                
+            return data
+
+        except:
+            
             return None
     
