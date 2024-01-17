@@ -153,6 +153,25 @@ class CardholdersRepository(BaseRepository):
             return None
 
     
+    def cardholder_order_by_child(
+        self,
+        environment: EnvironmentEnum,
+        company_issuing_app_id: str,
+        child_atrr: str,
+        value:str,
+        context,
+    ):
+        try:
+
+            data = self.db_ref.child(company_issuing_app_id).child(environment.value).order_by_child(child_atrr).equal_to(value).get()
+                
+            return data
+
+        except:
+            
+            return None
+
+    
     
 
 
