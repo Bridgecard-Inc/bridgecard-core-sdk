@@ -13,8 +13,9 @@ class AdminRepository(BaseRepository):
     def __init__(
         self, db_session_factory: Callable[..., AbstractContextManager[DbSession]]
     ):
+
+        super().__init__(db_session_factory, ADMINISTRATORS_MODEL_NAME)
+
         self.auth = CoreAuth(
             admin_db_ref=self.db_ref,
         )
-
-        super().__init__(db_session_factory, ADMINISTRATORS_MODEL_NAME)

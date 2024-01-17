@@ -12,12 +12,9 @@ from bridgecard_core_sdk.core.core_auth.error import (
     AuthenticationTokenMismatch,
     IssuingPermissionHasBeenDeactivated,
 )
-from bridgecard_core_sdk.core.core_db.core_db import CoreDbUsecase
+
 from bridgecard_core_sdk.core.core_db.schema.base_schema import EnvironmentEnum
 
-from bridgecard_core_sdk.core.core_db.utils.core_db_data_context import (
-    core_db_data_context,
-)
 
 
 PREFIX = "Bearer"
