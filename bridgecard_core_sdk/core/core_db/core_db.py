@@ -191,6 +191,7 @@ class Database:
 
 
 def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
+    
     db = Database(core_db_init_data)
 
     cards_repository = CardsRepository(db_session_factory=db.session)
