@@ -172,7 +172,19 @@ class CardholdersRepository(BaseRepository):
             return None
 
     
-    
+    def delete_cardholder(self,
+        environment: EnvironmentEnum,
+        company_issuing_app_id: str,
+        cardholder_id: str,
+        value:str,
+        context,
+    ):
+        try:
 
+            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(cardholder_id).delete()
+                
+            return data
 
-    
+        except:
+            
+            return None
