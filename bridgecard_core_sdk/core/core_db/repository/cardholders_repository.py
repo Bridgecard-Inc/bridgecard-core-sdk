@@ -144,7 +144,7 @@ class CardholdersRepository(BaseRepository):
     ):
         try:
 
-            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(child_atrr).child(cardholder_id).set(value)
+            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(cardholder_id).child(child_atrr).set(value)
                 
             return data
 
