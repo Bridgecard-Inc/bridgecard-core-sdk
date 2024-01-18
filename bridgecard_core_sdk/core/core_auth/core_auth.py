@@ -27,7 +27,7 @@ live_secret_key_prefix = "sk_live_"
 class CoreAuth:
     def __init__(self, admin_db_ref):
 
-        self._admin_db_ref = admin_db_ref
+        self.admin_db_ref = admin_db_ref
 
     async def verify_token(
         self, token: Optional[str] = Header(None), request: Request = None
