@@ -1,5 +1,5 @@
 from contextlib import AbstractContextManager
-from typing import Callable
+from typing import Any, Callable, Optional
 from ..core_db import DbSession
 from .base_repository import BaseRepository
 from ..schema.base_schema import EnvironmentEnum
@@ -27,7 +27,7 @@ class CardTransactionsRepository(BaseRepository):
         card_id: str,
         key_name: str,
         data,
-        context,
+        context: Optional[Any] = None,
     ):
         try:
 
@@ -48,7 +48,7 @@ class CardTransactionsRepository(BaseRepository):
         environment: EnvironmentEnum,
         company_issuing_app_id: str,
         card_id: str,
-        context,
+        context: Optional[Any] = None,
     ):
         try:
 

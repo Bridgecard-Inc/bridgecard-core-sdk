@@ -1,6 +1,6 @@
 from contextlib import AbstractContextManager
 from datetime import datetime
-from typing import Callable
+from typing import Any, Callable, Optional
 from firebase_admin import db
 from ..schema.base_schema import DbSession
 from .base_repository import BaseRepository
@@ -26,7 +26,7 @@ class BillingRepository(BaseRepository):
         company_issuing_app_id: str,
         attribute: str,
         value,
-        context,
+        context: Optional[Any] = None,
     ):
         try:
 

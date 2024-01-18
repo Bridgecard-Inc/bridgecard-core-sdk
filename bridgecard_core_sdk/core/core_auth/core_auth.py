@@ -1,4 +1,5 @@
 from contextlib import AbstractContextManager, contextmanager
+from datetime import datetime
 import time
 from redis import Redis
 import os
@@ -12,8 +13,17 @@ from bridgecard_core_sdk.core.core_auth.error import (
     AuthenticationTokenMismatch,
     IssuingPermissionHasBeenDeactivated,
 )
+from bridgecard_core_sdk.core.core_auth.schema.base_schema import ProvidersEnum
+# from bridgecard_core_sdk.core.core_db.core_db import CoreDbUsecase
 
 from bridgecard_core_sdk.core.core_db.schema.base_schema import EnvironmentEnum
+from bridgecard_core_sdk.core.utils.rest_api_client.rest_api_client import RestApiClient
+
+from bridgecard_core_sdk.core.core_db.utils.core_db_data_context import (
+    core_db_data_context,
+)
+
+
 
 
 PREFIX = "Bearer"
@@ -21,6 +31,9 @@ test_authorization_token_prefix = "at_test_"
 test_secret_key_prefix = "sk_test_"
 live_authorization_token_prefix = "at_live_"
 live_secret_key_prefix = "sk_live_"
+
+
+ISSUNG_PRODUCT_GROUP = "issuing"
 
 
 class CoreAuth:
@@ -125,6 +138,74 @@ class CoreAuth:
             raise InvalidToken
 
         return header[len(PREFIX) :].lstrip()
+
+
+def fetch_provider_token(provider: str, environment: EnvironmentEnum, login_url: str):
+
+    delimiter = "-----"
+
+    core_db_usecase = core_db_data_context.core_db_usecase
+
+    if provider == ProvidersEnum.bopayments_module_visa:
+        if environment == EnvironmentEnum.production:
+            username = os.environ.get("BOPAYMENTS_LIVE_USERNAME")
+
+            password = os.environ.get("BOPAYMENTS_LIVE_PASSWORD")
+
+            api_key = os.environ.get("BOPAYMENTS_LIVE_APIKEY")
+
+        else:
+            username = os.environ.get("BOPAYMENTS_TEST_USERNAME")
+
+            password = os.environ.get("BOPAYMENTS_TEST_PASSWORD")
+
+            api_key = os.environ.get("BOPAYMENTS_TEST_APIKEY")
+
+        jwt_token_key = f"core_monitoring:{ISSUNG_PRODUCT_GROUP}:{provider}:jwt_token"
+
+        jwt_token = core_db_usecase.cache_repository.get(
+            key=jwt_token_key, context=None
+        )
+
+        
+
+        if (
+            jwt_token
+            and int(datetime.timestamp(datetime.now())) <= int(jwt_token.split(delimiter)[1])
+        ):
+            
+            return jwt_token.split(delimiter)[0]
+        
+        else:
+
+            payload = {"email": username, "password": password}
+
+            headers = {"Content-Type": "application/json", "ApiKey": api_key}
+
+            rest_api_client = RestApiClient(headers=headers)
+
+            response_status_code, response_dict = rest_api_client.post(
+                url=login_url,
+                data=payload,
+            )
+
+            if response_status_code == 200:
+
+                auth_token = response_dict["auth_token"]
+
+                expires = int(datetime.timestamp(datetime.now())) + 1700
+
+                jwt_token = f"{auth_token}{delimiter}{expires}"
+
+                res = core_db_usecase.cache_repository.set(
+                    key=jwt_token_key, value=jwt_token, context=None
+                )
+                
+                return res
+            
+            else:
+
+                return False
 
 
 def init_core_auth():

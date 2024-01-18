@@ -1,5 +1,5 @@
 from contextlib import AbstractContextManager
-from typing import Any, Callable
+from typing import Any, Callable, Optional
 
 from ..core_db import DbSession
 from .base_repository import BaseRepository
@@ -24,7 +24,7 @@ class ManuallyPassedKycLogsRepository(BaseRepository):
     def fetch_child_data(
         self,
         child_data_key: str,
-        context,
+        context: Optional[Any] = None,
     ):
         try:
 
@@ -40,7 +40,7 @@ class ManuallyPassedKycLogsRepository(BaseRepository):
         self,
         child_data_key: str,
         child_attribute: str,
-        context,
+        context: Optional[Any] = None,
     ):
         try:
             data = self.db_ref.child(child_data_key).child(child_attribute).get()
@@ -55,7 +55,7 @@ class ManuallyPassedKycLogsRepository(BaseRepository):
         child_data_key: str,
         child_attribute: str,
         child_attribute_value: Any,
-        context,
+        context: Optional[Any] = None,
     ):
         try:
             self.db_ref.child(child_data_key).child(child_attribute).set(

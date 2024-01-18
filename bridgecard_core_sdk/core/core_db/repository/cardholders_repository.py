@@ -1,5 +1,5 @@
 from contextlib import AbstractContextManager
-from typing import Callable
+from typing import Any, Callable, Optional
 from ..core_db import DbSession
 from .base_repository import BaseRepository
 from ..schema.base_schema import EnvironmentEnum
@@ -26,7 +26,7 @@ class CardholdersRepository(BaseRepository):
         environment: EnvironmentEnum,
         company_issuing_app_id: str,
         cardholder_id: str,
-        context,
+        context: Optional[Any] = None,
     ):
         try:
 
@@ -44,7 +44,7 @@ class CardholdersRepository(BaseRepository):
         company_issuing_app_id: str,
         cardholder_id: str,
         value,
-        context,
+        context: Optional[Any] = None,
     ):
         try:
 
@@ -62,7 +62,7 @@ class CardholdersRepository(BaseRepository):
         company_issuing_app_id: str,
         cardholder_id: str,
         attribute: str,
-        context,
+        context: Optional[Any] = None,
     ):
         try:
 
@@ -79,7 +79,7 @@ class CardholdersRepository(BaseRepository):
         company_issuing_app_id: str,
         cardholder_id: str,
         attribute: str,
-        context,
+        context: Optional[Any] = None,
     ):
         try:
 
@@ -98,7 +98,7 @@ class CardholdersRepository(BaseRepository):
         cardholder_id: str,
         attribute: str,
         value,
-        context,
+        context: Optional[Any] = None,
     ):
         try:
 
@@ -121,7 +121,7 @@ class CardholdersRepository(BaseRepository):
         cardholder_id: str,
         attribute: str,
         value,
-        context,
+        context: Optional[Any] = None,
     ):
         try:
 
@@ -140,7 +140,7 @@ class CardholdersRepository(BaseRepository):
         cardholder_id: str,
         child_atrr: str,
         value,
-        context,
+        context: Optional[Any] = None,
     ):
         try:
 
@@ -159,7 +159,7 @@ class CardholdersRepository(BaseRepository):
         company_issuing_app_id: str,
         child_atrr: str,
         value:str,
-        context,
+        context: Optional[Any] = None,
     ):
         try:
 
@@ -177,7 +177,7 @@ class CardholdersRepository(BaseRepository):
         company_issuing_app_id: str,
         cardholder_id: str,
         value:str,
-        context,
+        context: Optional[Any] = None,
     ):
         try:
 
@@ -196,7 +196,7 @@ class CardholdersRepository(BaseRepository):
         company_issuing_app_id: str,
         cardholder_id: str,
         attribute: str,
-        context,
+        context: Optional[Any] = None,
     ):
         try:
 
