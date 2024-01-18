@@ -188,3 +188,21 @@ class CardholdersRepository(BaseRepository):
         except:
             
             return None
+
+
+    def delete_cardholder_data_attr(
+        self,
+        environment: EnvironmentEnum,
+        company_issuing_app_id: str,
+        cardholder_id: str,
+        attribute: str,
+        context,
+    ):
+        try:
+
+            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(cardholder_id).child(attribute).delete()
+                
+            return data
+
+        except:
+            return None
