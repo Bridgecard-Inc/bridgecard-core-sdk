@@ -17,5 +17,5 @@ class AdminRepository(BaseRepository):
         super().__init__(db_session_factory, ADMINISTRATORS_MODEL_NAME)
 
         self.auth = CoreAuth(
-            admin_db_ref=self.db_ref,
+            admin_repo=self,
         )

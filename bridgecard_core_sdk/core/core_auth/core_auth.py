@@ -16,7 +16,6 @@ from bridgecard_core_sdk.core.core_auth.error import (
 from bridgecard_core_sdk.core.core_db.schema.base_schema import EnvironmentEnum
 
 
-
 PREFIX = "Bearer"
 test_authorization_token_prefix = "at_test_"
 test_secret_key_prefix = "sk_test_"
@@ -25,9 +24,8 @@ live_secret_key_prefix = "sk_live_"
 
 
 class CoreAuth:
-    def __init__(self, admin_db_ref):
-
-        self.admin_db_ref = admin_db_ref
+    def __init__(self, admin_repo):
+        self.admin_repo = admin_repo
 
     async def verify_token(
         self, token: Optional[str] = Header(None), request: Request = None
@@ -58,7 +56,8 @@ class CoreAuth:
         filter_string = "live_authorization_token"
         if token.startswith(test_authorization_token_prefix):
             filter_string = "test_authorization_token"
-        data = self.admin_db_ref.filter_db(filter_string, token)
+
+        data = self.admin_repo.filter_db(filter_string, token, None)
 
         if data == None:
             raise InvalidToken
@@ -91,9 +90,8 @@ class CoreAuth:
         self, issuing_app_id: str, environment: EnvironmentEnum
     ):
         request_time = int(time.time())
-        data = self.admin_db_ref.filter_db(
-            "issuing_app_id", issuing_app_id
-        )
+
+        data = self.admin_repo.filter_db("issuing_app_id", issuing_app_id, None)
 
         if data == None:
             raise InvalidToken
