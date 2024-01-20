@@ -17,7 +17,8 @@ from .repository import (
     CacheRepository,
     ManuallyPassedKycLogsRepository,
     BlackListedCardholdersRepository,
-    CompanyRepository
+    CompanyRepository,
+    CompanyKycRequestRepository
 )
 
 from .utils.core_db_data_context import core_db_data_context
@@ -30,6 +31,7 @@ class CoreDbUsecase:
         admin_repository: Optional[AdminRepository] = None,
         cardholders_repository: Optional[CardholdersRepository] = None,
         company_repository: Optional[CompanyRepository] = None,
+        company_kyc_request_repository: Optional[CompanyKycRequestRepository] = None,
         blacklisted_cardholders_repository: Optional[BlackListedCardholdersRepository] = None,
         card_transactions_repository: Optional[CardTransactionsRepository] = None,
         naira_accounts_repository: Optional[NairaAccountsRepository] = False,
@@ -43,6 +45,7 @@ class CoreDbUsecase:
         self.admin_repository = admin_repository
         self.cardholders_repository = cardholders_repository
         self.company_repository = company_repository
+        self.company_kyc_request_repository = company_kyc_request_repository
         self.card_transactions_repository = card_transactions_repository
         self.naira_accounts_repository = naira_accounts_repository
         self.billing_repository = billing_repository
@@ -209,11 +212,13 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
     cardholders_repository = None
     blacklisted_cardholders_repository = None
     company_repository = None
+    company_kyc_request_repository = None
 
     if core_db_init_data.cardholders_db:
         cardholders_repository = CardholdersRepository(db_session_factory=db.session)
         blacklisted_cardholders_repository = BlackListedCardholdersRepository(db_session_factory=db.session)
         company_repository =  CompanyRepository(db_session_factory=db.session)
+        company_kyc_request_repository = CompanyKycRequestRepository(db_session_factory=db.session)
 
     naira_accounts_repository = None
 
@@ -249,6 +254,7 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
         card_transactions_repository=card_transactions_repository,
         cardholders_repository=cardholders_repository,
         company_repository=company_repository,
+        company_kyc_request_repository=company_kyc_request_repository
         naira_accounts_repository=naira_accounts_repository,
         billing_repository=billing_repository,
         admin_repository=admin_repository,
