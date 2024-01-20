@@ -46,14 +46,14 @@ class CompanyRepository(BaseRepository):
         context: Optional[Any] = None,
     ):
         try:
-            data = (
+            (
                 self.db_ref.child(company_issuing_app_id)
                 .child(environment.value)
                 .child(company_id)
                 .set(value)
             )
 
-            return data
+            return True
 
         except:
             return None
@@ -90,7 +90,7 @@ class CompanyRepository(BaseRepository):
         context: Optional[Any] = None,
     ):
         try:
-            data = (
+            (
                 self.db_ref.child(company_issuing_app_id)
                 .child(environment.value)
                 .child(company_id)
@@ -98,11 +98,10 @@ class CompanyRepository(BaseRepository):
                 .set(value)
             )
 
-            return data
+            return True
 
         except:
             return None
-        
 
     def delete_company(
         self,
@@ -113,7 +112,7 @@ class CompanyRepository(BaseRepository):
         context: Optional[Any] = None,
     ):
         try:
-            data = (
+            (
                 self.db_ref.child(company_issuing_app_id)
                 .child(environment.value)
                 .child(company_id)
