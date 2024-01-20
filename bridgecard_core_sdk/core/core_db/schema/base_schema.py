@@ -28,3 +28,11 @@ class CoreDbInitData(BaseModel):
 class EnvironmentEnum(str, Enum):
     sandbox = "sandbox"
     production = "production"
+
+
+
+class Pagination(BaseModel):
+    total: int
+    pages: int
+    previous: Optional[str]
+    next: Optional[str]

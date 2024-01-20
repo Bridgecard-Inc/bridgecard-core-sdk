@@ -1,6 +1,8 @@
 from contextlib import AbstractContextManager
-from typing import Callable, Optional
+from typing import Callable, List, Optional
 from firebase_admin import db
+
+from bridgecard_core_sdk.core.core_db.schema.base_schema import EnvironmentEnum, Pagination
 from ..core_db import DbSession
 
 
@@ -119,3 +121,91 @@ class BaseRepository:
         dict_key = list(dict_data.keys())[0]
 
         return dict_data[dict_key]
+    
+
+    def paginate_data(self, page: int, data: List[dict], keys_list: List[str], base_url: str, url_path: str, environment: EnvironmentEnum, sort_key: Optional[str] = None, is_data_already_a_list : Optional[bool] = False, ):
+
+        if data == None:
+
+            pagination = Pagination(total=0, pages=0, previous=None, next=None)
+
+            data = []
+
+            return data, pagination
+
+        tuple_keys = tuple(keys_list)
+
+        if not is_data_already_a_list:
+
+            data = list(data.values())
+
+
+        data = [dict((k, d.get(k, None)) for k in tuple_keys) for d in data]
+        
+        if sort_key:
+
+            data = sorted(data, key=lambda i: i[f"{sort_key}"], reverse=True)
+
+        if len(data) % 20 == 0:
+            pages = len(data) / 20
+        else:
+            pages = int(len(data) / 20)
+            pages += 1
+
+        if environment == EnvironmentEnum.production.value:
+
+            url = base_url + url_path
+        else:
+            url = base_url + url_path
+
+        if len(data) > (page + 1) * 20 or len(data) > (page * 20):
+            next_page = page + 1
+            next_page = f"{url}?page={next_page}"
+        else:
+            next_page = None
+
+        if page == 1:
+            pagination = Pagination(
+                total=len(data), pages=pages, previous=None, next=next_page
+            )
+
+            data = data[:20]
+
+            return data, pagination
+
+        elif len(data) > page * 20:
+            previous_page = f"{url}?page={(page-1)}"
+
+            pagination = Pagination(
+                total=len(data),
+                pages=pages,
+                previous=previous_page,
+                next=next_page,
+            )
+
+            data = data[(page - 1) * 20 : page * 20]
+
+            return data, pagination
+
+        elif len(data) > (page - 1) * 20:
+            previous_page = f"{url}?page={(page-1)}"
+
+            pagination = Pagination(
+                total=len(data),
+                pages=pages,
+                previous=previous_page,
+                next=None,
+            )
+
+            data = data[(page - 1) * 20 : page * 20]
+
+            return data, pagination
+
+        else:
+            pagination = Pagination(
+                total=len(data), pages=pages, previous=None, next=None
+            )
+
+            data = []
+
+            return data, pagination
