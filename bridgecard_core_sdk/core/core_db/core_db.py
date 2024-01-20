@@ -16,7 +16,8 @@ from .repository import (
     NairaAccountsRepository,
     CacheRepository,
     ManuallyPassedKycLogsRepository,
-    BlackListedCardholdersRepository
+    BlackListedCardholdersRepository,
+    CompanyRepository
 )
 
 from .utils.core_db_data_context import core_db_data_context
@@ -28,8 +29,8 @@ class CoreDbUsecase:
         cards_repository: Optional[CardsRepository] = None,
         admin_repository: Optional[AdminRepository] = None,
         cardholders_repository: Optional[CardholdersRepository] = None,
+        company_repository: Optional[CompanyRepository] = None,
         blacklisted_cardholders_repository: Optional[BlackListedCardholdersRepository] = None,
-
         card_transactions_repository: Optional[CardTransactionsRepository] = None,
         naira_accounts_repository: Optional[NairaAccountsRepository] = False,
         billing_repository: Optional[AdminRepository] = None,
@@ -41,6 +42,7 @@ class CoreDbUsecase:
         self.cards_repository = cards_repository
         self.admin_repository = admin_repository
         self.cardholders_repository = cardholders_repository
+        self.company_repository = company_repository
         self.card_transactions_repository = card_transactions_repository
         self.naira_accounts_repository = naira_accounts_repository
         self.billing_repository = billing_repository
@@ -206,10 +208,12 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
 
     cardholders_repository = None
     blacklisted_cardholders_repository = None
+    company_repository = None
 
     if core_db_init_data.cardholders_db:
         cardholders_repository = CardholdersRepository(db_session_factory=db.session)
         blacklisted_cardholders_repository = BlackListedCardholdersRepository(db_session_factory=db.session)
+        company_repository =  CompanyRepository(db_session_factory=db.session)
 
     naira_accounts_repository = None
 
@@ -244,6 +248,7 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
         cards_repository=cards_repository,
         card_transactions_repository=card_transactions_repository,
         cardholders_repository=cardholders_repository,
+        company_repository=company_repository,
         naira_accounts_repository=naira_accounts_repository,
         billing_repository=billing_repository,
         admin_repository=admin_repository,

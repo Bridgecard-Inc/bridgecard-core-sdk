@@ -201,7 +201,7 @@ def fetch_provider_token(provider: str, environment: EnvironmentEnum, login_url:
                     key=jwt_token_key, value=jwt_token, context=None
                 )
                 
-                return res
+                return auth_token
             
             else:
 
