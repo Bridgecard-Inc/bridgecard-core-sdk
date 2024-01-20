@@ -21,12 +21,9 @@ class CompanyRepository(BaseRepository):
         self,
         environment: EnvironmentEnum,
         company_issuing_app_id: str,
-        company_id: str,
         page: int,
-        data: List[dict],
         keys_list: List[str],
         base_url: str,
-        url_path: str,
         sort_key: Optional[str] = None,
         context: Optional[Any] = None,
     ):
@@ -41,7 +38,7 @@ class CompanyRepository(BaseRepository):
                 base_url=base_url,
                 sort_key=sort_key,
                 data=data,
-                url_path=url_path,
+                url_path="",
                 environment=environment,
             )
 

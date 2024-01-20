@@ -34,5 +34,3 @@ class EnvironmentEnum(str, Enum):
 class Pagination(BaseModel):
     total: int
     pages: int
-    previous: Optional[str]
-    next: Optional[str]
