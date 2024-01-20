@@ -144,7 +144,7 @@ class BaseRepository:
         
         if sort_key:
 
-            data = sorted(data, key=lambda i: i[f"{sort_key}"], reverse=True)
+            data = sorted(data, key=lambda i: i.get(sort_key) or 0, reverse=True)
 
         if len(data) % 20 == 0:
             pages = len(data) / 20
