@@ -129,7 +129,7 @@ class AccountsRepository(BaseRepository):
             return None
 
 
-    def accounts_order_by_child(
+    def accounts_filter_db(
         self,
         environment: EnvironmentEnum,
         company_issuing_app_id: str,
