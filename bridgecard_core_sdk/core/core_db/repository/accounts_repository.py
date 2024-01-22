@@ -31,7 +31,7 @@ class AccountsRepository(BaseRepository):
 
             data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(account_id).get()
                 
-            return data
+            return True
 
         except:
             
@@ -49,7 +49,7 @@ class AccountsRepository(BaseRepository):
 
             data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(account_id).set(value)
                 
-            return data
+            return True
 
         except:
             
@@ -67,7 +67,7 @@ class AccountsRepository(BaseRepository):
 
             data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(account_id).child(attribute).get()
                 
-            return data
+            return True
 
         except:
             return None
@@ -86,7 +86,7 @@ class AccountsRepository(BaseRepository):
 
             data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(account_id).child(child_atrr).set(value)
                 
-            return data
+            return True
 
         except:
             
@@ -104,7 +104,7 @@ class AccountsRepository(BaseRepository):
 
             data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(account_id).delete()
                 
-            return data
+            return True
 
         except:
             
@@ -123,7 +123,7 @@ class AccountsRepository(BaseRepository):
 
             data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(account_id).child(attribute).delete()
                 
-            return data
+            return True
 
         except:
             return None
