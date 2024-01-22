@@ -7,7 +7,7 @@ from firebase_admin import db
 
 BC_GB_INTERNAL_SANDBOX_DATA_MODEL_NAME = "bc_gb_internal_sandbox_data"
 
-
+ACCOUNTS_MODEL_NAME = "accounts"
 
 class BcGbInternalSandboxRepository(BaseRepository):
     
@@ -19,3 +19,20 @@ class BcGbInternalSandboxRepository(BaseRepository):
             db_ref = db.reference(BC_GB_INTERNAL_SANDBOX_DATA_MODEL_NAME, db_session.accounts_db_app)
 
             self.db_ref = db_ref
+
+    def create_raw(self, id: str, schema_dict, context):
+        try:
+
+            data = self.db_ref.child(ACCOUNTS_MODEL_NAME).child(id).get()
+
+            if data is not None:
+
+                return False
+
+            self.db_ref.child(ACCOUNTS_MODEL_NAME).child(id).set(schema_dict)
+
+            return True
+
+        except:
+            
+            return False
