@@ -37,7 +37,7 @@ class BcGbInternalSandboxRepository(BaseRepository):
             
             return False
         
-    def read(self, id: str, field: str, context):
+    def read(self, id: str, context):
         try:
             data = self.db_ref.child(ACCOUNTS_MODEL_NAME).child(id).get()
 
