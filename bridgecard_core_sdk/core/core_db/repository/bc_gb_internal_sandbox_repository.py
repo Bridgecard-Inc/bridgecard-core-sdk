@@ -36,3 +36,21 @@ class BcGbInternalSandboxRepository(BaseRepository):
         except:
             
             return False
+        
+    def read(self, id: str, field: str, context):
+        try:
+            data = self.db_ref.child(ACCOUNTS_MODEL_NAME).child(id).get()
+
+            return data
+
+        except:
+            return False
+        
+    def read_attr(self, id: str, field: str, context):
+        try:
+            data = self.db_ref.child(ACCOUNTS_MODEL_NAME).child(id).child(field).get()
+
+            return data
+
+        except:
+            return False
