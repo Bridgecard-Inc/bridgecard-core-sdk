@@ -49,6 +49,23 @@ class BaseRepository:
 
         except:
             return False
+        
+
+    def create_raw(self, id: str, schema_dict, context):
+        try:
+
+            data = self.db_ref.child(id).get()
+
+            if data is not None:
+
+                return False
+
+            self.db_ref.child(id).set(schema_dict)
+
+            return True
+
+        except:
+            return False
 
     def update(self, id: str, schema, context):
         try:
