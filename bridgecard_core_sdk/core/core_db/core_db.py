@@ -4,10 +4,13 @@ import os
 from typing import Any, Callable, Optional
 import firebase_admin
 from firebase_admin import db, credentials
+
 from .schema.base_schema import CoreDbInitData, DbSession
 from .utils.methods import decode_base_64_to_json
 from pydantic import BaseModel
 from .repository import (
+    AccountsRepository,
+    BcGbInternalSandboxRepository,
     CardsRepository,
     AdminRepository,
     BillingRepository,
@@ -18,7 +21,7 @@ from .repository import (
     ManuallyPassedKycLogsRepository,
     BlackListedCardholdersRepository,
     CompanyRepository,
-    CompanyKycRequestRepository
+    CompanyKycRequestRepository,
 )
 
 from .utils.core_db_data_context import core_db_data_context
@@ -32,9 +35,13 @@ class CoreDbUsecase:
         cardholders_repository: Optional[CardholdersRepository] = None,
         company_repository: Optional[CompanyRepository] = None,
         company_kyc_request_repository: Optional[CompanyKycRequestRepository] = None,
-        blacklisted_cardholders_repository: Optional[BlackListedCardholdersRepository] = None,
+        blacklisted_cardholders_repository: Optional[
+            BlackListedCardholdersRepository
+        ] = None,
         card_transactions_repository: Optional[CardTransactionsRepository] = None,
         naira_accounts_repository: Optional[NairaAccountsRepository] = False,
+        accounts_repository: Optional[AccountsRepository] = False,
+        bc_gb_internal_sandbox_repository: Optional[BcGbInternalSandboxRepository] = False,
         billing_repository: Optional[AdminRepository] = None,
         cache_repository: Optional[CacheRepository] = None,
         manually_passed_kyc_logs_repository: Optional[
@@ -48,6 +55,8 @@ class CoreDbUsecase:
         self.company_kyc_request_repository = company_kyc_request_repository
         self.card_transactions_repository = card_transactions_repository
         self.naira_accounts_repository = naira_accounts_repository
+        self.accounts_repository = accounts_repository
+        self.bc_gb_internal_sandbox_repository = bc_gb_internal_sandbox_repository
         self.billing_repository = billing_repository
         self.cache_repository = cache_repository
         self.blacklisted_cardholders_repository = blacklisted_cardholders_repository
@@ -145,7 +154,6 @@ class Database:
         self._accounts_db_app = None
 
         if core_db_init_data.accounts_db:
-
             accounts_database_url = os.environ.get("ACCOUNTS_DATABASE_URL")
 
             self._accounts_db_app = firebase_admin.initialize_app(
@@ -200,7 +208,7 @@ class Database:
             naira_accounts_db_app=self._naira_accounts_db_app,
             cache_db_client=self.cache_db_client,
             client_logs_db_app=self.client_log_db_app,
-            accounts_db_app=self._accounts_db_app
+            accounts_db_app=self._accounts_db_app,
         )
         try:
             yield db_session
@@ -213,7 +221,6 @@ class Database:
 
 
 def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
-    
     db = Database(core_db_init_data)
 
     cards_repository = CardsRepository(db_session_factory=db.session)
@@ -229,14 +236,21 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
 
     if core_db_init_data.cardholders_db:
         cardholders_repository = CardholdersRepository(db_session_factory=db.session)
-        blacklisted_cardholders_repository = BlackListedCardholdersRepository(db_session_factory=db.session)
-        company_repository =  CompanyRepository(db_session_factory=db.session)
-        company_kyc_request_repository = CompanyKycRequestRepository(db_session_factory=db.session)
+        blacklisted_cardholders_repository = BlackListedCardholdersRepository(
+            db_session_factory=db.session
+        )
+        company_repository = CompanyRepository(db_session_factory=db.session)
+        company_kyc_request_repository = CompanyKycRequestRepository(
+            db_session_factory=db.session
+        )
 
     accounts_repository = None
 
-    if core_db_init_data.naira_accounts_db:
-        naira_accounts_repository = NairaAccountsRepository(
+    bc_gb_internal_sandbox_repository = None
+
+    if core_db_init_data.accounts_db:
+        accounts_repository = AccountsRepository(db_session_factory=db.session)
+        bc_gb_internal_sandbox_repository = BcGbInternalSandboxRepository(
             db_session_factory=db.session
         )
 
@@ -276,10 +290,12 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
         company_repository=company_repository,
         company_kyc_request_repository=company_kyc_request_repository,
         naira_accounts_repository=naira_accounts_repository,
+        accounts_repository=accounts_repository,
+        bc_gb_internal_sandbox_repository=bc_gb_internal_sandbox_repository,
         billing_repository=billing_repository,
         admin_repository=admin_repository,
         cache_repository=cache_repository,
-        blacklisted_cardholders_repository = blacklisted_cardholders_repository,
+        blacklisted_cardholders_repository=blacklisted_cardholders_repository,
         manually_passed_kyc_logs_repository=manually_passed_kyc_logs_repository,
     )
 
