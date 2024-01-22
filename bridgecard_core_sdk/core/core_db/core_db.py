@@ -142,6 +142,18 @@ class Database:
                 name="naira_account_db_app",
             )
 
+        self._accounts_db_app = None
+
+        if core_db_init_data.accounts_db:
+
+            accounts_database_url = os.environ.get("ACCOUNTS_DATABASE_URL")
+
+            self._accounts_db_app = firebase_admin.initialize_app(
+                self._cred,
+                {"databaseURL": accounts_database_url},
+                name="accounts_db_app",
+            )
+
         self.client_log_db_app = None
 
         if core_db_init_data.client_logs_db:
@@ -188,6 +200,7 @@ class Database:
             naira_accounts_db_app=self._naira_accounts_db_app,
             cache_db_client=self.cache_db_client,
             client_logs_db_app=self.client_log_db_app,
+            accounts_db_app=self._accounts_db_app
         )
         try:
             yield db_session
@@ -219,6 +232,13 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
         blacklisted_cardholders_repository = BlackListedCardholdersRepository(db_session_factory=db.session)
         company_repository =  CompanyRepository(db_session_factory=db.session)
         company_kyc_request_repository = CompanyKycRequestRepository(db_session_factory=db.session)
+
+    accounts_repository = None
+
+    if core_db_init_data.naira_accounts_db:
+        naira_accounts_repository = NairaAccountsRepository(
+            db_session_factory=db.session
+        )
 
     naira_accounts_repository = None
 
