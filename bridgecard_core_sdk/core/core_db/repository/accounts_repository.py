@@ -19,3 +19,112 @@ class AccountsRepository(BaseRepository):
             )
 
             self.db_ref = db_ref
+
+    def fetch_account_data(
+        self,
+        environment: EnvironmentEnum,
+        company_issuing_app_id: str,
+        account_id: str,
+        context: Optional[Any] = None,
+    ):
+        try:
+
+            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(account_id).get()
+                
+            return data
+
+        except:
+            
+            return None
+        
+    def set_account_data(
+        self,
+        environment: EnvironmentEnum,
+        company_issuing_app_id: str,
+        account_id: str,
+        value,
+        context: Optional[Any] = None,
+    ):
+        try:
+
+            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(account_id).set(value)
+                
+            return data
+
+        except:
+            
+            return None
+
+    def fetch_account_data_attr(
+        self,
+        environment: EnvironmentEnum,
+        company_issuing_app_id: str,
+        account_id: str,
+        attribute: str,
+        context: Optional[Any] = None,
+    ):
+        try:
+
+            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(account_id).child(attribute).get()
+                
+            return data
+
+        except:
+            return None
+
+
+    def set_account_child_atrr_data(
+        self,
+        environment: EnvironmentEnum,
+        company_issuing_app_id: str,
+        account_id: str,
+        child_atrr: str,
+        value,
+        context: Optional[Any] = None,
+    ):
+        try:
+
+            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(account_id).child(child_atrr).set(value)
+                
+            return data
+
+        except:
+            
+            return None
+
+    
+    def delete_account(self,
+        environment: EnvironmentEnum,
+        company_issuing_app_id: str,
+        account_id: str,
+        value:str,
+        context: Optional[Any] = None,
+    ):
+        try:
+
+            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(account_id).delete()
+                
+            return data
+
+        except:
+            
+            return None
+
+
+    def delete_account_data_attr(
+        self,
+        environment: EnvironmentEnum,
+        company_issuing_app_id: str,
+        account_id: str,
+        attribute: str,
+        context: Optional[Any] = None,
+    ):
+        try:
+
+            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(account_id).child(attribute).delete()
+                
+            return data
+
+        except:
+            return None
+
