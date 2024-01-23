@@ -55,6 +55,25 @@ class AccountsRepository(BaseRepository):
             
             return None
 
+
+    def upddate_account_data(
+        self,
+        environment: EnvironmentEnum,
+        company_issuing_app_id: str,
+        account_id: str,
+        value,
+        context: Optional[Any] = None,
+    ):
+        try:
+
+            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(account_id).update(value)
+                
+            return True
+
+        except:
+            
+            return None
+
     def fetch_account_data_attr(
         self,
         environment: EnvironmentEnum,
