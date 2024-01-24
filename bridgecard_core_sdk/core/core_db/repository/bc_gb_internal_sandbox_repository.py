@@ -81,3 +81,27 @@ class BcGbInternalSandboxRepository(BaseRepository):
 
         except:
             return False
+
+    def update_attr_child_atrr_as_a_transaction(
+        self,
+        id: str,
+        field: str,
+        child_atrr: str,
+        value,
+        context: Optional[Any] = None,
+        is_reduction: Optional[bool] = True,
+    ):
+        try:
+            if is_reduction:
+                self.db_ref.child(ACCOUNTS_MODEL_NAME).child(id).child(field).child(
+                    child_atrr
+                ).transaction(lambda current_value: current_value - int(value))
+
+            else:
+                self.db_ref.child(ACCOUNTS_MODEL_NAME).child(id).child(field).child(
+                    child_atrr
+                ).transaction(lambda current_value: current_value - int(value))
+
+            return True
+        except:
+            return False
