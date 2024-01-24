@@ -11,3 +11,4 @@ from .company_repository import CompanyRepository
 from .company_kyc_request_repository import CompanyKycRequestRepository
 from .accounts_repository import AccountsRepository
 from .bc_gb_internal_sandbox_repository import BcGbInternalSandboxRepository
+from .account_transactions_repository import AccountsTransactionsRepository

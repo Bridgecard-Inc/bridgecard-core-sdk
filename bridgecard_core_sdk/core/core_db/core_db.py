@@ -22,6 +22,7 @@ from .repository import (
     BlackListedCardholdersRepository,
     CompanyRepository,
     CompanyKycRequestRepository,
+    AccountsTransactionsRepository
 )
 
 from .utils.core_db_data_context import core_db_data_context
@@ -41,6 +42,7 @@ class CoreDbUsecase:
         card_transactions_repository: Optional[CardTransactionsRepository] = None,
         naira_accounts_repository: Optional[NairaAccountsRepository] = False,
         accounts_repository: Optional[AccountsRepository] = False,
+        account_transactions_repository: Optional[AccountsTransactionsRepository] = False,
         bc_gb_internal_sandbox_repository: Optional[BcGbInternalSandboxRepository] = False,
         billing_repository: Optional[AdminRepository] = None,
         cache_repository: Optional[CacheRepository] = None,
@@ -56,6 +58,7 @@ class CoreDbUsecase:
         self.card_transactions_repository = card_transactions_repository
         self.naira_accounts_repository = naira_accounts_repository
         self.accounts_repository = accounts_repository
+        self.account_transactions_repository = account_transactions_repository
         self.bc_gb_internal_sandbox_repository = bc_gb_internal_sandbox_repository
         self.billing_repository = billing_repository
         self.cache_repository = cache_repository
@@ -246,6 +249,8 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
 
     accounts_repository = None
 
+    account_transactions_repository = None
+
     bc_gb_internal_sandbox_repository = None
 
     if core_db_init_data.accounts_db:
@@ -253,6 +258,8 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
         bc_gb_internal_sandbox_repository = BcGbInternalSandboxRepository(
             db_session_factory=db.session
         )
+
+        account_transactions_repository = AccountsTransactionsRepository(db_session_factory=db.session)
 
     naira_accounts_repository = None
 
@@ -291,6 +298,7 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
         company_kyc_request_repository=company_kyc_request_repository,
         naira_accounts_repository=naira_accounts_repository,
         accounts_repository=accounts_repository,
+        account_transactions_repository=account_transactions_repository,
         bc_gb_internal_sandbox_repository=bc_gb_internal_sandbox_repository,
         billing_repository=billing_repository,
         admin_repository=admin_repository,
