@@ -3,6 +3,8 @@ from typing import Optional
 
 import grpc
 
+from bridgecard_core_sdk.core.core_db.schema.base_schema import EnvironmentEnum
+
 from .protos import billing_details_pb2_grpc, billing_details_pb2
 
 from .model import BillType
@@ -21,10 +23,11 @@ def init_billing_service():
         "BRIDGECARD_ISSUING_TLS_SERVER_CERT_CHAIN"
     )
 
-    server_addr = (
-        "ae740cdf8e16b48bc82a259400ca03b9-1383199310.us-west-2.elb.amazonaws.com:80"
-    )
-    # server_addr = "0.0.0.0:8080"
+    # server_addr = (
+    #     "ae740cdf8e16b48bc82a259400ca03b9-1383199310.us-west-2.elb.amazonaws.com:80"
+    # )
+
+    server_addr = "0.0.0.0:8089"
 
     # creds = grpc.ssl_channel_credentials(
     #     private_key=client_private_key.encode(),
@@ -43,6 +46,9 @@ def check_admin_bill_status(
     bill_type: BillType,
     card_id: Optional[str] = None,
     transaction_amount: Optional[str] = None,
+    account_id: Optional[str] = None,
+    cardholder_id: Optional[str] = None,
+    environment: Optional[EnvironmentEnum] = None,
 ):
     grpc_channel = billing_service_data_context.grpc_channel
 
@@ -52,7 +58,13 @@ def check_admin_bill_status(
 
     request = billing_details_pb2.RequestData(
         bill_type=bill_type,
-        request_metadata={"card_id": card_id or "", "transaction_amount": transaction_amount or ""},
+        request_metadata={
+            "account_id": account_id or "",
+            "cardholder_id": cardholder_id or "",
+            "card_id": card_id or "",
+            "transaction_amount": transaction_amount or "",
+            "environment": environment or "",
+        },
     )
 
     try:
@@ -76,6 +88,9 @@ def bill_admin(
     bill_type: BillType,
     card_id: Optional[str] = None,
     transaction_amount: Optional[str] = None,
+    account_id: Optional[str] = None,
+    cardholder_id: Optional[str] = None,
+    environment: Optional[EnvironmentEnum] = None,
 ):
     grpc_channel = billing_service_data_context.grpc_channel
 
@@ -86,7 +101,13 @@ def bill_admin(
     # Make a remote gRPC call
     request = billing_details_pb2.RequestData(
         bill_type=bill_type,
-        request_metadata={"card_id": card_id or "", "transaction_amount": transaction_amount or ""},
+        request_metadata={
+            "account_id": account_id or "",
+            "cardholder_id": cardholder_id or "",
+            "card_id": card_id or "",
+            "transaction_amount": transaction_amount or "",
+            "environment": environment or "",
+        },
     )
 
     try:

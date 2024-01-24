@@ -11,12 +11,15 @@ enum BillType {
   CARD_ISSUING_FEE_NGN_VIRTUAL_CARD = 4;
   CARD_MAINTENANCE_FEE_NGN_VIRTUAL_CARD = 5;
   CARD_TRANSACTION_FEE_NGN_VIRTUAL_CARD = 6;
+  ACCOUNT_ISSUING_FEE_USD_VIRTUAL_ACCOUNT = 7;
+  ACCOUNT_MAINTENANCE_FEE_USD_VIRTUAL_ACCOUNT = 8;
+  ACCOUNT_TRANSACTION_FEE_USD_VIRTUAL_ACCOUNT = 9;
 
 }
 
 message RequestData {
-  BillType bill_type = 2;
-  map<string, string>  request_metadata = 3;
+  BillType bill_type = 1;
+  map<string, string>  request_metadata = 2;
 }
 
 
@@ -26,7 +29,6 @@ message ResponseData {
   map<string, string>  response_metadata = 3;
 
 }
-
 
 
 service BillingService {

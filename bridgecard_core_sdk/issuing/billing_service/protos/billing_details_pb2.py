@@ -15,7 +15,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x15\x62illing_details.proto\x12\x0f\x62illing_details\"\xc0\x01\n\x0bRequestData\x12,\n\tbill_type\x18\x01 \x01(\x0e\x32\x19.billing_details.BillType\x12K\n\x10request_metadata\x18\x02 \x03(\x0b\x32\x31.billing_details.RequestData.RequestMetadataEntry\x1a\x36\n\x14RequestMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xb6\x01\n\x0cResponseData\x12\x0c\n\x04\x63ode\x18\x01 \x01(\x03\x12\x0f\n\x07message\x18\x02 \x01(\t\x12N\n\x11response_metadata\x18\x03 \x03(\x0b\x32\x33.billing_details.ResponseData.ResponseMetadataEntry\x1a\x37\n\x15ResponseMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01*\x9a\x02\n\x08\x42illType\x12%\n!CARD_ISSUING_FEE_USD_VIRTUAL_CARD\x10\x00\x12)\n%CARD_MAINTENANCE_FEE_USD_VIRTUAL_CARD\x10\x01\x12)\n%CARD_TRANSACTION_FEE_USD_VIRTUAL_CARD\x10\x02\x12\x14\n\x10\x43\x41RD_REWARDS_FEE\x10\x03\x12%\n!CARD_ISSUING_FEE_NGN_VIRTUAL_CARD\x10\x04\x12)\n%CARD_MAINTENANCE_FEE_NGN_VIRTUAL_CARD\x10\x05\x12)\n%CARD_TRANSACTION_FEE_NGN_VIRTUAL_CARD\x10\x06\x32\xb3\x01\n\x0e\x42illingService\x12U\n\x14\x43heckAdminBillStatus\x12\x1c.billing_details.RequestData\x1a\x1d.billing_details.ResponseData\"\x00\x12J\n\tBillAdmin\x12\x1c.billing_details.RequestData\x1a\x1d.billing_details.ResponseData\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x15\x62illing_details.proto\x12\x0f\x62illing_details\"\xc0\x01\n\x0bRequestData\x12,\n\tbill_type\x18\x01 \x01(\x0e\x32\x19.billing_details.BillType\x12K\n\x10request_metadata\x18\x02 \x03(\x0b\x32\x31.billing_details.RequestData.RequestMetadataEntry\x1a\x36\n\x14RequestMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xb6\x01\n\x0cResponseData\x12\x0c\n\x04\x63ode\x18\x01 \x01(\x03\x12\x0f\n\x07message\x18\x02 \x01(\t\x12N\n\x11response_metadata\x18\x03 \x03(\x0b\x32\x33.billing_details.ResponseData.ResponseMetadataEntry\x1a\x37\n\x15ResponseMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01*\xa9\x03\n\x08\x42illType\x12%\n!CARD_ISSUING_FEE_USD_VIRTUAL_CARD\x10\x00\x12)\n%CARD_MAINTENANCE_FEE_USD_VIRTUAL_CARD\x10\x01\x12)\n%CARD_TRANSACTION_FEE_USD_VIRTUAL_CARD\x10\x02\x12\x14\n\x10\x43\x41RD_REWARDS_FEE\x10\x03\x12%\n!CARD_ISSUING_FEE_NGN_VIRTUAL_CARD\x10\x04\x12)\n%CARD_MAINTENANCE_FEE_NGN_VIRTUAL_CARD\x10\x05\x12)\n%CARD_TRANSACTION_FEE_NGN_VIRTUAL_CARD\x10\x06\x12+\n\'ACCOUNT_ISSUING_FEE_USD_VIRTUAL_ACCOUNT\x10\x07\x12/\n+ACCOUNT_MAINTENANCE_FEE_USD_VIRTUAL_ACCOUNT\x10\x08\x12/\n+ACCOUNT_TRANSACTION_FEE_USD_VIRTUAL_ACCOUNT\x10\t2\xb3\x01\n\x0e\x42illingService\x12U\n\x14\x43heckAdminBillStatus\x12\x1c.billing_details.RequestData\x1a\x1d.billing_details.ResponseData\"\x00\x12J\n\tBillAdmin\x12\x1c.billing_details.RequestData\x1a\x1d.billing_details.ResponseData\"\x00\x62\x06proto3')
 
 _BILLTYPE = DESCRIPTOR.enum_types_by_name['BillType']
 BillType = enum_type_wrapper.EnumTypeWrapper(_BILLTYPE)
@@ -26,6 +26,9 @@ CARD_REWARDS_FEE = 3
 CARD_ISSUING_FEE_NGN_VIRTUAL_CARD = 4
 CARD_MAINTENANCE_FEE_NGN_VIRTUAL_CARD = 5
 CARD_TRANSACTION_FEE_NGN_VIRTUAL_CARD = 6
+ACCOUNT_ISSUING_FEE_USD_VIRTUAL_ACCOUNT = 7
+ACCOUNT_MAINTENANCE_FEE_USD_VIRTUAL_ACCOUNT = 8
+ACCOUNT_TRANSACTION_FEE_USD_VIRTUAL_ACCOUNT = 9
 
 
 _REQUESTDATA = DESCRIPTOR.message_types_by_name['RequestData']
@@ -71,7 +74,7 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _RESPONSEDATA_RESPONSEMETADATAENTRY._options = None
   _RESPONSEDATA_RESPONSEMETADATAENTRY._serialized_options = b'8\001'
   _BILLTYPE._serialized_start=423
-  _BILLTYPE._serialized_end=705
+  _BILLTYPE._serialized_end=848
   _REQUESTDATA._serialized_start=43
   _REQUESTDATA._serialized_end=235
   _REQUESTDATA_REQUESTMETADATAENTRY._serialized_start=181
@@ -80,6 +83,6 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _RESPONSEDATA._serialized_end=420
   _RESPONSEDATA_RESPONSEMETADATAENTRY._serialized_start=365
   _RESPONSEDATA_RESPONSEMETADATAENTRY._serialized_end=420
-  _BILLINGSERVICE._serialized_start=708
-  _BILLINGSERVICE._serialized_end=887
+  _BILLINGSERVICE._serialized_start=851
+  _BILLINGSERVICE._serialized_end=1030
 # @@protoc_insertion_point(module_scope)
