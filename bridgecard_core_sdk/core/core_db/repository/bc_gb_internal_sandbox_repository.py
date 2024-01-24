@@ -75,9 +75,9 @@ class BcGbInternalSandboxRepository(BaseRepository):
         context: Optional[Any] = None,
     ):
         try:
-            data = self.db_ref.child(ACCOUNTS_MODEL_NAME).child(id).child(field).set(value)
+            self.db_ref.child(ACCOUNTS_MODEL_NAME).child(id).child(field).set(value)
 
-            return data
+            return True
 
         except:
             return False
