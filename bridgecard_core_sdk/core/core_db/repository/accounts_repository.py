@@ -54,6 +54,27 @@ class AccountsRepository(BaseRepository):
         except:
             
             return None
+        
+
+    def set_account_data_as_a_transaction(
+        self,
+        environment: EnvironmentEnum,
+        company_issuing_app_id: str,
+        account_id: str,
+        value,
+        context: Optional[Any] = None,
+    ):
+        try:
+
+            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(account_id).transaction(
+                    lambda current_value: (current_value or 0) + int(value)
+                )
+                
+            return True
+
+        except:
+            
+            return None
 
 
     def upddate_account_data(
@@ -90,7 +111,6 @@ class AccountsRepository(BaseRepository):
 
         except:
             return None
-
 
     def set_account_child_atrr_data(
         self,
