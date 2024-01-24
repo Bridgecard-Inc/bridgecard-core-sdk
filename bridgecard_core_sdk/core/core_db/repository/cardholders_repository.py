@@ -9,6 +9,8 @@ CARDHOLDERS_MODEL_NAME = "cardholders"
 
 NAIRA_VIRTUAL_ACCOUNT_MODEL_NAME = "naira_virtual_account"
 
+ACCOUNTS_MODEL_NAME = "accounts"
+
 
 class CardholdersRepository(BaseRepository):
     
@@ -36,6 +38,24 @@ class CardholdersRepository(BaseRepository):
 
         except:
             
+            return None
+        
+    def fetch_cardholder_data_naira_virtual_account_attr(
+        self,
+        environment: EnvironmentEnum,
+        company_issuing_app_id: str,
+        cardholder_id: str,
+        attribute: str,
+        context: Optional[Any] = None,
+    ):
+        try:
+
+            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(cardholder_id).child(NAIRA_VIRTUAL_ACCOUNT_MODEL_NAME).child(attribute).get()
+                
+            return data
+
+        except:
+
             return None
         
     def set_cardholder_data(
@@ -73,19 +93,20 @@ class CardholdersRepository(BaseRepository):
         except:
             return None
 
-    def fetch_cardholder_data_naira_virtual_account_attr(
+    def add_cardholder_account_info(
         self,
         environment: EnvironmentEnum,
         company_issuing_app_id: str,
         cardholder_id: str,
-        attribute: str,
+        account_id: str,
+        value: str,
         context: Optional[Any] = None,
     ):
         try:
 
-            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(cardholder_id).child(NAIRA_VIRTUAL_ACCOUNT_MODEL_NAME).child(attribute).get()
+            self.db_ref.child(company_issuing_app_id).child(environment.value).child(cardholder_id).child(ACCOUNTS_MODEL_NAME).child(account_id).set(value)
                 
-            return data
+            return True
 
         except:
 
