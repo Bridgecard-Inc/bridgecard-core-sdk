@@ -100,7 +100,7 @@ class BcGbInternalSandboxRepository(BaseRepository):
             else:
                 self.db_ref.child(ACCOUNTS_MODEL_NAME).child(id).child(field).child(
                     child_atrr
-                ).transaction(lambda current_value: current_value - int(value))
+                ).transaction(lambda current_value: current_value + int(value))
 
             return True
         except:
