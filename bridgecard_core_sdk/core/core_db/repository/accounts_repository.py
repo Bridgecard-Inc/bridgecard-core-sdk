@@ -86,7 +86,7 @@ class AccountsRepository(BaseRepository):
 
             data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(account_id).child(attribute).get()
                 
-            return True
+            return data
 
         except:
             return None
