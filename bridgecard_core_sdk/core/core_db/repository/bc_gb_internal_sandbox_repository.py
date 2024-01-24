@@ -71,10 +71,11 @@ class BcGbInternalSandboxRepository(BaseRepository):
         self,
         id: str,
         field: str,
+        value,
         context: Optional[Any] = None,
     ):
         try:
-            data = self.db_ref.child(ACCOUNTS_MODEL_NAME).child(id).child(field).get()
+            data = self.db_ref.child(ACCOUNTS_MODEL_NAME).child(id).child(field).set(value)
 
             return data
 
