@@ -7,6 +7,8 @@ from firebase_admin import db
 
 COMAPNIES_MODEL_NAME = "companies"
 
+ACCOUNTS_MODEL_NAME = "accounts"
+
 
 class CompanyRepository(BaseRepository):
     def __init__(
@@ -65,6 +67,25 @@ class CompanyRepository(BaseRepository):
             return data
 
         except:
+            return None
+        
+    def add_company_account_info(
+        self,
+        environment: EnvironmentEnum,
+        company_issuing_app_id: str,
+        company_id: str,
+        account_id: str,
+        value: str,
+        context: Optional[Any] = None,
+    ):
+        try:
+
+            self.db_ref.child(company_issuing_app_id).child(environment.value).child(company_id).child(ACCOUNTS_MODEL_NAME).child(account_id).set(value)
+                
+            return True
+
+        except:
+
             return None
 
     def set_company_data(
