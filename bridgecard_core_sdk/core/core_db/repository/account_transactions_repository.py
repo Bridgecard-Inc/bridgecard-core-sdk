@@ -47,31 +47,15 @@ class AccountsTransactionsRepository(BaseRepository):
         keys_list: List[str],
         base_url: str,
         sort_key: Optional[str] = None,
-        currency: Optional[str] = None,
         context: Optional[Any] = None,
     ):
         try:
-
-            if not currency:
-
-                data = (
-                    self.db_ref.child(company_issuing_app_id)
-                    .child(environment.value)
-                    .child(account_id)
-                    .get()
-                )
-
-            else:
-
-                ordered_dict_data = (
-                    self.db_ref.child(company_issuing_app_id)
-                    .child(environment.value)
-                    .child(account_id)
-                    .order_by_child("currency").equal_to(currency).get()
-                )
-
-                data = dict(ordered_dict_data)
-
+            data = (
+                self.db_ref.child(company_issuing_app_id)
+                .child(environment.value)
+                .child(account_id)
+                .get()
+            )
 
             account_transaction_data, meta = self.paginate_data(
                 page=page,
@@ -86,7 +70,40 @@ class AccountsTransactionsRepository(BaseRepository):
             return account_transaction_data, meta
 
         except:
-            
+            return None
+
+    def paginate_all_account_transaction_data(
+        self,
+        environment: EnvironmentEnum,
+        company_issuing_app_id: str,
+        account_id: str,
+        page: int,
+        keys_list: List[str],
+        base_url: str,
+        sort_key: Optional[str] = None,
+        context: Optional[Any] = None,
+    ):
+        try:
+            data = (
+                self.db_ref.child(company_issuing_app_id)
+                .child(environment.value)
+                .child(account_id)
+                .get()
+            )
+
+            account_transaction_data, meta = self.paginate_data(
+                page=page,
+                keys_list=keys_list,
+                base_url=base_url,
+                sort_key=sort_key,
+                data=data,
+                url_path="",
+                environment=environment,
+            )
+
+            return account_transaction_data, meta
+
+        except:
             return None
 
     def set_account_transaction_data(
