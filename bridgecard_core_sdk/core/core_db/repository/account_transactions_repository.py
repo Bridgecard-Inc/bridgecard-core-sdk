@@ -165,7 +165,7 @@ class AccountsTransactionsRepository(BaseRepository):
                 .get()
             )
 
-            return True
+            return data
 
         except:
             return None
