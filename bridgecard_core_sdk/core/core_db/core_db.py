@@ -22,7 +22,8 @@ from .repository import (
     BlackListedCardholdersRepository,
     CompanyRepository,
     CompanyKycRequestRepository,
-    AccountsTransactionsRepository
+    AccountsTransactionsRepository,
+    NairaBankAccountMappingRepository,
 )
 
 from .utils.core_db_data_context import core_db_data_context
@@ -42,12 +43,19 @@ class CoreDbUsecase:
         card_transactions_repository: Optional[CardTransactionsRepository] = None,
         naira_accounts_repository: Optional[NairaAccountsRepository] = False,
         accounts_repository: Optional[AccountsRepository] = False,
-        account_transactions_repository: Optional[AccountsTransactionsRepository] = False,
-        bc_gb_internal_sandbox_repository: Optional[BcGbInternalSandboxRepository] = False,
+        account_transactions_repository: Optional[
+            AccountsTransactionsRepository
+        ] = False,
+        bc_gb_internal_sandbox_repository: Optional[
+            BcGbInternalSandboxRepository
+        ] = False,
         billing_repository: Optional[AdminRepository] = None,
         cache_repository: Optional[CacheRepository] = None,
         manually_passed_kyc_logs_repository: Optional[
             ManuallyPassedKycLogsRepository
+        ] = None,
+        naira_bank_account_mapping_repository: Optional[
+            NairaBankAccountMappingRepository
         ] = None,
     ):
         self.cards_repository = cards_repository
@@ -64,6 +72,9 @@ class CoreDbUsecase:
         self.cache_repository = cache_repository
         self.blacklisted_cardholders_repository = blacklisted_cardholders_repository
         self.manually_passed_kyc_logs_repository = manually_passed_kyc_logs_repository
+        self.naira_bank_account_mapping_repository = (
+            naira_bank_account_mapping_repository
+        )
 
 
 class Database:
@@ -259,12 +270,20 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
             db_session_factory=db.session
         )
 
-        account_transactions_repository = AccountsTransactionsRepository(db_session_factory=db.session)
+        account_transactions_repository = AccountsTransactionsRepository(
+            db_session_factory=db.session
+        )
 
     naira_accounts_repository = None
 
+    naira_bank_account_mapping_repository = None
+
     if core_db_init_data.naira_accounts_db:
         naira_accounts_repository = NairaAccountsRepository(
+            db_session_factory=db.session
+        )
+
+        naira_bank_account_mapping_repository = NairaBankAccountMappingRepository(
             db_session_factory=db.session
         )
 
@@ -305,6 +324,7 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
         cache_repository=cache_repository,
         blacklisted_cardholders_repository=blacklisted_cardholders_repository,
         manually_passed_kyc_logs_repository=manually_passed_kyc_logs_repository,
+        naira_bank_account_mapping_repository=naira_bank_account_mapping_repository,
     )
 
     core_db_data_context.core_db_usecase = core_db_usecase
