@@ -197,12 +197,7 @@ class CardholdersRepository(BaseRepository):
         environment: EnvironmentEnum,
         company_issuing_app_id: str,
         cardholder_id: str,
-<<<<<<< Updated upstream
-        value:str,
         context: Optional[Any] = None,
-=======
-        context,
->>>>>>> Stashed changes
     ):
         try:
 
