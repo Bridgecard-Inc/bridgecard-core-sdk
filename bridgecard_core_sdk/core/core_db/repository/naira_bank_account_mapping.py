@@ -19,3 +19,20 @@ class NairaBankAccountMappingRepository(BaseRepository):
             )
 
             self.db_ref = db_ref
+
+    def set_naira_account_mapping_child_atrr_data(
+        self,
+        bank_account_number: str,
+        child_atrr: str,
+        value,
+        context: Optional[Any] = None,
+    ):
+        try:
+
+            data = self.db_ref.child(bank_account_number).child(child_atrr).set(value)
+                
+            return data
+
+        except:
+            
+            return None
