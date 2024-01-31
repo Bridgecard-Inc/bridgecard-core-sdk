@@ -76,3 +76,27 @@ class NairaAccountsRepository(BaseRepository):
 
         except:
             return None, None
+        
+    
+    def fetch_naira_account_transaction_data_attr(
+        self,
+        environment: EnvironmentEnum,
+        company_issuing_app_id: str,
+        account_id: str,
+        attribute: str,
+        context: Optional[Any] = None,
+    ):
+        try:
+            data = (
+                self.db_ref.child(company_issuing_app_id)
+                .child(environment.value)
+                .child(account_id)
+                .child(attribute)
+                .get()
+            )
+
+            return data
+
+        except:
+
+            return None
