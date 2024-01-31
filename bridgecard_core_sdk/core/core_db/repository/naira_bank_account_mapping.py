@@ -1,5 +1,5 @@
 from contextlib import AbstractContextManager
-from typing import Any, Callable, Optional
+from typing import Any, Callable, List, Optional
 from ..core_db import DbSession
 from .base_repository import BaseRepository
 from ..schema.base_schema import EnvironmentEnum

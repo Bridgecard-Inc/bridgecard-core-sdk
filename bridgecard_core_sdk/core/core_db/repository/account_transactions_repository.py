@@ -70,7 +70,7 @@ class AccountsTransactionsRepository(BaseRepository):
             return account_transaction_data, meta
 
         except:
-            return None
+            return None, None
 
     def paginate_all_account_transaction_data(
         self,
