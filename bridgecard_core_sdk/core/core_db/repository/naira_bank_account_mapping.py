@@ -36,3 +36,19 @@ class NairaBankAccountMappingRepository(BaseRepository):
         except:
             
             return None
+
+
+    def fetch_naira_account_mapping_data_attr(
+        self,
+        bank_account_number: str,
+        attribute: str,
+        context: Optional[Any] = None,
+    ):
+        try:
+
+            data = self.db_ref.child(bank_account_number).child(attribute).get()
+                
+            return data
+
+        except:
+            return None
