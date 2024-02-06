@@ -30,13 +30,12 @@ class NairaBankAccountMappingRepository(BaseRepository):
         try:
 
             data = self.db_ref.child(bank_account_number).child(child_atrr).set(value)
-                
+
             return data
 
         except:
-            
-            return None
 
+            return None
 
     def fetch_naira_account_mapping_data_attr(
         self,
@@ -47,8 +46,36 @@ class NairaBankAccountMappingRepository(BaseRepository):
         try:
 
             data = self.db_ref.child(bank_account_number).child(attribute).get()
-                
+
             return data
 
         except:
+            return None
+
+    def filter_naira_account_mapping_data_by_attr(
+        self,
+        attribute: str,
+        attribute_value: str,
+        context: Optional[Any] = None,
+    ):
+        try:
+
+            ordered_dict_data = (
+                self.db_ref.order_by_child(attribute).equal_to(attribute_value).get()
+            )
+
+            dict_data = dict(ordered_dict_data)
+
+            if ordered_dict_data is None:
+
+                return []
+
+            elif dict_data == {}:
+
+                return []
+
+            return list(dict_data.values())
+
+        except:
+            
             return None

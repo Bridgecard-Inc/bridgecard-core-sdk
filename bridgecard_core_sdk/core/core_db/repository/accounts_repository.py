@@ -223,3 +223,25 @@ class AccountsRepository(BaseRepository):
 
         except:
             return None
+        
+
+    def fetch_all_accounts(
+        self,
+        environment: EnvironmentEnum,
+        company_issuing_app_id: str,
+        context: Optional[Any] = None,
+    ):
+        
+        try:
+            data = (
+                self.db_ref.child(company_issuing_app_id)
+                .child(environment.value)
+                .get()
+            )
+
+            return data
+
+        except:
+
+            return None
+
