@@ -24,12 +24,14 @@ from .repository import (
     CompanyKycRequestRepository,
     AccountsTransactionsRepository,
     NairaBankAccountMappingRepository,
+    TestServiceRepo,
 )
 
 from .utils.core_db_data_context import core_db_data_context
 
 
 class CoreDbUsecase:
+
     def __init__(
         self,
         cards_repository: Optional[CardsRepository] = None,
@@ -57,6 +59,7 @@ class CoreDbUsecase:
         naira_bank_account_mapping_repository: Optional[
             NairaBankAccountMappingRepository
         ] = None,
+        test_service_repository: Optional[TestServiceRepo] = None,
     ):
         self.cards_repository = cards_repository
         self.admin_repository = admin_repository
@@ -75,6 +78,7 @@ class CoreDbUsecase:
         self.naira_bank_account_mapping_repository = (
             naira_bank_account_mapping_repository
         )
+        self.test_service_repository = test_service_repository
 
 
 class Database:
@@ -286,6 +290,10 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
         naira_bank_account_mapping_repository = NairaBankAccountMappingRepository(
             db_session_factory=db.session
         )
+    test_service_repository = None
+
+    if core_db_init_data.test_service_db:
+        test_service_repository = TestServiceRepo(db_session_factory=db.session)
 
     billing_repository = None
 
@@ -325,6 +333,7 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
         blacklisted_cardholders_repository=blacklisted_cardholders_repository,
         manually_passed_kyc_logs_repository=manually_passed_kyc_logs_repository,
         naira_bank_account_mapping_repository=naira_bank_account_mapping_repository,
+        test_service_repository=test_service_repository,
     )
 
     core_db_data_context.core_db_usecase = core_db_usecase

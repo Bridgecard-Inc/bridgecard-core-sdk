@@ -14,6 +14,8 @@ class DbSession(BaseModel):
     accounts_db_app: Any
     client_logs_db_app: Any
     cache_db_client: Any
+    test_service_db_app: Any
+
 
 class CoreDbInitData(BaseModel):
     admin_db: Optional[bool] = False
@@ -25,12 +27,12 @@ class CoreDbInitData(BaseModel):
     accounts_db: Optional[bool] = False
     cache_db: Optional[bool] = False
     client_logs_db: Optional[bool] = False
+    test_service_db: Optional[bool] = False
 
 
 class EnvironmentEnum(str, Enum):
     sandbox = "sandbox"
     production = "production"
-
 
 
 class Pagination(BaseModel):
