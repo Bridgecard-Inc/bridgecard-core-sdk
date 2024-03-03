@@ -169,6 +169,17 @@ class Database:
                 name="naira_account_db_app",
             )
 
+        self._test_service_db = None
+
+        if core_db_init_data.test_service_db:
+            test_service_db_url = os.environ.get("TEST_SERVICE_DATABASE_URL")
+
+            self._test_service_db = firebase_admin.initialize_app(
+                self._cred,
+                {"databaseURL": test_service_db_url},
+                name="test_service_db_app",
+            )
+
         self._accounts_db_app = None
 
         if core_db_init_data.accounts_db:
@@ -227,6 +238,7 @@ class Database:
             cache_db_client=self.cache_db_client,
             client_logs_db_app=self.client_log_db_app,
             accounts_db_app=self._accounts_db_app,
+            test_service_db_app=self._test_service_db,
         )
         try:
             yield db_session
