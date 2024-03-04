@@ -20,7 +20,6 @@ class CardsRepository(BaseRepository):
 
             self.db_ref = db_ref
 
-    
     def fetch_card_data(
         self,
         environment: EnvironmentEnum,
@@ -30,14 +29,19 @@ class CardsRepository(BaseRepository):
     ):
         try:
 
-            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(card_id).get()
-                
+            data = (
+                self.db_ref.child(company_issuing_app_id)
+                .child(environment.value)
+                .child(card_id)
+                .get()
+            )
+
             return data
 
         except:
-            
+
             return None
-        
+
     def delete_card_data(
         self,
         environment: EnvironmentEnum,
@@ -47,14 +51,18 @@ class CardsRepository(BaseRepository):
     ):
         try:
 
-            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(card_id).delete()
-                
+            data = (
+                self.db_ref.child(company_issuing_app_id)
+                .child(environment.value)
+                .child(card_id)
+                .delete()
+            )
+
             return data
 
         except:
-            
-            return None
 
+            return None
 
     def update_card_data_attr_as_a_transaction(
         self,
@@ -67,17 +75,17 @@ class CardsRepository(BaseRepository):
     ):
         try:
 
-            self.db_ref.child(company_issuing_app_id).child(environment.value).child(card_id).child(attribute).transaction(
-                    lambda current_value: (current_value or 0) + int(value)
-                )
-                
+            self.db_ref.child(company_issuing_app_id).child(environment.value).child(
+                card_id
+            ).child(attribute).transaction(
+                lambda current_value: (current_value or 0) + int(value)
+            )
+
             return True
 
         except:
             return False
-        
 
-    
     def update_card_data_attr(
         self,
         environment: EnvironmentEnum,
@@ -89,14 +97,15 @@ class CardsRepository(BaseRepository):
     ):
         try:
 
-            self.db_ref.child(company_issuing_app_id).child(environment.value).child(card_id).child(attribute).set(value)
-                
+            self.db_ref.child(company_issuing_app_id).child(environment.value).child(
+                card_id
+            ).child(attribute).set(value)
+
             return True
 
         except:
             return False
-        
-    
+
     def fetch_card_data_attr(
         self,
         environment: EnvironmentEnum,
@@ -107,14 +116,19 @@ class CardsRepository(BaseRepository):
     ):
         try:
 
-            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(card_id).child(attribute).get()
-                
+            data = (
+                self.db_ref.child(company_issuing_app_id)
+                .child(environment.value)
+                .child(card_id)
+                .child(attribute)
+                .get()
+            )
+
             return data
 
         except:
 
             return None
-        
 
     def set_card_child_atrr_data(
         self,
@@ -127,11 +141,39 @@ class CardsRepository(BaseRepository):
     ):
         try:
 
-            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(child_atrr).child(card_id).set(value)
-                
+            data = (
+                self.db_ref.child(company_issuing_app_id)
+                .child(environment.value)
+                .child(child_atrr)
+                .child(card_id)
+                .set(value)
+            )
+
             return data
 
         except:
-            
+
             return None
-    
+
+    def set_card_data(
+        self,
+        environment: EnvironmentEnum,
+        company_issuing_app_id: str,
+        card_id: str,
+        value,
+        context: Optional[Any] = None,
+    ):
+        try:
+
+            data = (
+                self.db_ref.child(company_issuing_app_id)
+                .child(environment.value)
+                .child(card_id)
+                .set(value)
+            )
+
+            return data
+
+        except:
+
+            return None
