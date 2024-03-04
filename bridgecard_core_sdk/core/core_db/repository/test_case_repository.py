@@ -95,3 +95,18 @@ class TestServiceRepo(BaseRepository):
         except:
 
             return None
+
+    def fetch_all_tag_data(
+        self,
+        tag: str,
+        context: Optional[Any] = None,
+    ):
+        try:
+
+            data = self.db_ref.child(tag).get()
+
+            return data
+
+        except:
+
+            return None
