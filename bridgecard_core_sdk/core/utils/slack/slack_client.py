@@ -10,12 +10,17 @@ class SlackClient:
         self._client = slack_sdk.WebClient(token=slack_bot_token)
 
     def send_message(
-        self, message: str, channel_id: str, thread_ts: Optional[str] = None
+        self,
+        message: str,
+        channel_id: str,
+        thread_ts: Optional[str] = None,
+        blocks: Optional[str] = None,
     ):
         res = self._client.chat_postMessage(
             channel=channel_id,
             text=message,
             thread_ts=thread_ts,
+            blocks=blocks
         )
 
         ts = res.get("ts")
