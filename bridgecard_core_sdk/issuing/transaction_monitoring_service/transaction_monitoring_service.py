@@ -81,3 +81,41 @@ def check_transaction_risk(
 
         return False
 
+
+
+def whitelist_user_from_potential_fraud(
+    token: str,
+    product_type: ProductType,
+    data: Optional[Dict] = None,
+):
+    grpc_channel = transaction_monitoring_service_data_context.grpc_channel
+
+    client_stub = (
+        transaction_monitoring_details_pb2_grpc.TransactionMonitoringServiceStub(
+            grpc_channel
+        )
+    )
+
+    metadata = (("token", token),)
+
+    metadata_struct = Struct()
+    metadata_struct.update(data or {})
+
+    request = transaction_monitoring_details_pb2.RequestData(
+        product_type=product_type,
+        request_metadata=metadata_struct,
+    )
+
+    try:
+        response = client_stub.WhitelistUserFromPotentialFraud(request, metadata=metadata)
+
+        if response.code == grpc.StatusCode.OK.value[0]:
+            return True
+
+    except grpc.RpcError as e:
+        print(f"check_transaction_risk - Code: {e.code()}")
+
+        print(f"check_transaction_risk - Message: {e.details()}")
+
+        return False
+
