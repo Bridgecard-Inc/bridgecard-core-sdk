@@ -19,6 +19,11 @@ class TransactionMonitoringServiceStub(object):
                 request_serializer=transaction__monitoring__details__pb2.RequestData.SerializeToString,
                 response_deserializer=transaction__monitoring__details__pb2.ResponseData.FromString,
                 )
+        self.WhitelistUserFromPotentialFraud = channel.unary_unary(
+                '/transaction_monitoring_details.TransactionMonitoringService/WhitelistUserFromPotentialFraud',
+                request_serializer=transaction__monitoring__details__pb2.RequestData.SerializeToString,
+                response_deserializer=transaction__monitoring__details__pb2.ResponseData.FromString,
+                )
 
 
 class TransactionMonitoringServiceServicer(object):
@@ -30,11 +35,22 @@ class TransactionMonitoringServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def WhitelistUserFromPotentialFraud(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_TransactionMonitoringServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'CheckTransactionRisk': grpc.unary_unary_rpc_method_handler(
                     servicer.CheckTransactionRisk,
+                    request_deserializer=transaction__monitoring__details__pb2.RequestData.FromString,
+                    response_serializer=transaction__monitoring__details__pb2.ResponseData.SerializeToString,
+            ),
+            'WhitelistUserFromPotentialFraud': grpc.unary_unary_rpc_method_handler(
+                    servicer.WhitelistUserFromPotentialFraud,
                     request_deserializer=transaction__monitoring__details__pb2.RequestData.FromString,
                     response_serializer=transaction__monitoring__details__pb2.ResponseData.SerializeToString,
             ),
@@ -60,6 +76,23 @@ class TransactionMonitoringService(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/transaction_monitoring_details.TransactionMonitoringService/CheckTransactionRisk',
+            transaction__monitoring__details__pb2.RequestData.SerializeToString,
+            transaction__monitoring__details__pb2.ResponseData.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def WhitelistUserFromPotentialFraud(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/transaction_monitoring_details.TransactionMonitoringService/WhitelistUserFromPotentialFraud',
             transaction__monitoring__details__pb2.RequestData.SerializeToString,
             transaction__monitoring__details__pb2.ResponseData.FromString,
             options, channel_credentials,

@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package transaction_monitoring_details_sdk;
+package transaction_monitoring_details;
 
 
 enum ProductType {
@@ -24,4 +24,5 @@ message ResponseData {
 
 service TransactionMonitoringService {
   rpc CheckTransactionRisk(RequestData) returns (ResponseData) {}
+  rpc WhitelistUserFromPotentialFraud(RequestData) returns (ResponseData) {}
 }
