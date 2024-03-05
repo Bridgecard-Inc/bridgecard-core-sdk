@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-from . import transaction_monitoring_details_sdk_pb2 as transaction__monitoring__details__sdk__pb2
+from . import transaction_monitoring_details_pb2 as transaction__monitoring__details__pb2
 
 
 class TransactionMonitoringServiceStub(object):
@@ -15,14 +15,14 @@ class TransactionMonitoringServiceStub(object):
             channel: A grpc.Channel.
         """
         self.CheckTransactionRisk = channel.unary_unary(
-                '/transaction_monitoring_details_sdk.TransactionMonitoringService/CheckTransactionRisk',
-                request_serializer=transaction__monitoring__details__sdk__pb2.RequestData.SerializeToString,
-                response_deserializer=transaction__monitoring__details__sdk__pb2.ResponseData.FromString,
+                '/transaction_monitoring_details.TransactionMonitoringService/CheckTransactionRisk',
+                request_serializer=transaction__monitoring__details__pb2.RequestData.SerializeToString,
+                response_deserializer=transaction__monitoring__details__pb2.ResponseData.FromString,
                 )
         self.WhitelistUserFromPotentialFraud = channel.unary_unary(
-                '/transaction_monitoring_details_sdk.TransactionMonitoringService/WhitelistUserFromPotentialFraud',
-                request_serializer=transaction__monitoring__details__sdk__pb2.RequestData.SerializeToString,
-                response_deserializer=transaction__monitoring__details__sdk__pb2.ResponseData.FromString,
+                '/transaction_monitoring_details.TransactionMonitoringService/WhitelistUserFromPotentialFraud',
+                request_serializer=transaction__monitoring__details__pb2.RequestData.SerializeToString,
+                response_deserializer=transaction__monitoring__details__pb2.ResponseData.FromString,
                 )
 
 
@@ -46,17 +46,17 @@ def add_TransactionMonitoringServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'CheckTransactionRisk': grpc.unary_unary_rpc_method_handler(
                     servicer.CheckTransactionRisk,
-                    request_deserializer=transaction__monitoring__details__sdk__pb2.RequestData.FromString,
-                    response_serializer=transaction__monitoring__details__sdk__pb2.ResponseData.SerializeToString,
+                    request_deserializer=transaction__monitoring__details__pb2.RequestData.FromString,
+                    response_serializer=transaction__monitoring__details__pb2.ResponseData.SerializeToString,
             ),
             'WhitelistUserFromPotentialFraud': grpc.unary_unary_rpc_method_handler(
                     servicer.WhitelistUserFromPotentialFraud,
-                    request_deserializer=transaction__monitoring__details__sdk__pb2.RequestData.FromString,
-                    response_serializer=transaction__monitoring__details__sdk__pb2.ResponseData.SerializeToString,
+                    request_deserializer=transaction__monitoring__details__pb2.RequestData.FromString,
+                    response_serializer=transaction__monitoring__details__pb2.ResponseData.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'transaction_monitoring_details_sdk.TransactionMonitoringService', rpc_method_handlers)
+            'transaction_monitoring_details.TransactionMonitoringService', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
@@ -75,9 +75,9 @@ class TransactionMonitoringService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/transaction_monitoring_details_sdk.TransactionMonitoringService/CheckTransactionRisk',
-            transaction__monitoring__details__sdk__pb2.RequestData.SerializeToString,
-            transaction__monitoring__details__sdk__pb2.ResponseData.FromString,
+        return grpc.experimental.unary_unary(request, target, '/transaction_monitoring_details.TransactionMonitoringService/CheckTransactionRisk',
+            transaction__monitoring__details__pb2.RequestData.SerializeToString,
+            transaction__monitoring__details__pb2.ResponseData.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -92,8 +92,8 @@ class TransactionMonitoringService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/transaction_monitoring_details_sdk.TransactionMonitoringService/WhitelistUserFromPotentialFraud',
-            transaction__monitoring__details__sdk__pb2.RequestData.SerializeToString,
-            transaction__monitoring__details__sdk__pb2.ResponseData.FromString,
+        return grpc.experimental.unary_unary(request, target, '/transaction_monitoring_details.TransactionMonitoringService/WhitelistUserFromPotentialFraud',
+            transaction__monitoring__details__pb2.RequestData.SerializeToString,
+            transaction__monitoring__details__pb2.ResponseData.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
