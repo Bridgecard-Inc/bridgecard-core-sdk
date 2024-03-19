@@ -43,7 +43,7 @@ def init_billing_service():
 
 def check_admin_bill_status(
     token: str,
-    bill_type: BillType,
+    bill_type: BillType, # type: ignore
     card_id: Optional[str] = None,
     transaction_amount: Optional[str] = None,
     account_id: Optional[str] = None,
@@ -85,7 +85,7 @@ def check_admin_bill_status(
 
 def bill_admin(
     token: str,
-    bill_type: BillType,
+    bill_type: BillType, # type: ignore
     card_id: Optional[str] = None,
     transaction_amount: Optional[str] = None,
     account_id: Optional[str] = None,
