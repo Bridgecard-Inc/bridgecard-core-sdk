@@ -14,3 +14,4 @@ from .bc_gb_internal_sandbox_repository import BcGbInternalSandboxRepository
 from .account_transactions_repository import AccountsTransactionsRepository
 from .naira_bank_account_mapping import NairaBankAccountMappingRepository
 from .test_case_repository import TestServiceRepo
+from .wallet_repository import WalletRepository

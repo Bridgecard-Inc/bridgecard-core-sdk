@@ -15,6 +15,7 @@ class DbSession(BaseModel):
     client_logs_db_app: Any
     cache_db_client: Any
     test_service_db_app: Any
+    wallets_db_app: Any
 
 
 class CoreDbInitData(BaseModel):
@@ -23,6 +24,7 @@ class CoreDbInitData(BaseModel):
     cards_db: Optional[bool] = False
     card_transactions_db: Optional[bool] = False
     cardholders_db: Optional[bool] = False
+    wallets_db: Optional[bool] = False
     naira_accounts_db: Optional[bool] = False
     accounts_db: Optional[bool] = False
     cache_db: Optional[bool] = False

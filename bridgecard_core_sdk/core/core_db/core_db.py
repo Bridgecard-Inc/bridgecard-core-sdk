@@ -12,6 +12,7 @@ from .repository import (
     AccountsRepository,
     BcGbInternalSandboxRepository,
     CardsRepository,
+    WalletRepository,
     AdminRepository,
     BillingRepository,
     CardholdersRepository,
@@ -37,6 +38,7 @@ class CoreDbUsecase:
         cards_repository: Optional[CardsRepository] = None,
         admin_repository: Optional[AdminRepository] = None,
         cardholders_repository: Optional[CardholdersRepository] = None,
+        wallets_repository: Optional[WalletRepository] = None,
         company_repository: Optional[CompanyRepository] = None,
         company_kyc_request_repository: Optional[CompanyKycRequestRepository] = None,
         blacklisted_cardholders_repository: Optional[
@@ -64,6 +66,7 @@ class CoreDbUsecase:
         self.cards_repository = cards_repository
         self.admin_repository = admin_repository
         self.cardholders_repository = cardholders_repository
+        self.wallets_repository = wallets_repository
         self.company_repository = company_repository
         self.company_kyc_request_repository = company_kyc_request_repository
         self.card_transactions_repository = card_transactions_repository
@@ -158,6 +161,17 @@ class Database:
                 name="cardholders_db_app",
             )
 
+        self._wallets_db_app = None
+
+        if core_db_init_data.wallets_db:
+            wallets_database_url = os.environ.get("WALLETS_DATABASE_URL")
+
+            self._wallets_db_app = firebase_admin.initialize_app(
+                self._cred,
+                {"databaseURL": wallets_database_url},
+                name="wallets_db_app",
+            )
+
         self._naira_accounts_db_app = None
 
         if core_db_init_data.naira_accounts_db:
@@ -234,6 +248,7 @@ class Database:
             cards_db_app=self._cards_db_app,
             card_transactions_db_app=self._card_transactions_db_app,
             cardholders_db_app=self._cardholders_db_app,
+            wallets_db_app=self._wallets_db_app,
             naira_accounts_db_app=self._naira_accounts_db_app,
             cache_db_client=self.cache_db_client,
             client_logs_db_app=self.client_log_db_app,
@@ -263,6 +278,10 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
     blacklisted_cardholders_repository = None
     company_repository = None
     company_kyc_request_repository = None
+    wallets_repository =None
+
+    if core_db_init_data.wallets_db:
+        wallets_repository = WalletRepository(db_session_factory=db.session)
 
     if core_db_init_data.cardholders_db:
         cardholders_repository = CardholdersRepository(db_session_factory=db.session)
@@ -334,6 +353,7 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
         card_transactions_repository=card_transactions_repository,
         cardholders_repository=cardholders_repository,
         company_repository=company_repository,
+        wallets_repository=wallets_repository,
         company_kyc_request_repository=company_kyc_request_repository,
         naira_accounts_repository=naira_accounts_repository,
         accounts_repository=accounts_repository,
