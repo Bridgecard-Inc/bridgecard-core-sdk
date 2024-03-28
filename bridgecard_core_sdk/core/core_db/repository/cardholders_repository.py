@@ -92,6 +92,25 @@ class CardholdersRepository(BaseRepository):
 
         except:
             return None
+        
+    def set_cardholder_card_or_wallet_data(
+        self,
+        environment: EnvironmentEnum,
+        company_issuing_app_id: str,
+        cardholder_id: str,
+        attribute: str,
+        value_id:str,
+        value,
+        context: Optional[Any] = None,
+    ):
+        try:
+
+            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(cardholder_id).child(attribute).child(value_id).set(value)
+                
+            return data
+
+        except:
+            return None
 
     def add_cardholder_account_info(
         self,
