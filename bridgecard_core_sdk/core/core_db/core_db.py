@@ -13,6 +13,7 @@ from .repository import (
     BcGbInternalSandboxRepository,
     CardsRepository,
     WalletRepository,
+    WalletTransactionsRepository,
     AdminRepository,
     BillingRepository,
     CardholdersRepository,
@@ -39,6 +40,7 @@ class CoreDbUsecase:
         admin_repository: Optional[AdminRepository] = None,
         cardholders_repository: Optional[CardholdersRepository] = None,
         wallets_repository: Optional[WalletRepository] = None,
+        wallet_transactions_repository: Optional[WalletTransactionsRepository] = None,
         company_repository: Optional[CompanyRepository] = None,
         company_kyc_request_repository: Optional[CompanyKycRequestRepository] = None,
         blacklisted_cardholders_repository: Optional[
@@ -67,6 +69,7 @@ class CoreDbUsecase:
         self.admin_repository = admin_repository
         self.cardholders_repository = cardholders_repository
         self.wallets_repository = wallets_repository
+        self.wallet_transactions_repository= wallet_transactions_repository
         self.company_repository = company_repository
         self.company_kyc_request_repository = company_kyc_request_repository
         self.card_transactions_repository = card_transactions_repository
@@ -281,7 +284,10 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
     wallets_repository =None
 
     if core_db_init_data.wallets_db:
+
         wallets_repository = WalletRepository(db_session_factory=db.session)
+
+        wallet_transactions_repository = WalletTransactionsRepository(db_session_factory=db.session)
 
     if core_db_init_data.cardholders_db:
         cardholders_repository = CardholdersRepository(db_session_factory=db.session)
@@ -354,6 +360,7 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
         cardholders_repository=cardholders_repository,
         company_repository=company_repository,
         wallets_repository=wallets_repository,
+        wallet_transactions_repository=wallet_transactions_repository,
         company_kyc_request_repository=company_kyc_request_repository,
         naira_accounts_repository=naira_accounts_repository,
         accounts_repository=accounts_repository,
