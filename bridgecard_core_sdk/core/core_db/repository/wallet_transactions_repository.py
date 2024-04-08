@@ -89,7 +89,7 @@ class WalletTransactionsRepository(BaseRepository):
     ):
         try:
 
-            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(wallet_id).child(child_atrr).child(transaction_reference).set(value)
+            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(wallet_id).child(transaction_reference).child(child_atrr).set(value)
                 
             return data
 
@@ -127,7 +127,7 @@ class WalletTransactionsRepository(BaseRepository):
     ):
         try:
 
-            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(wallet_id).child(attribute).child(transaction_reference).delete()
+            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(wallet_id).child(transaction_reference).child(attribute).delete()
                 
             return data
 
