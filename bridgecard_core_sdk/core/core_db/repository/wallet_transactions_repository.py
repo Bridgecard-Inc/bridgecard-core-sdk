@@ -49,7 +49,7 @@ class WalletTransactionsRepository(BaseRepository):
     ):
         try:
 
-            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(wallet_id).get(transaction_reference).set(value)
+            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(wallet_id).child(transaction_reference).set(value)
                 
             return data
 
