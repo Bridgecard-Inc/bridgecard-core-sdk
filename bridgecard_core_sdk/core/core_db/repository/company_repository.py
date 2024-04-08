@@ -192,3 +192,28 @@ class CompanyRepository(BaseRepository):
 
         except:
             return None
+
+
+    def fetch_company_data_by_name(
+        self,
+        environment: EnvironmentEnum,
+        company_issuing_app_id: str,
+        company_name: str,
+        context: Optional[Any] = None,
+    ):
+        try:
+            data = self.db_ref.companies_db.child(company_issuing_app_id).child(environment.value).order_by_child("company_name").equal_to(company_name).get()
+            dict_data = dict(data)
+
+            if data is None:
+                return None
+
+            elif dict_data == {}:
+                return None
+
+            dict_key = list(dict_data.keys())[0]
+
+            return dict_data[dict_key]
+
+        except:
+            return None
