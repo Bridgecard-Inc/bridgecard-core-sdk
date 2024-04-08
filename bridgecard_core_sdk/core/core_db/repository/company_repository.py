@@ -203,17 +203,13 @@ class CompanyRepository(BaseRepository):
     ):
         try:
             data = self.db_ref.companies_db.child(company_issuing_app_id).child(environment.value).order_by_child("company_name").equal_to(company_name).get()
-            dict_data = dict(data)
-
-            if data is None:
+            if not data:
                 return None
-
-            elif dict_data == {}:
-                return None
-
-            dict_key = list(dict_data.keys())[0]
-
-            return dict_data[dict_key]
+            dict_key = list(data.keys())[0]
+            company = data[dict_key]
+            if "company_id" not in company:
+                company["company_id"] = dict_key
+            return company
 
         except:
             return None
