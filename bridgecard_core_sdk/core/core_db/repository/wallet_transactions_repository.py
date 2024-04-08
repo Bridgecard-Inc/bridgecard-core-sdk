@@ -24,11 +24,12 @@ class WalletTransactionsRepository(BaseRepository):
         environment: EnvironmentEnum,
         company_issuing_app_id: str,
         wallet_id: str,
+        transaction_reference: str,
         context: Optional[Any] = None,
     ):
         try:
 
-            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(wallet_id).get()
+            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(wallet_id).child(transaction_reference).get()
                 
             return data
 
@@ -42,12 +43,13 @@ class WalletTransactionsRepository(BaseRepository):
         environment: EnvironmentEnum,
         company_issuing_app_id: str,
         wallet_id: str,
+        transaction_reference: str,
         value,
         context: Optional[Any] = None,
     ):
         try:
 
-            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(wallet_id).set(value)
+            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(wallet_id).get(transaction_reference).set(value)
                 
             return data
 
@@ -61,11 +63,12 @@ class WalletTransactionsRepository(BaseRepository):
         company_issuing_app_id: str,
         wallet_id: str,
         attribute: str,
+        transaction_reference: str,
         context: Optional[Any] = None,
     ):
         try:
 
-            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(wallet_id).child(attribute).get()
+            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(wallet_id).child(transaction_reference).child(attribute).get()
                 
             return data
 
@@ -80,12 +83,13 @@ class WalletTransactionsRepository(BaseRepository):
         company_issuing_app_id: str,
         wallet_id: str,
         child_atrr: str,
+        transaction_reference: str,
         value,
         context: Optional[Any] = None,
     ):
         try:
 
-            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(wallet_id).child(child_atrr).set(value)
+            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(wallet_id).child(child_atrr).child(transaction_reference).set(value)
                 
             return data
 
@@ -98,11 +102,12 @@ class WalletTransactionsRepository(BaseRepository):
         environment: EnvironmentEnum,
         company_issuing_app_id: str,
         wallet_id: str,
+        transaction_reference: str,
         context: Optional[Any] = None,
     ):
         try:
 
-            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(wallet_id).delete()
+            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(wallet_id).child(transaction_reference).delete()
                 
             return data
 
@@ -116,12 +121,13 @@ class WalletTransactionsRepository(BaseRepository):
         environment: EnvironmentEnum,
         company_issuing_app_id: str,
         wallet_id: str,
+        transaction_reference: str,
         attribute: str,
         context: Optional[Any] = None,
     ):
         try:
 
-            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(wallet_id).child(attribute).delete()
+            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(wallet_id).child(attribute).child(transaction_reference).delete()
                 
             return data
 
