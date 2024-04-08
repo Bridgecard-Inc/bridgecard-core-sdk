@@ -51,6 +51,10 @@ class WalletTransactionsRepository(BaseRepository):
 
             prev_data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(wallet_id).child(transaction_reference).get()
 
+            if not prev_data:
+
+                prev_data = {}
+
             updated_data = {**value, **prev_data}
 
             self.db_ref.child(company_issuing_app_id).child(environment.value).child(wallet_id).child(transaction_reference).update(updated_data)
