@@ -49,9 +49,13 @@ class WalletTransactionsRepository(BaseRepository):
     ):
         try:
 
-            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(wallet_id).child(transaction_reference).update(value)
+            prev_data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(wallet_id).child(transaction_reference).get()
+
+            prev_data.update(value)
+
+            self.db_ref.child(company_issuing_app_id).child(environment.value).child(wallet_id).child(transaction_reference).update(prev_data)
                 
-            return data
+            return prev_data
 
         except:
             
