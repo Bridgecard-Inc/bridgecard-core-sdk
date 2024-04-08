@@ -202,7 +202,7 @@ class CompanyRepository(BaseRepository):
         context: Optional[Any] = None,
     ):
         try:
-            data = self.db_ref.companies_db.child(company_issuing_app_id).child(environment.value).order_by_child("company_name").equal_to(company_name).get()
+            data = self.db_ref.child(company_issuing_app_id).child(environment.value).order_by_child("company_name").equal_to(company_name).get()
             if not data:
                 return None
             dict_key = list(data.keys())[0]
