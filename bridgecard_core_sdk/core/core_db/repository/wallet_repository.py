@@ -111,7 +111,7 @@ class WalletRepository(BaseRepository):
     ):
         try:
 
-            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(wallet_id).child(child_atrr).transaction(lambda current_value: current_value - int(value))
+            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(wallet_id).child(child_atrr).transaction(lambda current_value: current_value - float(value))
                 
             return data
 
