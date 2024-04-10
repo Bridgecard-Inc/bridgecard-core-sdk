@@ -98,6 +98,26 @@ class WalletRepository(BaseRepository):
         except:
             
             return None
+        
+
+    def set_wallet_child_atrr_data_as_transaction(
+        self,
+        environment: EnvironmentEnum,
+        company_issuing_app_id: str,
+        wallet_id: str,
+        child_atrr: str,
+        value,
+        context: Optional[Any] = None,
+    ):
+        try:
+
+            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(wallet_id).child(child_atrr).transaction(lambda current_value: current_value - int(value))
+                
+            return data
+
+        except:
+            
+            return None
 
     
     def wallet_order_by_child(
