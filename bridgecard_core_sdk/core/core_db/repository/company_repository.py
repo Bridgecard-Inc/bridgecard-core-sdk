@@ -15,7 +15,8 @@ class CompanyRepository(BaseRepository):
         self, db_session_factory: Callable[..., AbstractContextManager[DbSession]]
     ):
         with db_session_factory() as db_session:
-            db_ref = db.reference(COMAPNIES_MODEL_NAME, db_session.cardholders_db_app)
+            db_ref = db.reference(COMAPNIES_MODEL_NAME,
+                                  db_session.cardholders_db_app)
 
             self.db_ref = db_ref
 
@@ -31,7 +32,8 @@ class CompanyRepository(BaseRepository):
     ):
         try:
             data = (
-                self.db_ref.child(company_issuing_app_id).child(environment.value).get()
+                self.db_ref.child(company_issuing_app_id).child(
+                    environment.value).get()
             )
 
             companies_data, meta = self.paginate_data(
@@ -68,7 +70,7 @@ class CompanyRepository(BaseRepository):
 
         except:
             return None
-        
+
     def add_company_account_info(
         self,
         environment: EnvironmentEnum,
@@ -80,8 +82,9 @@ class CompanyRepository(BaseRepository):
     ):
         try:
 
-            self.db_ref.child(company_issuing_app_id).child(environment.value).child(company_id).child(ACCOUNTS_MODEL_NAME).child(account_id).set(value)
-                
+            self.db_ref.child(company_issuing_app_id).child(environment.value).child(
+                company_id).child(ACCOUNTS_MODEL_NAME).child(account_id).set(value)
+
             return True
 
         except:
@@ -193,7 +196,6 @@ class CompanyRepository(BaseRepository):
         except:
             return None
 
-
     def fetch_company_data_by_name(
         self,
         environment: EnvironmentEnum,
@@ -202,7 +204,8 @@ class CompanyRepository(BaseRepository):
         context: Optional[Any] = None,
     ):
         try:
-            data = self.db_ref.child(company_issuing_app_id).child(environment.value).order_by_child("company_name").equal_to(company_name).get()
+            data = self.db_ref.child(company_issuing_app_id).child(
+                environment.value).order_by_child("company_name").equal_to(company_name).get()
             if not data:
                 return None
             dict_key = list(data.keys())[0]
@@ -211,5 +214,24 @@ class CompanyRepository(BaseRepository):
                 company["company_id"] = dict_key
             return company
 
+        except:
+            return None
+
+    def set_company_card_or_wallet_data(
+        self,
+        environment: EnvironmentEnum,
+        company_issuing_app_id: str,
+        company_id: str,
+        attribute: str,
+        value_id: str,
+        value,
+        context: Optional[Any] = None,
+    ):
+        try:
+
+            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(
+                company_id).child(attribute).child(value_id).set(value)
+
+            return data
         except:
             return None
