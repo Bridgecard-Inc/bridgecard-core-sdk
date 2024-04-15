@@ -282,6 +282,7 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
     company_repository = None
     company_kyc_request_repository = None
     wallets_repository =None
+    wallet_transactions_repository=None
 
     if core_db_init_data.wallets_db:
 
