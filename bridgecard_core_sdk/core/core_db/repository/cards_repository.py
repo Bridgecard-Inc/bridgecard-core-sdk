@@ -144,8 +144,8 @@ class CardsRepository(BaseRepository):
             data = (
                 self.db_ref.child(company_issuing_app_id)
                 .child(environment.value)
-                .child(child_atrr)
                 .child(card_id)
+                .child(child_atrr)
                 .set(value)
             )
 
