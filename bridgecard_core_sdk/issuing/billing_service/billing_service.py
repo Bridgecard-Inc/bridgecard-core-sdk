@@ -23,11 +23,11 @@ def init_billing_service():
         "BRIDGECARD_ISSUING_TLS_SERVER_CERT_CHAIN"
     )
 
-    server_addr = (
-        "ae740cdf8e16b48bc82a259400ca03b9-1383199310.us-west-2.elb.amazonaws.com:80"
-    )
+    # server_addr = (
+    #     "ae740cdf8e16b48bc82a259400ca03b9-1383199310.us-west-2.elb.amazonaws.com:80"
+    # )
 
-    # server_addr = "0.0.0.0:8089"
+    server_addr = "0.0.0.0:8089"
 
     # creds = grpc.ssl_channel_credentials(
     #     private_key=client_private_key.encode(),
@@ -114,7 +114,10 @@ def bill_admin(
         response = client_stub.BillAdmin(request, metadata=metadata)
 
         if response.code == grpc.StatusCode.OK.value[0]:
-            return True
+
+            amount_out = response.response_metadata.get("amount_out") or True
+
+            return amount_out
 
     except grpc.RpcError as e:
         print(f"bill_admin - Code: {e.code()}")
