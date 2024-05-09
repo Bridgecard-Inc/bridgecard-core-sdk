@@ -113,13 +113,13 @@ class NairaAccountsRepository(BaseRepository):
                 .child(account_id)
                 .get()
             )
-            if data != None:
-                data = list(data.values())
-                data = sorted(
-                    data,
-                    key=lambda i: i.get("transaction_timestamp", 0),
-                    reverse=True,
-                )
+            # if data != None:
+            #     data = list(data.values())
+            #     data = sorted(
+            #         data,
+            #         key=lambda i: i.get("transaction_timestamp", 0),
+            #         reverse=True,
+            #     )
             return data
 
         except:
