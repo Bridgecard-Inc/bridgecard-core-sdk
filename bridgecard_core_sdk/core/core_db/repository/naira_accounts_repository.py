@@ -41,8 +41,7 @@ class NairaAccountsRepository(BaseRepository):
 
         except:
             return False
-        
-    
+
     def fetch_all_naira_account_transaction_data(
         self,
         environment: EnvironmentEnum,
@@ -76,8 +75,7 @@ class NairaAccountsRepository(BaseRepository):
 
         except:
             return None, None
-        
-    
+
     def fetch_naira_account_transaction_data_attr(
         self,
         environment: EnvironmentEnum,
@@ -95,6 +93,33 @@ class NairaAccountsRepository(BaseRepository):
                 .get()
             )
 
+            return data
+
+        except:
+
+            return None
+
+    def fetch_all_naira_account_transactions(
+        self,
+        environment: EnvironmentEnum,
+        company_issuing_app_id: str,
+        account_id: str,
+        context: Optional[Any] = None,
+    ):
+        try:
+            data = (
+                self.db_ref.child(company_issuing_app_id)
+                .child(environment.value)
+                .child(account_id)
+                .get()
+            )
+            if data != None:
+                data = list(data.values())
+                data = sorted(
+                    data,
+                    key=lambda i: i.get("transaction_timestamp", 0),
+                    reverse=True,
+                )
             return data
 
         except:

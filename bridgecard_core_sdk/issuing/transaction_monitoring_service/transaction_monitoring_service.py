@@ -18,7 +18,8 @@ from .utils.transaction_monitoring_service_data_context import (
 
 
 def init_transaction_monitoring_service():
-    client_private_key = os.environ.get("BRIDGECARD_ISSUING_TLS_CLIENT_PRIVATE_KEY")
+    client_private_key = os.environ.get(
+        "BRIDGECARD_ISSUING_TLS_CLIENT_PRIVATE_KEY")
 
     client_certificate_chain = os.environ.get(
         "BRIDGECARD_ISSUING_TLS_CLIENT_CERT_CHAIN"
@@ -31,7 +32,7 @@ def init_transaction_monitoring_service():
     server_addr = (
         "a08c5b25f952f4266b52c70600aefcec-2060662335.us-west-2.elb.amazonaws.com:80"
     )
-    # server_addr = "0.0.0.0:8080"
+    server_addr = "localhost:8085"
 
     # creds = grpc.ssl_channel_credentials(
     #     private_key=client_private_key.encode(),
@@ -82,7 +83,6 @@ def check_transaction_risk(
         return False
 
 
-
 def whitelist_user_from_potential_fraud(
     token: str,
     product_type: ProductType,
@@ -107,7 +107,8 @@ def whitelist_user_from_potential_fraud(
     )
 
     try:
-        response = client_stub.WhitelistUserFromPotentialFraud(request, metadata=metadata)
+        response = client_stub.WhitelistUserFromPotentialFraud(
+            request, metadata=metadata)
 
         if response.code == grpc.StatusCode.OK.value[0]:
             return True
@@ -118,4 +119,3 @@ def whitelist_user_from_potential_fraud(
         print(f"check_transaction_risk - Message: {e.details()}")
 
         return False
-
