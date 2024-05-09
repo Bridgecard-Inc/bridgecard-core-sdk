@@ -5,6 +5,7 @@ package transaction_monitoring_details_sdk;
 
 enum ProductType {
   USD_CARDS = 0;
+  NGN_CARDS = 1;
 
 }
 
