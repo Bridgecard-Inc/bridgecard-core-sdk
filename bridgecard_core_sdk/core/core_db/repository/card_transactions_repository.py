@@ -41,6 +41,25 @@ class CardTransactionsRepository(BaseRepository):
 
         except:
             return False
+        
+    
+    def delete_card_transactions(
+        self,
+        environment: EnvironmentEnum,
+        company_issuing_app_id: str,
+        card_id: str,
+        context: Optional[Any] = None,
+    ):
+        try:
+
+            self.db_ref.child(company_issuing_app_id).child(environment.value).child(
+                card_id
+            ).delete()
+
+            return True
+
+        except:
+            return False
 
 
     def fetch_card_transaction_data(
