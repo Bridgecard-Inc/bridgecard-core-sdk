@@ -27,6 +27,7 @@ from .repository import (
     AccountsTransactionsRepository,
     NairaBankAccountMappingRepository,
     TestServiceRepo,
+    DeleteWalletRepository,
 )
 
 from .utils.core_db_data_context import core_db_data_context
@@ -40,6 +41,7 @@ class CoreDbUsecase:
         admin_repository: Optional[AdminRepository] = None,
         cardholders_repository: Optional[CardholdersRepository] = None,
         wallets_repository: Optional[WalletRepository] = None,
+        delete_wallet_repository: Optional[DeleteWalletRepository] = None,
         wallet_transactions_repository: Optional[WalletTransactionsRepository] = None,
         company_repository: Optional[CompanyRepository] = None,
         company_kyc_request_repository: Optional[CompanyKycRequestRepository] = None,
@@ -69,7 +71,8 @@ class CoreDbUsecase:
         self.admin_repository = admin_repository
         self.cardholders_repository = cardholders_repository
         self.wallets_repository = wallets_repository
-        self.wallet_transactions_repository= wallet_transactions_repository
+        self.delete_wallet_repository = delete_wallet_repository
+        self.wallet_transactions_repository = wallet_transactions_repository
         self.company_repository = company_repository
         self.company_kyc_request_repository = company_kyc_request_repository
         self.card_transactions_repository = card_transactions_repository
@@ -156,7 +159,8 @@ class Database:
         self._cardholders_db_app = None
 
         if core_db_init_data.cardholders_db:
-            cardholders_database_url = os.environ.get("CARDHOLDERS_DATABASE_URL")
+            cardholders_database_url = os.environ.get(
+                "CARDHOLDERS_DATABASE_URL")
 
             self._cardholders_db_app = firebase_admin.initialize_app(
                 self._cred,
@@ -178,7 +182,8 @@ class Database:
         self._naira_accounts_db_app = None
 
         if core_db_init_data.naira_accounts_db:
-            naira_accounts_database_url = os.environ.get("NAIRA_ACCOUNTS_DATABASE_URL")
+            naira_accounts_database_url = os.environ.get(
+                "NAIRA_ACCOUNTS_DATABASE_URL")
 
             self._naira_accounts_db_app = firebase_admin.initialize_app(
                 self._cred,
@@ -211,7 +216,8 @@ class Database:
         self.client_log_db_app = None
 
         if core_db_init_data.client_logs_db:
-            client_logs_database_url = os.environ.get("CLIENT_LOGS_DATABASE_URL")
+            client_logs_database_url = os.environ.get(
+                "CLIENT_LOGS_DATABASE_URL")
 
             self.client_log_db_app = firebase_admin.initialize_app(
                 self._cred,
@@ -281,17 +287,23 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
     blacklisted_cardholders_repository = None
     company_repository = None
     company_kyc_request_repository = None
-    wallets_repository =None
-    wallet_transactions_repository=None
+    wallets_repository = None
+    wallet_transactions_repository = None
+    delete_wallet_repository = None
 
     if core_db_init_data.wallets_db:
 
         wallets_repository = WalletRepository(db_session_factory=db.session)
 
-        wallet_transactions_repository = WalletTransactionsRepository(db_session_factory=db.session)
+        wallet_transactions_repository = WalletTransactionsRepository(
+            db_session_factory=db.session)
+
+        delete_wallet_repository = DeleteWalletRepository(
+            db_session_factory=db.session)
 
     if core_db_init_data.cardholders_db:
-        cardholders_repository = CardholdersRepository(db_session_factory=db.session)
+        cardholders_repository = CardholdersRepository(
+            db_session_factory=db.session)
         blacklisted_cardholders_repository = BlackListedCardholdersRepository(
             db_session_factory=db.session
         )
@@ -331,7 +343,8 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
     test_service_repository = None
 
     if core_db_init_data.test_service_db:
-        test_service_repository = TestServiceRepo(db_session_factory=db.session)
+        test_service_repository = TestServiceRepo(
+            db_session_factory=db.session)
 
     billing_repository = None
 
@@ -361,6 +374,7 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
         cardholders_repository=cardholders_repository,
         company_repository=company_repository,
         wallets_repository=wallets_repository,
+        delete_wallet_repository=delete_wallet_repository,
         wallet_transactions_repository=wallet_transactions_repository,
         company_kyc_request_repository=company_kyc_request_repository,
         naira_accounts_repository=naira_accounts_repository,

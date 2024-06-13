@@ -16,3 +16,4 @@ from .naira_bank_account_mapping import NairaBankAccountMappingRepository
 from .test_case_repository import TestServiceRepo
 from .wallet_repository import WalletRepository
 from .wallet_transactions_repository import WalletTransactionsRepository
+from .delete_wallet_repository import DeleteWalletRepository
