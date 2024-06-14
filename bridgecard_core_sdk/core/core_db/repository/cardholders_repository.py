@@ -13,13 +13,14 @@ ACCOUNTS_MODEL_NAME = "accounts"
 
 
 class CardholdersRepository(BaseRepository):
-    
+
     def __init__(
         self, db_session_factory: Callable[..., AbstractContextManager[DbSession]]
     ):
         with db_session_factory() as db_session:
 
-            db_ref = db.reference(CARDHOLDERS_MODEL_NAME, db_session.cardholders_db_app)
+            db_ref = db.reference(CARDHOLDERS_MODEL_NAME,
+                                  db_session.cardholders_db_app)
 
             self.db_ref = db_ref
 
@@ -32,14 +33,15 @@ class CardholdersRepository(BaseRepository):
     ):
         try:
 
-            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(cardholder_id).get()
-                
+            data = self.db_ref.child(company_issuing_app_id).child(
+                environment.value).child(cardholder_id).get()
+
             return data
 
         except:
-            
+
             return None
-        
+
     def fetch_cardholder_data_naira_virtual_account_attr(
         self,
         environment: EnvironmentEnum,
@@ -50,14 +52,15 @@ class CardholdersRepository(BaseRepository):
     ):
         try:
 
-            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(cardholder_id).child(NAIRA_VIRTUAL_ACCOUNT_MODEL_NAME).child(attribute).get()
-                
+            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(
+                cardholder_id).child(NAIRA_VIRTUAL_ACCOUNT_MODEL_NAME).child(attribute).get()
+
             return data
 
         except:
 
             return None
-        
+
     def set_cardholder_data(
         self,
         environment: EnvironmentEnum,
@@ -68,12 +71,13 @@ class CardholdersRepository(BaseRepository):
     ):
         try:
 
-            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(cardholder_id).set(value)
-                
+            data = self.db_ref.child(company_issuing_app_id).child(
+                environment.value).child(cardholder_id).set(value)
+
             return data
 
         except:
-            
+
             return None
 
     def fetch_cardholder_data_attr(
@@ -86,27 +90,50 @@ class CardholdersRepository(BaseRepository):
     ):
         try:
 
-            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(cardholder_id).child(attribute).get()
-                
+            data = self.db_ref.child(company_issuing_app_id).child(
+                environment.value).child(cardholder_id).child(attribute).get()
+
             return data
 
         except:
             return None
-        
+
     def set_cardholder_card_or_wallet_data(
         self,
         environment: EnvironmentEnum,
         company_issuing_app_id: str,
         cardholder_id: str,
         attribute: str,
-        value_id:str,
+        value_id: str,
         value,
         context: Optional[Any] = None,
     ):
         try:
 
-            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(cardholder_id).child(attribute).child(value_id).set(value)
-                
+            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(
+                cardholder_id).child(attribute).child(value_id).set(value)
+
+            return data
+
+        except:
+            return None
+
+    def set_cardholder_card_or_wallet_data_attribute(
+        self,
+        environment: EnvironmentEnum,
+        company_issuing_app_id: str,
+        cardholder_id: str,
+        attribute: str,
+        value_id: str,
+        data_key: str,
+        value,
+        context: Optional[Any] = None,
+    ):
+        try:
+
+            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(
+                cardholder_id).child(attribute).child(value_id).child(data_key).set(value)
+
             return data
 
         except:
@@ -123,8 +150,9 @@ class CardholdersRepository(BaseRepository):
     ):
         try:
 
-            self.db_ref.child(company_issuing_app_id).child(environment.value).child(cardholder_id).child(ACCOUNTS_MODEL_NAME).child(account_id).set(value)
-                
+            self.db_ref.child(company_issuing_app_id).child(environment.value).child(
+                cardholder_id).child(ACCOUNTS_MODEL_NAME).child(account_id).set(value)
+
             return True
 
         except:
@@ -143,17 +171,15 @@ class CardholdersRepository(BaseRepository):
         try:
 
             self.db_ref.child(company_issuing_app_id).child(environment.value).child(cardholder_id).child(NAIRA_VIRTUAL_ACCOUNT_MODEL_NAME).child(attribute).transaction(
-                    lambda current_value: (current_value or 0) + int(value)
-                )
-                
+                lambda current_value: (current_value or 0) + int(value)
+            )
+
             return True
 
         except:
 
             return None
-        
 
-    
     def update_cardholder_data_naira_virtual_account_attr(
         self,
         environment: EnvironmentEnum,
@@ -165,13 +191,13 @@ class CardholdersRepository(BaseRepository):
     ):
         try:
 
-            self.db_ref.child(company_issuing_app_id).child(environment.value).child(cardholder_id).child(NAIRA_VIRTUAL_ACCOUNT_MODEL_NAME).child(attribute).set(value)
-                
+            self.db_ref.child(company_issuing_app_id).child(environment.value).child(
+                cardholder_id).child(NAIRA_VIRTUAL_ACCOUNT_MODEL_NAME).child(attribute).set(value)
+
             return True
 
         except:
             return None
-    
 
     def set_cardholder_child_atrr_data(
         self,
@@ -184,50 +210,50 @@ class CardholdersRepository(BaseRepository):
     ):
         try:
 
-            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(cardholder_id).child(child_atrr).set(value)
-                
+            data = self.db_ref.child(company_issuing_app_id).child(
+                environment.value).child(cardholder_id).child(child_atrr).set(value)
+
             return data
 
         except:
-            
+
             return None
 
-    
     def cardholder_order_by_child(
         self,
         environment: EnvironmentEnum,
         company_issuing_app_id: str,
         child_atrr: str,
-        value:str,
+        value: str,
         context: Optional[Any] = None,
     ):
         try:
 
-            data = self.db_ref.child(company_issuing_app_id).child(environment.value).order_by_child(child_atrr).equal_to(value).get()
-                
+            data = self.db_ref.child(company_issuing_app_id).child(
+                environment.value).order_by_child(child_atrr).equal_to(value).get()
+
             return data
 
         except:
-            
+
             return None
 
-    
     def delete_cardholder(self,
-        environment: EnvironmentEnum,
-        company_issuing_app_id: str,
-        cardholder_id: str,
-        context: Optional[Any] = None,
-    ):
+                          environment: EnvironmentEnum,
+                          company_issuing_app_id: str,
+                          cardholder_id: str,
+                          context: Optional[Any] = None,
+                          ):
         try:
 
-            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(cardholder_id).delete()
-                
+            data = self.db_ref.child(company_issuing_app_id).child(
+                environment.value).child(cardholder_id).delete()
+
             return data
 
         except:
-            
-            return None
 
+            return None
 
     def delete_cardholder_data_attr(
         self,
@@ -239,8 +265,9 @@ class CardholdersRepository(BaseRepository):
     ):
         try:
 
-            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(cardholder_id).child(attribute).delete()
-                
+            data = self.db_ref.child(company_issuing_app_id).child(
+                environment.value).child(cardholder_id).child(attribute).delete()
+
             return data
 
         except:
