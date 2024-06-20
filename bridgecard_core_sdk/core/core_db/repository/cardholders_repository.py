@@ -118,21 +118,19 @@ class CardholdersRepository(BaseRepository):
         except:
             return None
 
-    def set_cardholder_card_or_wallet_data_attribute(
+    def delete_cardholder_card_or_wallet_data_attribute(
         self,
         environment: EnvironmentEnum,
         company_issuing_app_id: str,
         cardholder_id: str,
         attribute: str,
         value_id: str,
-        data_key: str,
-        value,
         context: Optional[Any] = None,
     ):
         try:
 
             data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(
-                cardholder_id).child(attribute).child(value_id).child(data_key).set(value)
+                cardholder_id).child(attribute).child(value_id).delete()
 
             return data
 
