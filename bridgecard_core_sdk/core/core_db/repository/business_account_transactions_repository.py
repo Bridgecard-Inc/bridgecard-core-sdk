@@ -1,35 +1,35 @@
 from contextlib import AbstractContextManager
-from typing import Any, Callable, Optional
+from typing import Any, Callable, List, Optional
 from ..core_db import DbSession
 from .base_repository import BaseRepository
 from ..schema.base_schema import EnvironmentEnum
 from firebase_admin import db
 
 
-ACCOUNTS_MODEL_NAME = "accounts"
+BUSINESS_ACCOUNT_TRANSACTIONS_MODEL_NAME = "business_account_transactions"
 
 
-class AccountsRepository(BaseRepository):
+class BusinessAccountsTransactionsRepository(BaseRepository):
     def __init__(
         self, db_session_factory: Callable[..., AbstractContextManager[DbSession]]
     ):
         with db_session_factory() as db_session:
-            db_ref = db.reference(ACCOUNTS_MODEL_NAME, db_session.accounts_db_app)
+            db_ref = db.reference(BUSINESS_ACCOUNT_TRANSACTIONS_MODEL_NAME, db_session.accounts_db_app)
 
             self.db_ref = db_ref
 
-    def fetch_account_data(
+    def fetch_business_account_transaction_data(
         self,
         environment: EnvironmentEnum,
         company_issuing_app_id: str,
-        account_id: str,
+        business_account_id: str,
         context: Optional[Any] = None,
     ):
         try:
             data = (
                 self.db_ref.child(company_issuing_app_id)
                 .child(environment.value)
-                .child(account_id)
+                .child(business_account_id)
                 .get()
             )
 
@@ -38,11 +38,79 @@ class AccountsRepository(BaseRepository):
         except:
             return None
 
-    def set_account_data(
+    def fetch_all_business_account_transaction_data(
         self,
         environment: EnvironmentEnum,
         company_issuing_app_id: str,
-        account_id: str,
+        business_account_id: str,
+        page: int,
+        keys_list: List[str],
+        base_url: str,
+        sort_key: Optional[str] = None,
+        context: Optional[Any] = None,
+    ):
+        try:
+            data = (
+                self.db_ref.child(company_issuing_app_id)
+                .child(environment.value)
+                .child(business_account_id)
+                .get()
+            )
+
+            business_account_transaction_data, meta = self.paginate_data(
+                page=page,
+                keys_list=keys_list,
+                base_url=base_url,
+                sort_key=sort_key,
+                data=data,
+                url_path="",
+                environment=environment,
+            )
+
+            return business_account_transaction_data, meta
+
+        except:
+            return None, None
+
+    def paginate_all_business_account_transaction_data(
+        self,
+        environment: EnvironmentEnum,
+        company_issuing_app_id: str,
+        business_account_id: str,
+        page: int,
+        keys_list: List[str],
+        base_url: str,
+        sort_key: Optional[str] = None,
+        context: Optional[Any] = None,
+    ):
+        try:
+            data = (
+                self.db_ref.child(company_issuing_app_id)
+                .child(environment.value)
+                .child(business_account_id)
+                .get()
+            )
+
+            business_account_transaction_data, meta = self.paginate_data(
+                page=page,
+                keys_list=keys_list,
+                base_url=base_url,
+                sort_key=sort_key,
+                data=data,
+                url_path="",
+                environment=environment,
+            )
+
+            return business_account_transaction_data, meta
+
+        except:
+            return None
+
+    def set_business_account_transaction_data(
+        self,
+        environment: EnvironmentEnum,
+        company_issuing_app_id: str,
+        business_account_id: str,
         value,
         context: Optional[Any] = None,
     ):
@@ -50,7 +118,7 @@ class AccountsRepository(BaseRepository):
             data = (
                 self.db_ref.child(company_issuing_app_id)
                 .child(environment.value)
-                .child(account_id)
+                .child(business_account_id)
                 .set(value)
             )
 
@@ -59,11 +127,11 @@ class AccountsRepository(BaseRepository):
         except:
             return None
 
-    def upddate_account_data(
+    def upddate_business_account_transaction_data(
         self,
         environment: EnvironmentEnum,
         company_issuing_app_id: str,
-        account_id: str,
+        business_account_id: str,
         value,
         context: Optional[Any] = None,
     ):
@@ -71,7 +139,7 @@ class AccountsRepository(BaseRepository):
             data = (
                 self.db_ref.child(company_issuing_app_id)
                 .child(environment.value)
-                .child(account_id)
+                .child(business_account_id)
                 .update(value)
             )
 
@@ -80,11 +148,11 @@ class AccountsRepository(BaseRepository):
         except:
             return None
 
-    def fetch_account_data_attr(
+    def fetch_business_account_transaction_data_attr(
         self,
         environment: EnvironmentEnum,
         company_issuing_app_id: str,
-        account_id: str,
+        business_account_id: str,
         attribute: str,
         context: Optional[Any] = None,
     ):
@@ -92,7 +160,7 @@ class AccountsRepository(BaseRepository):
             data = (
                 self.db_ref.child(company_issuing_app_id)
                 .child(environment.value)
-                .child(account_id)
+                .child(business_account_id)
                 .child(attribute)
                 .get()
             )
@@ -102,11 +170,11 @@ class AccountsRepository(BaseRepository):
         except:
             return None
 
-    def set_account_child_atrr_data(
+    def set_business_account_transaction_child_atrr_data(
         self,
         environment: EnvironmentEnum,
         company_issuing_app_id: str,
-        account_id: str,
+        business_account_id: str,
         child_atrr: str,
         value,
         context: Optional[Any] = None,
@@ -115,7 +183,7 @@ class AccountsRepository(BaseRepository):
             data = (
                 self.db_ref.child(company_issuing_app_id)
                 .child(environment.value)
-                .child(account_id)
+                .child(business_account_id)
                 .child(child_atrr)
                 .set(value)
             )
@@ -125,35 +193,11 @@ class AccountsRepository(BaseRepository):
         except:
             return None
 
-    def set_account_child_atrr_data_as_a_transaction(
+    def delete_business_account(
         self,
         environment: EnvironmentEnum,
         company_issuing_app_id: str,
-        account_id: str,
-        child_atrr: str,
-        value,
-        context: Optional[Any] = None,
-    ):
-        try:
-            
-            data = (
-                self.db_ref.child(company_issuing_app_id)
-                .child(environment.value)
-                .child(account_id)
-                .child(child_atrr)
-                .transaction(lambda current_value: (int(current_value) or 0) + int(value))
-            )
-
-            return True
-
-        except:
-            return None
-
-    def delete_account(
-        self,
-        environment: EnvironmentEnum,
-        company_issuing_app_id: str,
-        account_id: str,
+        business_account_id: str,
         value: str,
         context: Optional[Any] = None,
     ):
@@ -161,7 +205,7 @@ class AccountsRepository(BaseRepository):
             data = (
                 self.db_ref.child(company_issuing_app_id)
                 .child(environment.value)
-                .child(account_id)
+                .child(business_account_id)
                 .delete()
             )
 
@@ -170,11 +214,11 @@ class AccountsRepository(BaseRepository):
         except:
             return None
 
-    def delete_account_data_attr(
+    def delete_business_account_transaction_data_attr(
         self,
         environment: EnvironmentEnum,
         company_issuing_app_id: str,
-        account_id: str,
+        business_account_id: str,
         attribute: str,
         context: Optional[Any] = None,
     ):
@@ -182,7 +226,7 @@ class AccountsRepository(BaseRepository):
             data = (
                 self.db_ref.child(company_issuing_app_id)
                 .child(environment.value)
-                .child(account_id)
+                .child(business_account_id)
                 .child(attribute)
                 .delete()
             )
@@ -192,7 +236,7 @@ class AccountsRepository(BaseRepository):
         except:
             return None
 
-    def accounts_filter_db(
+    def business_accounts_filter_db(
         self,
         environment: EnvironmentEnum,
         company_issuing_app_id: str,
@@ -223,25 +267,3 @@ class AccountsRepository(BaseRepository):
 
         except:
             return None
-        
-
-    def fetch_all_accounts(
-        self,
-        environment: EnvironmentEnum,
-        company_issuing_app_id: str,
-        context: Optional[Any] = None,
-    ):
-        
-        try:
-            data = (
-                self.db_ref.child(company_issuing_app_id)
-                .child(environment.value)
-                .get()
-            )
-
-            return data
-
-        except:
-
-            return None
-

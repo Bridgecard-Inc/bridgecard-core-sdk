@@ -10,6 +10,8 @@ from .utils.methods import decode_base_64_to_json
 from pydantic import BaseModel
 from .repository import (
     AccountsRepository,
+    BusinessAccountsRepository,
+    BusinessAccountsTransactionsRepository,
     BcGbInternalSandboxRepository,
     CardsRepository,
     WalletRepository,
@@ -53,6 +55,10 @@ class CoreDbUsecase:
         accounts_repository: Optional[AccountsRepository] = False,
         account_transactions_repository: Optional[
             AccountsTransactionsRepository
+        ] = False,
+        business_accounts_repository: Optional[BusinessAccountsRepository] = False,
+        business_account_transactions_repository: Optional[
+            BusinessAccountsTransactionsRepository
         ] = False,
         bc_gb_internal_sandbox_repository: Optional[
             BcGbInternalSandboxRepository
@@ -316,6 +322,10 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
 
     account_transactions_repository = None
 
+    business_accounts_repository = None
+
+    business_account_transactions_repository = None
+
     bc_gb_internal_sandbox_repository = None
 
     if core_db_init_data.accounts_db:
@@ -325,6 +335,12 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
         )
 
         account_transactions_repository = AccountsTransactionsRepository(
+            db_session_factory=db.session
+        )
+
+        business_accounts_repository = BusinessAccountsRepository(db_session_factory=db.session)
+       
+        business_account_transactions_repository = BusinessAccountsTransactionsRepository(
             db_session_factory=db.session
         )
 
@@ -369,6 +385,8 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
         )
 
     core_db_usecase = CoreDbUsecase(
+        business_accounts_repository=business_accounts_repository,
+        business_account_transactions_repository=business_account_transactions_repository,
         cards_repository=cards_repository,
         card_transactions_repository=card_transactions_repository,
         cardholders_repository=cardholders_repository,
