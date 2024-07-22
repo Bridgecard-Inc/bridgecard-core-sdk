@@ -94,6 +94,8 @@ class CoreDbUsecase:
             naira_bank_account_mapping_repository
         )
         self.test_service_repository = test_service_repository
+        self.business_accounts_repository = business_accounts_repository
+        self.business_account_transactions_repository = business_account_transactions_repository
 
 
 class Database:
