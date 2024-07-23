@@ -19,3 +19,4 @@ from .test_case_repository import TestServiceRepo
 from .wallet_repository import WalletRepository
 from .wallet_transactions_repository import WalletTransactionsRepository
 from .delete_wallet_repository import DeleteWalletRepository
+from .client_requests_repository import ClientRequestsRepository
