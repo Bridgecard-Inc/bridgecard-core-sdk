@@ -98,7 +98,7 @@ class CoreDbUsecase:
         self.test_service_repository = test_service_repository
         self.business_accounts_repository = business_accounts_repository
         self.business_account_transactions_repository = (
-            business_account_transactions_repository,
+            business_account_transactions_repository
         )
         self.client_requests_repository = client_requests_repository
 
@@ -391,9 +391,6 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
             db_session_factory=db.session
         )
 
-
-        
-
     core_db_usecase = CoreDbUsecase(
         business_accounts_repository=business_accounts_repository,
         business_account_transactions_repository=business_account_transactions_repository,
@@ -416,7 +413,7 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
         manually_passed_kyc_logs_repository=manually_passed_kyc_logs_repository,
         naira_bank_account_mapping_repository=naira_bank_account_mapping_repository,
         test_service_repository=test_service_repository,
-        client_requests_repository=client_requests_repository
+        client_requests_repository=client_requests_repository,
     )
 
     core_db_data_context.core_db_usecase = core_db_usecase
