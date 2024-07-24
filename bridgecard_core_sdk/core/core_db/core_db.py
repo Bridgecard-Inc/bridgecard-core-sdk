@@ -31,6 +31,7 @@ from .repository import (
     TestServiceRepo,
     DeleteWalletRepository,
     ClientRequestsRepository,
+    OvalBusinessAccountWebhooksRepository
 )
 
 from .utils.core_db_data_context import core_db_data_context
@@ -74,6 +75,7 @@ class CoreDbUsecase:
         ] = None,
         test_service_repository: Optional[TestServiceRepo] = None,
         client_requests_repository: Optional[ClientRequestsRepository] = None,
+        oval_business_account_webhooks_repository: Optional[OvalBusinessAccountWebhooksRepository] = None,
     ):
         self.cards_repository = cards_repository
         self.admin_repository = admin_repository
@@ -101,6 +103,7 @@ class CoreDbUsecase:
             business_account_transactions_repository
         )
         self.client_requests_repository = client_requests_repository
+        self.oval_business_account_webhooks_repository = oval_business_account_webhooks_repository
 
 
 class Database:
@@ -293,6 +296,10 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
         db_session_factory=db.session
     )
 
+    oval_business_account_webhooks_repository = OvalBusinessAccountWebhooksRepository(
+        db_session_factory=db.session
+    )
+
     cardholders_repository = None
     blacklisted_cardholders_repository = None
     company_repository = None
@@ -414,6 +421,7 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
         naira_bank_account_mapping_repository=naira_bank_account_mapping_repository,
         test_service_repository=test_service_repository,
         client_requests_repository=client_requests_repository,
+        oval_business_account_webhooks_repository=oval_business_account_webhooks_repository,
     )
 
     core_db_data_context.core_db_usecase = core_db_usecase
