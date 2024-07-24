@@ -102,6 +102,7 @@ class CoreDbUsecase:
         self.business_account_transactions_repository = (
             business_account_transactions_repository
         )
+        
         self.client_requests_repository = client_requests_repository
         self.oval_business_account_webhooks_repository = oval_business_account_webhooks_repository
 
