@@ -33,7 +33,7 @@ class BusinessAccountsRepository(BaseRepository):
                 .get()
             )
 
-            return True
+            return data
 
         except:
             return None
