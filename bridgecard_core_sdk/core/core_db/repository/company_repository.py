@@ -120,23 +120,20 @@ class CompanyRepository(BaseRepository):
         attribute: str,
         context: Optional[Any] = None,
     ):
-        # try:
-        data = (
-            self.db_ref.child(company_issuing_app_id)
-            .child(environment.value)
-            .child(company_id)
-            .child(attribute)
-            .get()
-        )
+        try:
+            
+            data = (
+                self.db_ref.child(company_issuing_app_id)
+                .child(environment.value)
+                .child(company_id)
+                .child(attribute)
+                .get()
+            )
 
-        print(self.db_ref)
+            return data
 
-        print(company_issuing_app_id,environment.value,company_id,attribute, data)
-
-        return data
-
-        # except:
-        #     return None
+        except:
+            return None
 
     def set_company_child_atrr_data(
         self,
