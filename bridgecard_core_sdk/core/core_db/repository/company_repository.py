@@ -129,6 +129,8 @@ class CompanyRepository(BaseRepository):
             .get()
         )
 
+        print(self.db_ref)
+
         print(company_issuing_app_id,environment.value,company_id,attribute, data)
 
         return data
