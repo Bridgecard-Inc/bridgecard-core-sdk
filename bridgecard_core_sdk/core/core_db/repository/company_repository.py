@@ -58,18 +58,18 @@ class CompanyRepository(BaseRepository):
         company_id: str,
         context: Optional[Any] = None,
     ):
-        try:
-            data = (
-                self.db_ref.child(company_issuing_app_id)
-                .child(environment.value)
-                .child(company_id)
-                .get()
-            )
+        # try:
+        data = (
+            self.db_ref.child(company_issuing_app_id)
+            .child(environment.value)
+            .child(company_id)
+            .get()
+        )
 
-            return data
+        return data
 
-        except:
-            return None
+        # except:
+        #     return None
 
     def add_company_account_info(
         self,
