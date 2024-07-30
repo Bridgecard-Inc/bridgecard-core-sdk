@@ -58,20 +58,18 @@ class CompanyRepository(BaseRepository):
         company_id: str,
         context: Optional[Any] = None,
     ):
-        # try:
-        data = (
-            self.db_ref.child(company_issuing_app_id)
-            .child(environment.value)
-            .child(company_id)
-            .get()
-        )
+        try:
+            data = (
+                self.db_ref.child(company_issuing_app_id)
+                .child(environment.value)
+                .child(company_id)
+                .get()
+            )
 
-        print(company_issuing_app_id,environment.value,company_id,data)
+            return data
 
-        return data
-
-        # except:
-        #     return None
+        except:
+            return None
 
     def add_company_account_info(
         self,
@@ -122,19 +120,21 @@ class CompanyRepository(BaseRepository):
         attribute: str,
         context: Optional[Any] = None,
     ):
-        try:
-            data = (
-                self.db_ref.child(company_issuing_app_id)
-                .child(environment.value)
-                .child(company_id)
-                .child(attribute)
-                .get()
-            )
+        # try:
+        data = (
+            self.db_ref.child(company_issuing_app_id)
+            .child(environment.value)
+            .child(company_id)
+            .child(attribute)
+            .get()
+        )
 
-            return data
+        print(company_issuing_app_id,environment.value,company_id,attribute, data)
 
-        except:
-            return None
+        return data
+
+        # except:
+        #     return None
 
     def set_company_child_atrr_data(
         self,
