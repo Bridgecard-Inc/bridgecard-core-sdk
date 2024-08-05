@@ -33,7 +33,7 @@ class AccountsRepository(BaseRepository):
                 .get()
             )
 
-            return True
+            return data
 
         except:
             return None
