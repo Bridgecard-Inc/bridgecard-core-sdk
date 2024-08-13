@@ -55,7 +55,7 @@ class WalletPoolRepository(BaseRepository):
             data = self.db_ref.child(id).child(field).get()
             return data
         except:
-            return False
+            return None
 
     def delete_child_node(
         self,
@@ -68,3 +68,17 @@ class WalletPoolRepository(BaseRepository):
             return True
         except:
             return False
+
+    def get_all(
+        self,
+        id: str,
+        data: dict,
+        context: Optional[Any] = None,
+    ):
+        try:
+            data = self.db_ref.get()
+            if data:
+                return list(data.values())
+            return data
+        except:
+            return None
