@@ -15,6 +15,7 @@ from .repository import (
     BcGbInternalSandboxRepository,
     CardsRepository,
     WalletRepository,
+    WalletPoolRepository,
     WalletTransactionsRepository,
     AdminRepository,
     BillingRepository,
@@ -53,6 +54,7 @@ class CoreDbUsecase:
         blacklisted_cardholders_repository: Optional[
             BlackListedCardholdersRepository
         ] = None,
+        wallet_pool_repository: Optional[WalletPoolRepository] = None,
         card_transactions_repository: Optional[CardTransactionsRepository] = None,
         naira_accounts_repository: Optional[NairaAccountsRepository] = False,
         accounts_repository: Optional[AccountsRepository] = False,
@@ -94,6 +96,7 @@ class CoreDbUsecase:
         self.card_transactions_repository = card_transactions_repository
         self.naira_accounts_repository = naira_accounts_repository
         self.accounts_repository = accounts_repository
+        self.wallet_pool_repository = wallet_pool_repository
         self.account_transactions_repository = account_transactions_repository
         self.bc_gb_internal_sandbox_repository = bc_gb_internal_sandbox_repository
         self.billing_repository = billing_repository
@@ -321,6 +324,7 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
     wallets_repository = None
     wallet_transactions_repository = None
     delete_wallet_repository = None
+    wallet_pool_respository = None
 
     if core_db_init_data.wallets_db:
 
@@ -331,6 +335,9 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
         )
 
         delete_wallet_repository = DeleteWalletRepository(db_session_factory=db.session)
+
+        wallet_pool_respository = WalletPoolRepository(
+            db_session_factory=db.session)
 
     if core_db_init_data.cardholders_db:
         cardholders_repository = CardholdersRepository(db_session_factory=db.session)
@@ -421,6 +428,7 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
         company_repository=company_repository,
         wallets_repository=wallets_repository,
         delete_wallet_repository=delete_wallet_repository,
+        wallet_pool_repository=wallet_pool_respository,
         wallet_transactions_repository=wallet_transactions_repository,
         company_kyc_request_repository=company_kyc_request_repository,
         naira_accounts_repository=naira_accounts_repository,
