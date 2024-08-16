@@ -75,8 +75,6 @@ class WalletPoolRepository(BaseRepository):
 
     def get_all(
         self,
-        id: str,
-        data: dict,
         environment: EnvironmentEnum,
         context: Optional[Any] = None,
     ):
