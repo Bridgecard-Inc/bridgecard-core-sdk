@@ -24,10 +24,11 @@ class WalletPoolRepository(BaseRepository):
         self,
         id: str,
         data: dict,
+        environment: EnvironmentEnum,
         context: Optional[Any] = None,
     ):
         try:
-            data = self.db_ref.child(id).set(data)
+            data = self.db_ref.child(environment.value).child(id).set(data)
             return True
         except:
             return False
@@ -37,10 +38,11 @@ class WalletPoolRepository(BaseRepository):
         id: str,
         field: str,
         value: str,
+        environment: EnvironmentEnum,
         context: Optional[Any] = None,
     ):
         try:
-            data = self.db_ref.child(id).child(field).set(value)
+            data = self.db_ref.child(environment.value).child(id).child(field).set(value)
             return True
         except:
             return False
@@ -49,10 +51,11 @@ class WalletPoolRepository(BaseRepository):
         self,
         id: str,
         field: str,
+        environment: EnvironmentEnum,
         context: Optional[Any] = None,
     ):
         try:
-            data = self.db_ref.child(id).child(field).get()
+            data = self.db_ref.child(environment.value).child(id).child(field).get()
             return data
         except:
             return None
@@ -61,22 +64,22 @@ class WalletPoolRepository(BaseRepository):
         self,
         id: str,
         field: str,
+        environment: EnvironmentEnum,
         context: Optional[Any] = None,
     ):
         try:
-            data = self.db_ref.child(id).child(field).delete()
+            data = self.db_ref.child(environment.value).child(id).child(field).delete()
             return True
         except:
             return False
 
     def get_all(
         self,
-        id: str,
-        data: dict,
+        environment: EnvironmentEnum,
         context: Optional[Any] = None,
     ):
         try:
-            data = self.db_ref.get()
+            data = self.db_ref.child(environment.value).get()
             if data:
                 return list(data.values())
             return data

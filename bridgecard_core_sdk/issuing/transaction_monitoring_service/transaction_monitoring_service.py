@@ -71,17 +71,23 @@ def check_transaction_risk(
     )
 
     try:
+        
         response = client_stub.CheckTransactionRisk(request, metadata=metadata)
 
         if response.code == grpc.StatusCode.OK.value[0]:
             return True
 
     except grpc.RpcError as e:
-        print(f"check_transaction_risk - Code: {e.code()}")
 
-        print(f"check_transaction_risk - Message: {e.details()}")
+        if e == grpc.StatusCode.PERMISSION_DENIED.value[0]:
 
-        return False
+            print(f"check_transaction_risk - Code: {e.code()}")
+
+            print(f"check_transaction_risk - Message: {e.details()}")
+
+            return False
+        
+        return True 
 
 
 def whitelist_user_from_potential_fraud(
