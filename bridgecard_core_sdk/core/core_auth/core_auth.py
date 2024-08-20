@@ -24,8 +24,6 @@ from bridgecard_core_sdk.core.core_db.utils.core_db_data_context import (
 )
 
 
-
-
 PREFIX = "Bearer"
 test_authorization_token_prefix = "at_test_"
 test_secret_key_prefix = "sk_test_"
@@ -46,26 +44,26 @@ class CoreAuth:
         request_time = int(time.time())
 
         if token is None:
-            raise InvalidToken
+            return InvalidToken
         if not token.startswith(PREFIX):
-            raise InvalidToken
+            return InvalidToken
 
         if request is None:
-            raise AuthenticationTokenMismatch
+            return AuthenticationTokenMismatch
         req = request.url.path
 
         if "sandbox" in req and "at_live" in token:
-            raise AuthenticationTokenMismatch
+            return AuthenticationTokenMismatch
 
         if "sandbox" not in req and "at_test" in token:
-            raise AuthenticationTokenMismatch
+            return AuthenticationTokenMismatch
 
         if "sandbox" in req:
             environment = EnvironmentEnum.sandbox
         else:
             environment = EnvironmentEnum.production
 
-        token = token[len(PREFIX) :].lstrip()
+        token = token[len(PREFIX):].lstrip()
         filter_string = "live_authorization_token"
         if token.startswith(test_authorization_token_prefix):
             filter_string = "test_authorization_token"
@@ -73,7 +71,7 @@ class CoreAuth:
         data = self.admin_repo.filter_db(filter_string, token, None)
 
         if data == None:
-            raise InvalidToken
+            return InvalidToken
 
         data["token"] = token
         data["environment"] = environment
@@ -91,7 +89,7 @@ class CoreAuth:
             client_details["is_account_verified"] == False
             and client_details["environment"] == EnvironmentEnum.production
         ):
-            raise IssuingPermissionHasBeenDeactivated
+            return IssuingPermissionHasBeenDeactivated
 
         client_details["headers"] = dict(request.headers.items())
         client_details["request_time"] = request_time
@@ -104,7 +102,8 @@ class CoreAuth:
     ):
         request_time = int(time.time())
 
-        data = self.admin_repo.filter_db("issuing_app_id", issuing_app_id, None)
+        data = self.admin_repo.filter_db(
+            "issuing_app_id", issuing_app_id, None)
 
         if data == None:
             raise InvalidToken
@@ -137,7 +136,7 @@ class CoreAuth:
         if not header.startswith(PREFIX):
             raise InvalidToken
 
-        return header[len(PREFIX) :].lstrip()
+        return header[len(PREFIX):].lstrip()
 
 
 def fetch_provider_token(provider: str, environment: EnvironmentEnum, login_url: str):
@@ -167,15 +166,13 @@ def fetch_provider_token(provider: str, environment: EnvironmentEnum, login_url:
             key=jwt_token_key, context=None
         )
 
-        
-
         if (
             jwt_token
             and int(datetime.timestamp(datetime.now())) <= int(jwt_token.split(delimiter)[1])
         ):
-            
+
             return jwt_token.split(delimiter)[0]
-        
+
         else:
 
             payload = {"email": username, "password": password}
@@ -200,9 +197,9 @@ def fetch_provider_token(provider: str, environment: EnvironmentEnum, login_url:
                 res = core_db_usecase.cache_repository.set(
                     key=jwt_token_key, value=jwt_token, context=None
                 )
-                
+
                 return auth_token
-            
+
             else:
 
                 return False
