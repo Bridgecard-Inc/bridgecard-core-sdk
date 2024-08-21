@@ -36,6 +36,9 @@ def init_core_webhook():
 
 
 def process_webhook(queue_name: str, webhook_event_session: WebhookEventSession):
+    
+    init_core_webhook()
+    
     core_webhook_data_context.basic_message_sender.declare_queue(queue_name)
 
     data_to_send = webhook_event_session.dict()
@@ -46,3 +49,5 @@ def process_webhook(queue_name: str, webhook_event_session: WebhookEventSession)
     core_webhook_data_context.basic_message_sender.send_message(
         exchange="", routing_key=queue_name, body=json_body
     )
+
+    core_webhook_data_context.basic_message_sender.close()
