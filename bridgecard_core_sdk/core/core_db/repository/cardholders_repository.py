@@ -1,9 +1,16 @@
 from contextlib import AbstractContextManager
+import json
 from typing import Any, Callable, Optional
+
+from bridgecard_core_sdk.core.core_auth.core_auth import ISSUNG_PRODUCT_GROUP
 from ..core_db import DbSession
 from .base_repository import BaseRepository
 from ..schema.base_schema import EnvironmentEnum
 from firebase_admin import db
+from bridgecard_core_sdk.core.core_db.utils.core_db_data_context import (
+    core_db_data_context,
+)
+
 
 CARDHOLDERS_MODEL_NAME = "cardholders"
 
@@ -19,8 +26,7 @@ class CardholdersRepository(BaseRepository):
     ):
         with db_session_factory() as db_session:
 
-            db_ref = db.reference(CARDHOLDERS_MODEL_NAME,
-                                  db_session.cardholders_db_app)
+            db_ref = db.reference(CARDHOLDERS_MODEL_NAME, db_session.cardholders_db_app)
 
             self.db_ref = db_ref
 
@@ -30,13 +36,49 @@ class CardholdersRepository(BaseRepository):
         company_issuing_app_id: str,
         cardholder_id: str,
         context: Optional[Any] = None,
+        latest: Optional[Any] = False,
     ):
         try:
 
-            data = self.db_ref.child(company_issuing_app_id).child(
-                environment.value).child(cardholder_id).get()
+            if not latest:
 
-            return data
+                key = f"core_db_cache:{ISSUNG_PRODUCT_GROUP}:fetch_cardholder_data:{company_issuing_app_id}:{cardholder_id}"
+
+                cardholder_data = (
+                    core_db_data_context.core_db_usecase.cache_repository.get(
+                        key=key, context=None
+                    )
+                )
+
+                cardholder_data = json.loads(cardholder_data)
+
+                if not cardholder_data:
+
+                    data = (
+                        self.db_ref.child(company_issuing_app_id)
+                        .child(environment.value)
+                        .child(cardholder_id)
+                        .get()
+                    )
+
+                    core_db_data_context.core_db_usecase.cache_repository.set(
+                        key=key, value=json.dumps(data), context=None
+                    )
+
+                    return data
+
+                return cardholder_data
+
+            else:
+
+                data = (
+                    self.db_ref.child(company_issuing_app_id)
+                    .child(environment.value)
+                    .child(cardholder_id)
+                    .get()
+                )
+
+                return data
 
         except:
 
@@ -52,8 +94,14 @@ class CardholdersRepository(BaseRepository):
     ):
         try:
 
-            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(
-                cardholder_id).child(NAIRA_VIRTUAL_ACCOUNT_MODEL_NAME).child(attribute).get()
+            data = (
+                self.db_ref.child(company_issuing_app_id)
+                .child(environment.value)
+                .child(cardholder_id)
+                .child(NAIRA_VIRTUAL_ACCOUNT_MODEL_NAME)
+                .child(attribute)
+                .get()
+            )
 
             return data
 
@@ -71,8 +119,12 @@ class CardholdersRepository(BaseRepository):
     ):
         try:
 
-            data = self.db_ref.child(company_issuing_app_id).child(
-                environment.value).child(cardholder_id).set(value)
+            data = (
+                self.db_ref.child(company_issuing_app_id)
+                .child(environment.value)
+                .child(cardholder_id)
+                .set(value)
+            )
 
             return data
 
@@ -90,8 +142,13 @@ class CardholdersRepository(BaseRepository):
     ):
         try:
 
-            data = self.db_ref.child(company_issuing_app_id).child(
-                environment.value).child(cardholder_id).child(attribute).get()
+            data = (
+                self.db_ref.child(company_issuing_app_id)
+                .child(environment.value)
+                .child(cardholder_id)
+                .child(attribute)
+                .get()
+            )
 
             return data
 
@@ -110,8 +167,14 @@ class CardholdersRepository(BaseRepository):
     ):
         try:
 
-            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(
-                cardholder_id).child(attribute).child(value_id).set(value)
+            data = (
+                self.db_ref.child(company_issuing_app_id)
+                .child(environment.value)
+                .child(cardholder_id)
+                .child(attribute)
+                .child(value_id)
+                .set(value)
+            )
 
             return data
 
@@ -129,8 +192,14 @@ class CardholdersRepository(BaseRepository):
     ):
         try:
 
-            data = self.db_ref.child(company_issuing_app_id).child(environment.value).child(
-                cardholder_id).child(attribute).child(value_id).delete()
+            data = (
+                self.db_ref.child(company_issuing_app_id)
+                .child(environment.value)
+                .child(cardholder_id)
+                .child(attribute)
+                .child(value_id)
+                .delete()
+            )
 
             return data
 
@@ -149,7 +218,8 @@ class CardholdersRepository(BaseRepository):
         try:
 
             self.db_ref.child(company_issuing_app_id).child(environment.value).child(
-                cardholder_id).child(ACCOUNTS_MODEL_NAME).child(account_id).set(value)
+                cardholder_id
+            ).child(ACCOUNTS_MODEL_NAME).child(account_id).set(value)
 
             return True
 
@@ -168,7 +238,9 @@ class CardholdersRepository(BaseRepository):
     ):
         try:
 
-            self.db_ref.child(company_issuing_app_id).child(environment.value).child(cardholder_id).child(NAIRA_VIRTUAL_ACCOUNT_MODEL_NAME).child(attribute).transaction(
+            self.db_ref.child(company_issuing_app_id).child(environment.value).child(
+                cardholder_id
+            ).child(NAIRA_VIRTUAL_ACCOUNT_MODEL_NAME).child(attribute).transaction(
                 lambda current_value: (current_value or 0) + int(value)
             )
 
@@ -190,7 +262,8 @@ class CardholdersRepository(BaseRepository):
         try:
 
             self.db_ref.child(company_issuing_app_id).child(environment.value).child(
-                cardholder_id).child(NAIRA_VIRTUAL_ACCOUNT_MODEL_NAME).child(attribute).set(value)
+                cardholder_id
+            ).child(NAIRA_VIRTUAL_ACCOUNT_MODEL_NAME).child(attribute).set(value)
 
             return True
 
@@ -208,8 +281,13 @@ class CardholdersRepository(BaseRepository):
     ):
         try:
 
-            data = self.db_ref.child(company_issuing_app_id).child(
-                environment.value).child(cardholder_id).child(child_atrr).set(value)
+            data = (
+                self.db_ref.child(company_issuing_app_id)
+                .child(environment.value)
+                .child(cardholder_id)
+                .child(child_atrr)
+                .set(value)
+            )
 
             return data
 
@@ -227,8 +305,13 @@ class CardholdersRepository(BaseRepository):
     ):
         try:
 
-            data = self.db_ref.child(company_issuing_app_id).child(
-                environment.value).order_by_child(child_atrr).equal_to(value).get()
+            data = (
+                self.db_ref.child(company_issuing_app_id)
+                .child(environment.value)
+                .order_by_child(child_atrr)
+                .equal_to(value)
+                .get()
+            )
 
             return data
 
@@ -236,16 +319,21 @@ class CardholdersRepository(BaseRepository):
 
             return None
 
-    def delete_cardholder(self,
-                          environment: EnvironmentEnum,
-                          company_issuing_app_id: str,
-                          cardholder_id: str,
-                          context: Optional[Any] = None,
-                          ):
+    def delete_cardholder(
+        self,
+        environment: EnvironmentEnum,
+        company_issuing_app_id: str,
+        cardholder_id: str,
+        context: Optional[Any] = None,
+    ):
         try:
 
-            data = self.db_ref.child(company_issuing_app_id).child(
-                environment.value).child(cardholder_id).delete()
+            data = (
+                self.db_ref.child(company_issuing_app_id)
+                .child(environment.value)
+                .child(cardholder_id)
+                .delete()
+            )
 
             return data
 
@@ -263,8 +351,13 @@ class CardholdersRepository(BaseRepository):
     ):
         try:
 
-            data = self.db_ref.child(company_issuing_app_id).child(
-                environment.value).child(cardholder_id).child(attribute).delete()
+            data = (
+                self.db_ref.child(company_issuing_app_id)
+                .child(environment.value)
+                .child(cardholder_id)
+                .child(attribute)
+                .delete()
+            )
 
             return data
 
