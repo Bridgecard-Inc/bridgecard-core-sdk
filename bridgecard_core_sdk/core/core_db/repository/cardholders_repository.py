@@ -54,12 +54,6 @@ class CardholdersRepository(BaseRepository):
                     )
                 )
 
-                cardholder_data = json.loads(cardholder_data)
-
-                cardholder_data.pop("saved_identity_record")
-
-                cardholder_data.pop("cards")
-
                 if not cardholder_data:
 
                     data = (
@@ -68,6 +62,12 @@ class CardholdersRepository(BaseRepository):
                         .child(cardholder_id)
                         .get()
                     )
+
+                    cardholder_data = json.loads(cardholder_data)
+
+                    cardholder_data.pop("saved_identity_record")
+
+                    cardholder_data.pop("cards")
 
                     self.cache_client.set(
                         key=key, value=json.dumps(data), context=None
