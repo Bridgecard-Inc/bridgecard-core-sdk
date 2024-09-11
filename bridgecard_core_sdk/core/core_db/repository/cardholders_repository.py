@@ -22,7 +22,9 @@ ACCOUNTS_MODEL_NAME = "accounts"
 class CardholdersRepository(BaseRepository):
 
     def __init__(
-        self, db_session_factory: Callable[..., AbstractContextManager[DbSession]]
+        self,
+        db_session_factory: Callable[..., AbstractContextManager[DbSession]],
+        cache_repository: Optional[Any] = None,
     ):
         with db_session_factory() as db_session:
 
@@ -45,12 +47,16 @@ class CardholdersRepository(BaseRepository):
                 key = f"core_db_cache:{ISSUNG_PRODUCT_GROUP}:fetch_cardholder_data:{company_issuing_app_id}:{cardholder_id}"
 
                 cardholder_data = (
-                    core_db_data_context.core_db_usecase.cache_repository.get(
+                    self.cache_repository.get(
                         key=key, context=None
                     )
                 )
 
                 cardholder_data = json.loads(cardholder_data)
+
+                cardholder_data.pop("saved_identity_record")
+
+                cardholder_data.pop("cards")
 
                 if not cardholder_data:
 
@@ -61,7 +67,7 @@ class CardholdersRepository(BaseRepository):
                         .get()
                     )
 
-                    core_db_data_context.core_db_usecase.cache_repository.set(
+                    self.cache_repository.set(
                         key=key, value=json.dumps(data), context=None
                     )
 
