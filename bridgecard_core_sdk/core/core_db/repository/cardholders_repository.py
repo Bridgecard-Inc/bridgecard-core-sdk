@@ -24,7 +24,7 @@ class CardholdersRepository(BaseRepository):
     def __init__(
         self,
         db_session_factory: Callable[..., AbstractContextManager[DbSession]],
-        cache_repository: Optional[Any] = None,
+        cache_client: Optional[Any] = None,
     ):
         with db_session_factory() as db_session:
 
