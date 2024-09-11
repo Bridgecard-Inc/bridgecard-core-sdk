@@ -43,53 +43,40 @@ class CardholdersRepository(BaseRepository):
         latest: Optional[Any] = False,
     ):
         try:
-
             if not latest:
-
                 key = f"core_db_cache:{ISSUNG_PRODUCT_GROUP}:fetch_cardholder_data:{company_issuing_app_id}:{cardholder_id}"
-
-                cardholder_data = (
-                    self.cache_client.get(
-                        key=key, context=None
-                    )
-                )
-
+                cardholder_data = self.cache_client.get(key=key, context=None)
                 if not cardholder_data:
-
                     data = (
                         self.db_ref.child(company_issuing_app_id)
                         .child(environment.value)
                         .child(cardholder_id)
                         .get()
                     )
-
+                    if data:
+                        cardholder_data = data
+                        if "saved_identity_record" in cardholder_data:
+                            cardholder_data.pop("saved_identity_record")
+                        if "cards" in cardholder_data:
+                            cardholder_data.pop("cards")
+                        self.cache_client.set(
+                            key=key, value=json.dumps(cardholder_data), context=None
+                        )
+                        return data
+                    else:
+                        return None
+                else:
                     cardholder_data = json.loads(cardholder_data)
-
-                    cardholder_data.pop("saved_identity_record")
-
-                    cardholder_data.pop("cards")
-
-                    self.cache_client.set(
-                        key=key, value=json.dumps(data), context=None
-                    )
-
-                    return data
-
                 return cardholder_data
-
             else:
-
                 data = (
                     self.db_ref.child(company_issuing_app_id)
                     .child(environment.value)
                     .child(cardholder_id)
                     .get()
                 )
-
                 return data
-
         except:
-
             return None
 
     def fetch_cardholder_data_naira_virtual_account_attr(
