@@ -32,6 +32,8 @@ class CardholdersRepository(BaseRepository):
 
             self.db_ref = db_ref
 
+            self.cache_client = cache_client
+
     def fetch_cardholder_data(
         self,
         environment: EnvironmentEnum,
@@ -47,7 +49,7 @@ class CardholdersRepository(BaseRepository):
                 key = f"core_db_cache:{ISSUNG_PRODUCT_GROUP}:fetch_cardholder_data:{company_issuing_app_id}:{cardholder_id}"
 
                 cardholder_data = (
-                    self.cache_repository.get(
+                    self.cache_client.get(
                         key=key, context=None
                     )
                 )
@@ -67,7 +69,7 @@ class CardholdersRepository(BaseRepository):
                         .get()
                     )
 
-                    self.cache_repository.set(
+                    self.cache_client.set(
                         key=key, value=json.dumps(data), context=None
                     )
 
