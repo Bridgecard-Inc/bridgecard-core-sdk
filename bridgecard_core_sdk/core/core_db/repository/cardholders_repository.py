@@ -43,7 +43,7 @@ class CardholdersRepository(BaseRepository):
         latest: Optional[Any] = False,
     ):
         try:
-            key = f"core_db_cache:{ISSUNG_PRODUCT_GROUP}:fetch_cardholder_data:{company_issuing_app_id}:{cardholder_id}"
+            key = f"core_db_cache:{ISSUNG_PRODUCT_GROUP}:fetch_cardholder_data:{company_issuing_app_id}:{environment.value}:{cardholder_id}"
             if not latest:
                 cardholder_data = self.cache_client.get(key=key, context=None)
                 if not cardholder_data:
