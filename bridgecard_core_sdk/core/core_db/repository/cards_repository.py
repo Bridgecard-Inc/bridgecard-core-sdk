@@ -55,6 +55,23 @@ class CardsRepository(BaseRepository):
                         return None
                 else:
                     card_data = json.loads(card_data)
+                    card_db_ref = self.db_ref.child(company_issuing_app_id).child(environment.value).child(card_id)
+                    is_active = card_db_ref.child("is_active").get()
+                    is_deleted = card_db_ref.child("is_deleted").get()
+                    balance_held = card_db_ref.child("balance_held").get()
+                    blocked_due_to_fraud = card_db_ref.child("blocked_due_to_fraud").get()
+                    maintenance_fee_held = card_db_ref.child("maintenance_fee_held").get()
+                    maintenance_fee_last_charged_at = card_db_ref.child("maintenance_fee_last_charged_at").get()
+                    has_done_debit_in_a_month = card_db_ref.child("has_done_debit_in_a_month").get()
+                    insufficient_funds_decline_count = card_db_ref.child("insufficient_funds_decline_count").get()
+                    card_data["is_active"] = is_active
+                    card_data["is_deleted"] = is_deleted
+                    card_data["balance_held"] = balance_held
+                    card_data["blocked_due_to_fraud"] = blocked_due_to_fraud
+                    card_data["maintenance_fee_held"] = maintenance_fee_held
+                    card_data["maintenance_fee_last_charged_at"] = maintenance_fee_last_charged_at
+                    card_data["has_done_debit_in_a_month"] = has_done_debit_in_a_month
+                    card_data["insufficient_funds_decline_count"] = insufficient_funds_decline_count
                 return card_data
             else:
                 data = (
