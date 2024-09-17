@@ -44,7 +44,7 @@ class CardholdersRepository(BaseRepository):
     ):
         try:
             key = f"core_db_cache:{ISSUNG_PRODUCT_GROUP}:fetch_cardholder_data:{company_issuing_app_id}:{environment.value}:{cardholder_id}"
-            if not latest:
+            if not latest and self.cache_client:
                 cardholder_data = self.cache_client.get(key=key, context=None)
                 if not cardholder_data:
                     data = (
@@ -75,7 +75,7 @@ class CardholdersRepository(BaseRepository):
                     .child(cardholder_id)
                     .get()
                 )
-                if data:
+                if data and self.cache_client:
                     cardholder_data = data
                     if "saved_identity_record" in cardholder_data:
                         cardholder_data.pop("saved_identity_record")

@@ -36,7 +36,7 @@ class CardsRepository(BaseRepository):
     ):
         try:
             key = f"core_db_cache:{ISSUNG_PRODUCT_GROUP}:fetch_card_data:{company_issuing_app_id}:{environment.value}:{card_id}"
-            if not latest:
+            if not latest and self.cache_client:
                 card_data = self.cache_client.get(key=key, context=None)
                 if not card_data:
                     data = (
@@ -88,7 +88,7 @@ class CardsRepository(BaseRepository):
                     .child(card_id)
                     .get()
                 )
-                if data:
+                if data and self.cache_client:
                     card_data = data
                     self.cache_client.set(
                         key=key, value=json.dumps(card_data), context=None
