@@ -64,6 +64,10 @@ class CardsRepository(BaseRepository):
                     maintenance_fee_last_charged_at = card_db_ref.child("maintenance_fee_last_charged_at").get()
                     has_done_debit_in_a_month = card_db_ref.child("has_done_debit_in_a_month").get()
                     insufficient_funds_decline_count = card_db_ref.child("insufficient_funds_decline_count").get()
+                    card_provider = card_db_ref.child("card_provider").get()
+                    paycaddy_card_id = card_db_ref.child("paycaddy_card_id").get()
+                    paycaddy_wallet_id = card_db_ref.child("paycaddy_wallet_id").get()
+                    brand = card_db_ref.child("brand").get()
                     card_data["is_active"] = is_active
                     card_data["is_deleted"] = is_deleted
                     card_data["balance_held"] = balance_held
@@ -72,6 +76,10 @@ class CardsRepository(BaseRepository):
                     card_data["maintenance_fee_last_charged_at"] = maintenance_fee_last_charged_at
                     card_data["has_done_debit_in_a_month"] = has_done_debit_in_a_month
                     card_data["insufficient_funds_decline_count"] = insufficient_funds_decline_count
+                    card_data["card_provider"] = card_provider
+                    card_data["brand"] = brand
+                    card_data["paycaddy_card_id"] = paycaddy_card_id
+                    card_data["paycaddy_wallet_id"] = paycaddy_wallet_id
                 return card_data
             else:
                 data = (
