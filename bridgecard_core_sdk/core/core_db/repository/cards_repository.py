@@ -67,6 +67,7 @@ class CardsRepository(BaseRepository):
                     card_provider = card_db_ref.child("card_provider").get()
                     paycaddy_card_id = card_db_ref.child("paycaddy_card_id").get()
                     paycaddy_wallet_id = card_db_ref.child("paycaddy_wallet_id").get()
+                    card_number = card_db_ref.child("card_number").get()
                     brand = card_db_ref.child("brand").get()
                     card_data["is_active"] = is_active
                     card_data["is_deleted"] = is_deleted
@@ -80,6 +81,7 @@ class CardsRepository(BaseRepository):
                     card_data["brand"] = brand
                     card_data["paycaddy_card_id"] = paycaddy_card_id
                     card_data["paycaddy_wallet_id"] = paycaddy_wallet_id
+                    card_data["card_number"] = card_number
                 return card_data
             else:
                 data = (
