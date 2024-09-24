@@ -36,7 +36,11 @@ class CardsRepository(BaseRepository):
     ):
         try:
             key = f"core_db_cache:{ISSUNG_PRODUCT_GROUP}:fetch_card_data:{company_issuing_app_id}:{environment.value}:{card_id}"
-            if not latest and self.cache_client:
+            card_db_ref = self.db_ref.child(company_issuing_app_id).child(environment.value).child(card_id)
+            bopayment_card_token_id = card_db_ref.child("bopayment_card_token_id").get()
+            paycaddy_card_id = card_db_ref.child("paycaddy_card_id").get()
+                      
+            if (not latest and self.cache_client) and not (paycaddy_card_id and bopayment_card_token_id):
                 card_data = self.cache_client.get(key=key, context=None)
                 if not card_data:
                     data = (
@@ -67,9 +71,7 @@ class CardsRepository(BaseRepository):
                     card_provider = card_db_ref.child("card_provider").get()
                     paycaddy_card_id = card_db_ref.child("paycaddy_card_id").get()
                     paycaddy_wallet_id = card_db_ref.child("paycaddy_wallet_id").get()
-                    card_number = card_db_ref.child("card_number").get()
-                    expiry_month = card_db_ref.child("expiry_month").get()
-                    expiry_year = card_db_ref.child("expiry_year").get()
+                    
                     brand = card_db_ref.child("brand").get()
                     card_data["is_active"] = is_active
                     card_data["is_deleted"] = is_deleted
@@ -83,9 +85,7 @@ class CardsRepository(BaseRepository):
                     card_data["brand"] = brand
                     card_data["paycaddy_card_id"] = paycaddy_card_id
                     card_data["paycaddy_wallet_id"] = paycaddy_wallet_id
-                    card_data["card_number"] = card_number
-                    card_data["expiry_year"] = expiry_year
-                    card_data["expiry_month"] = expiry_month
+                    card_data["bopayment_card_token_id"] = bopayment_card_token_id
                 return card_data
             else:
                 data = (
@@ -100,7 +100,8 @@ class CardsRepository(BaseRepository):
                         key=key, value=json.dumps(card_data), context=None
                     )
                 return data
-        except:
+        except Exception as e:
+            print(e)
             return None
             
 
