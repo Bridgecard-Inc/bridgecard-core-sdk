@@ -19,6 +19,26 @@ class CompanyRepository(BaseRepository):
                                   db_session.cardholders_db_app)
 
             self.db_ref = db_ref
+    
+    def create_company(
+        self,
+        environment: EnvironmentEnum,
+        company_issuing_app_id: str,
+        company_data: dict,
+        context: Optional[Any] = None,
+    ):
+        try:
+            data = (
+                self.db_ref.child(company_issuing_app_id)
+                .child(environment.value)
+                .child(company_data["company_id"])
+                .set(company_data)
+            )
+
+            return data
+
+        except:
+            return None
 
     def fetch_all_company_data(
         self,
