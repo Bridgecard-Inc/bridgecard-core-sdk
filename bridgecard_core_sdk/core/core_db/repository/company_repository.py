@@ -35,7 +35,7 @@ class CompanyRepository(BaseRepository):
                 .set(company_data)
             )
 
-            return data
+            return company_data
 
         except:
             return None
