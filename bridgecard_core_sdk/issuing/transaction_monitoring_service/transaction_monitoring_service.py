@@ -87,7 +87,7 @@ def check_transaction_risk(
 
             return False
         
-        return False
+        return True
 
 def whitelist_user_from_potential_fraud(
     token: str,
