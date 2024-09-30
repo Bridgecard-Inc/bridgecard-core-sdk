@@ -79,7 +79,15 @@ def check_transaction_risk(
 
     except grpc.RpcError as e:
 
-        if e == grpc.StatusCode.PERMISSION_DENIED.value[0]:
+        if e.code() == grpc.StatusCode.PERMISSION_DENIED:
+
+            print(f"check_transaction_risk - Code: {e.code()}")
+
+            print(f"check_transaction_risk - Message: {e.details()}")
+
+            return False
+        
+        if e.code() == grpc.StatusCode.UNKNOWN:
 
             print(f"check_transaction_risk - Code: {e.code()}")
 
