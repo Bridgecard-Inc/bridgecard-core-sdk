@@ -411,6 +411,8 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
 
     manually_passed_kyc_logs_repository = None
 
+    client_requests_repository = None
+
     if core_db_init_data.client_logs_db:
         manually_passed_kyc_logs_repository = ManuallyPassedKycLogsRepository(
             db_session_factory=db.session
