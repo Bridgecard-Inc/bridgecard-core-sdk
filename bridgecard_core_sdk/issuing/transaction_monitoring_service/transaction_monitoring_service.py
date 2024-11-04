@@ -17,6 +17,8 @@ from .utils.transaction_monitoring_service_data_context import (
 )
 
 
+COMPANY_LIMIT_REACHED = "COMPANY_LIMIT_REACHED"
+
 def init_transaction_monitoring_service():
     client_private_key = os.environ.get(
         "BRIDGECARD_ISSUING_TLS_CLIENT_PRIVATE_KEY")
@@ -75,6 +77,12 @@ def check_transaction_risk(
         response = client_stub.CheckTransactionRisk(request, metadata=metadata)
 
         if response.code == grpc.StatusCode.OK.value[0]:
+
+            if response.message == COMPANY_LIMIT_REACHED:
+
+                return COMPANY_LIMIT_REACHED
+
+            
             return True
 
     except grpc.RpcError as e:
