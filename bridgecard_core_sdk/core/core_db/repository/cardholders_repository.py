@@ -54,7 +54,7 @@ class CardholdersRepository(BaseRepository):
                         .get()
                     )
                     if data:
-                        cardholder_data = data
+                        cardholder_data = data.copy()
                         if "saved_identity_record" in cardholder_data:
                             cardholder_data.pop("saved_identity_record")
                         if "cards" in cardholder_data:
@@ -76,7 +76,7 @@ class CardholdersRepository(BaseRepository):
                     .get()
                 )
                 if data and self.cache_client:
-                    cardholder_data = data
+                    cardholder_data = data.copy()
                     if "saved_identity_record" in cardholder_data:
                         cardholder_data.pop("saved_identity_record")
                     if "cards" in cardholder_data:
