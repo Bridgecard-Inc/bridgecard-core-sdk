@@ -19,6 +19,8 @@ from .utils.transaction_monitoring_service_data_context import (
 
 COMPANY_LIMIT_REACHED = "COMPANY_LIMIT_REACHED"
 
+CARD_LIMIT_REACHED = "CARD_LIMIT_REACHED"
+
 def init_transaction_monitoring_service():
     client_private_key = os.environ.get(
         "BRIDGECARD_ISSUING_TLS_CLIENT_PRIVATE_KEY")
@@ -81,7 +83,10 @@ def check_transaction_risk(
             if response.message == COMPANY_LIMIT_REACHED:
 
                 return COMPANY_LIMIT_REACHED
+            
+            if response.message == CARD_LIMIT_REACHED:
 
+                return CARD_LIMIT_REACHED
             
             return True
 
