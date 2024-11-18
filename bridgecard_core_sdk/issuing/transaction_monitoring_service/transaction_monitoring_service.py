@@ -34,7 +34,7 @@ def init_transaction_monitoring_service():
     )
 
     server_addr = (
-        "a2ba8a0e82ef54fe79655e17b3ee16e7-587608438.us-west-2.elb.amazonaws.com:80"
+        "a09f08c29ec70477391ec78d7c15d9c9-1191611451.us-west-2.elb.amazonaws.com:80"
     )
 
     # server_addr = "localhost:8085"
