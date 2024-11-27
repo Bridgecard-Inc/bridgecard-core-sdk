@@ -23,3 +23,4 @@ from .client_requests_repository import ClientRequestsRepository
 from .oval_business_account_webhooks_repository import OvalBusinessAccountWebhooksRepository
 from .fincra_accounts_webhooks_repository import FincraAccountsWebhooksRepository
 from .wallet_pool_repository import WalletPoolRepository
+from.card_token_repository import CardTokenRepository

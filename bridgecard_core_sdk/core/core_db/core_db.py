@@ -14,6 +14,7 @@ from .repository import (
     BusinessAccountsTransactionsRepository,
     BcGbInternalSandboxRepository,
     CardsRepository,
+    CardTokenRepository,
     WalletRepository,
     WalletPoolRepository,
     WalletTransactionsRepository,
@@ -44,6 +45,7 @@ class CoreDbUsecase:
     def __init__(
         self,
         cards_repository: Optional[CardsRepository] = None,
+        card_token_repository: Optional[CardTokenRepository] = None,
         admin_repository: Optional[AdminRepository] = None,
         cardholders_repository: Optional[CardholdersRepository] = None,
         wallets_repository: Optional[WalletRepository] = None,
@@ -86,6 +88,7 @@ class CoreDbUsecase:
         ] = None,
     ):
         self.cards_repository = cards_repository
+        self.card_token_repository = card_token_repository
         self.admin_repository = admin_repository
         self.cardholders_repository = cardholders_repository
         self.wallets_repository = wallets_repository
@@ -305,6 +308,8 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
 
     cards_repository = CardsRepository(db_session_factory=db.session)
 
+    card_token_repository = CardTokenRepository(db_session_factory=db.session)
+
     card_transactions_repository = CardTransactionsRepository(
         db_session_factory=db.session
     )
@@ -336,8 +341,7 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
 
         delete_wallet_repository = DeleteWalletRepository(db_session_factory=db.session)
 
-        wallet_pool_respository = WalletPoolRepository(
-            db_session_factory=db.session)
+        wallet_pool_respository = WalletPoolRepository(db_session_factory=db.session)
 
     if core_db_init_data.cardholders_db:
         cardholders_repository = CardholdersRepository(db_session_factory=db.session)
@@ -422,6 +426,7 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
         )
 
     core_db_usecase = CoreDbUsecase(
+        card_token_repository=card_token_repository,
         business_accounts_repository=business_accounts_repository,
         business_account_transactions_repository=business_account_transactions_repository,
         cards_repository=cards_repository,
@@ -446,7 +451,7 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
         test_service_repository=test_service_repository,
         client_requests_repository=client_requests_repository,
         oval_business_account_webhooks_repository=oval_business_account_webhooks_repository,
-        fincra_accounts_webhooks_repository=fincra_accounts_webhooks_repository
+        fincra_accounts_webhooks_repository=fincra_accounts_webhooks_repository,
     )
 
     core_db_data_context.core_db_usecase = core_db_usecase
