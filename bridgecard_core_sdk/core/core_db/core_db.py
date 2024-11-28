@@ -306,6 +306,12 @@ class Database:
 def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
     db = Database(core_db_init_data)
 
+    cards_repository = None
+    card_token_repository = None
+    card_transactions_repository = None
+    oval_business_account_webhooks_repository = None
+    fincra_accounts_webhooks_repository = None
+
     cards_repository = CardsRepository(db_session_factory=db.session)
 
     card_token_repository = CardTokenRepository(db_session_factory=db.session)
