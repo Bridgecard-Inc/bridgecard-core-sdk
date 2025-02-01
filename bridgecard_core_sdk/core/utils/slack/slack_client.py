@@ -79,3 +79,17 @@ class SlackClient:
        except slack_sdk.errors.SlackApiError as e:
            print(f"Error deleting message: {e.response['error']}")
            return None
+
+    # In your SlackClient class
+    def delete_file(self, file_id: str):
+        """
+        Delete a file from Slack.
+        :param file_id: ID of the file to delete
+        :return: Response from Slack API
+        """
+        
+        try:
+            self._client.files_delete(file=file_id)
+            print(f"File {file_id} deleted successfully")
+        except Exception as e:
+            print(f"Failed to delete Slack file {file_id}: {str(e)}")
