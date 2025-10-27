@@ -15,13 +15,13 @@ class BasicPikaClient:
 
         environment = environment.lower()
 
-        if environment == "local":
+        if environment == "development" or "local":
             # Local RabbitMQ (e.g., running via Docker)
             host = rabbitmq_broker_id or "localhost"
             port = 5672
             url = f"amqp://{rabbitmq_user}:{rabbitmq_password}@{host}:{port}/"
             parameters = pika.URLParameters(url)
-            logging.info(f"[BasicPikaClient] Environment: local — connecting to {url}")
+            logging.info(f"[BasicPikaClient] Environment: {environment} — connecting to {url}")
 
         else:
             # SSL Context for TLS configuration of Amazon MQ for RabbitMQ
