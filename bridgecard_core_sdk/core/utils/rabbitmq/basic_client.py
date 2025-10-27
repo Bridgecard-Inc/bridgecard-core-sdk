@@ -10,7 +10,7 @@ class BasicPikaClient:
             rabbitmq_user: str,
             rabbitmq_password: str,
             region: str,
-            environment: str = "production",
+            environment: str,
     ):
 
         environment = environment.lower()
