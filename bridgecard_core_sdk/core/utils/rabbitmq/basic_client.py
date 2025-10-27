@@ -15,11 +15,9 @@ class BasicPikaClient:
 
         environment = environment.lower()
 
-        if environment == "development" or "local":
+        if environment in ["local", "development"]:
             # Local RabbitMQ (e.g., running via Docker)
-            host = rabbitmq_broker_id or "localhost"
-            port = 5672
-            url = f"amqp://{rabbitmq_user}:{rabbitmq_password}@{host}:{port}/"
+            url = f"amqp://{rabbitmq_user}:{rabbitmq_password}@localhost:5672/"
             parameters = pika.URLParameters(url)
             logging.info(f"[BasicPikaClient] Environment: {environment} — connecting to {url}")
 
