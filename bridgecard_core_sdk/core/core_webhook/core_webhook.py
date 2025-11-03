@@ -25,11 +25,14 @@ def init_core_webhook():
 
     region = os.environ.get("REGION")
 
+    environment = os.environ.get("ENVIRONMENT", "production")
+
     basic_message_sender = BasicMessageSender(
         rabbitmq_broker_id,
         rabbitmq_user,
         rabbitmq_password,
         region,
+        environment=environment
     )
 
     core_webhook_data_context.basic_message_sender = basic_message_sender
