@@ -24,3 +24,4 @@ from .oval_business_account_webhooks_repository import OvalBusinessAccountWebhoo
 from .fincra_accounts_webhooks_repository import FincraAccountsWebhooksRepository
 from .wallet_pool_repository import WalletPoolRepository
 from .card_token_repository import CardTokenRepository
+from .wallet_by_address_repository import WalletByAddressRepository

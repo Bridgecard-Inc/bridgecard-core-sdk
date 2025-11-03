@@ -25,11 +25,13 @@ class CoreDbInitData(BaseModel):
     card_transactions_db: Optional[bool] = False
     cardholders_db: Optional[bool] = False
     wallets_db: Optional[bool] = False
+    wallet_by_address_db: Optional[bool] = True
     naira_accounts_db: Optional[bool] = False
     accounts_db: Optional[bool] = False
     cache_db: Optional[bool] = False
     client_logs_db: Optional[bool] = False
     test_service_db: Optional[bool] = False
+    wallet_by_address_repository: Optional[bool] = True
 
 
 class EnvironmentEnum(str, Enum):

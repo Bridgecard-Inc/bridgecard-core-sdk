@@ -17,6 +17,7 @@ from .repository import (
     CardTokenRepository,
     WalletRepository,
     WalletPoolRepository,
+    WalletByAddressRepository,
     WalletTransactionsRepository,
     AdminRepository,
     BillingRepository,
@@ -57,6 +58,7 @@ class CoreDbUsecase:
             BlackListedCardholdersRepository
         ] = None,
         wallet_pool_repository: Optional[WalletPoolRepository] = None,
+        wallet_by_address_repository: Optional[WalletByAddressRepository] = None,
         card_transactions_repository: Optional[CardTransactionsRepository] = None,
         naira_accounts_repository: Optional[NairaAccountsRepository] = False,
         accounts_repository: Optional[AccountsRepository] = False,
@@ -120,6 +122,7 @@ class CoreDbUsecase:
             oval_business_account_webhooks_repository
         )
         self.fincra_accounts_webhooks_repository = fincra_accounts_webhooks_repository
+        self.wallet_by_address_repository = wallet_by_address_repository
 
 
 class Database:
@@ -336,6 +339,7 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
     wallet_transactions_repository = None
     delete_wallet_repository = None
     wallet_pool_respository = None
+    wallet_by_address_repository = None
 
     if core_db_init_data.wallets_db:
 
@@ -358,6 +362,9 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
         company_kyc_request_repository = CompanyKycRequestRepository(
             db_session_factory=db.session
         )
+        
+    if core_db_init_data.wallet_by_address_db:
+        wallet_by_address_repository = WalletByAddressRepository(db_session_factory=db.session)
 
     accounts_repository = None
 
@@ -442,6 +449,7 @@ def init_core_db(core_db_init_data: Optional[CoreDbInitData] = None):
         wallets_repository=wallets_repository,
         delete_wallet_repository=delete_wallet_repository,
         wallet_pool_repository=wallet_pool_respository,
+        wallet_by_address_repository=wallet_by_address_repository,
         wallet_transactions_repository=wallet_transactions_repository,
         company_kyc_request_repository=company_kyc_request_repository,
         naira_accounts_repository=naira_accounts_repository,
