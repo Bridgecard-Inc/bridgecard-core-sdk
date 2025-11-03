@@ -25,6 +25,7 @@ class CoreDbInitData(BaseModel):
     card_transactions_db: Optional[bool] = False
     cardholders_db: Optional[bool] = False
     wallets_db: Optional[bool] = False
+    wallet_by_address_db: Optional[bool] = False
     naira_accounts_db: Optional[bool] = False
     accounts_db: Optional[bool] = False
     cache_db: Optional[bool] = False
