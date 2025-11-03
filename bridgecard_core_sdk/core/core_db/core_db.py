@@ -122,6 +122,7 @@ class CoreDbUsecase:
             oval_business_account_webhooks_repository
         )
         self.fincra_accounts_webhooks_repository = fincra_accounts_webhooks_repository
+        self.wallet_by_address_repository = wallet_by_address_repository
 
 
 class Database:
